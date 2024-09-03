@@ -1,0 +1,88 @@
+{
+  "personalInfo": {
+    "name": "John Doe",
+    "userRole": "B.A",
+    "age": 35
+  },
+  "attendance": [
+    {
+      "date": "2024-08-31",
+      "checkInTime": "09:00:00",
+      "checkOutTime": "17:00:00",
+      "status": true
+    },
+    {
+      "date": "2024-09-01",
+      "checkInTime": "09:15:00",
+      "checkOutTime": "16:45:00",
+      "status": true
+    }
+  ],
+  "locations": [
+    {
+      "locationName": "Location A",
+      "latitude": 24.865289474406016,
+      "longitude": 67.07881103540363,
+      "brandName": "Brand A",
+      "count": 10
+    },
+    {
+      "locationName": "Location B",
+      "latitude": 24.865289474406016,
+      "longitude": 67.07881103540363,
+      "brandName": "Brand B",
+      "count": 5
+    }
+  ],
+  "products": [
+    {
+      "productName": "Product 1",
+      "quantity": 100,
+      "price": 29.99
+    },
+    {
+      "productName": "Product 2",
+      "quantity": 50,
+      "price": 19.99
+    }
+  ],
+  "sales": [
+    {
+      "date": "2024-09-01T00:00:00Z",
+      "saleDetails": [
+        {
+          "locationName": "Location A",
+          "brandName": "Brand A",
+          "products": [
+            {
+              "productName": "Product 1",
+              "quantity": 10,
+              "price": 29.99
+            },
+            {
+              "productName": "Product 2",
+              "quantity": 5,
+              "price": 19.99
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2024-09-02T00:00:00Z",
+      "saleDetails": [
+        {
+          "locationName": "Location B",
+          "brandName": "Brand B",
+          "products": [
+            {
+              "productName": "Product 1",
+              "quantity": 8,
+              "price": 29.99
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
