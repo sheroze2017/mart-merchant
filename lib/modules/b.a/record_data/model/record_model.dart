@@ -1,11 +1,11 @@
-class RecordModel {
+class RecordModelData {
   int id;
   String name;
   int quantityGm;
   double pricePkr;
   int stock;
 
-  RecordModel({
+  RecordModelData({
     required this.id,
     required this.name,
     required this.quantityGm,
@@ -25,8 +25,8 @@ class RecordModel {
   }
 
   // Convert a Map to a RecordModel object
-  factory RecordModel.fromMap(Map<String, dynamic> map) {
-    return RecordModel(
+  factory RecordModelData.fromMap(Map<String, dynamic> map) {
+    return RecordModelData(
       id: map['id'] ?? 0,
       name: map['name'],
       quantityGm: map['quantity_gm'],

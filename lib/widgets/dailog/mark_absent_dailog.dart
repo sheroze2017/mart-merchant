@@ -3,6 +3,7 @@ import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 
 class MarkAbsentDialog extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
@@ -29,6 +30,16 @@ class MarkAbsentDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Center(
+              child: Container(
+                height: 10.h,
+                width: 20.w,
+                child: Image(
+                  fit: BoxFit.fill,
+                  image: AssetImage('assets/images/logo.png'),
+                ),
+              ),
+            ),
             Material(
               color: Colors.transparent,
               child: Text(

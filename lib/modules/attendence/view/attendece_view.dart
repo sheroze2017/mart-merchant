@@ -168,8 +168,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   syncController.userAttendance.last.date!
                               .contains(todayDate) &&
                           syncController.userAttendance.last.status == true &&
-                          syncController
-                              .userAttendance.last.checkOutTime!.isEmpty
+                          syncController.userAttendance.last.checkOutTime ==
+                              null
                       ? Expanded(
                           child: InkWell(
                             onTap: () {
@@ -230,7 +230,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           Row(
             children: [
               heading(
-                title: ' Your Today Timing',
+                title: ' Dated:',
               ),
               heading(title: todayDate),
             ],
@@ -242,7 +242,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       Text(
                         '   Attendance Status ',
                         style: CustomTextStyles.darkHeadingTextStyle(
-                            color: Colors.green),
+                            color: Colors.black),
                       ),
                       Obx(
                         () => Text(
@@ -276,26 +276,24 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       )
                     : Container(),
           ),
-          Obx(() => syncController.userAttendance.last.date!
-                      .contains(todayDate) &&
-                  syncController.userAttendance.last.checkOutTime!.isNotEmpty
-              ? Row(
-                  children: [
-                    Text(
-                      '   checkout time ',
-                      style: CustomTextStyles.darkHeadingTextStyle(
-                          color: Colors.red),
-                    ),
-                    Obx(
-                      () => Text(
-                        syncController.userAttendance.last.checkOutTime
-                            .toString(),
-                        style: CustomTextStyles.lightTextStyle(),
-                      ),
+          Obx(() =>
+              syncController.userAttendance.last.date!.contains(todayDate) &&
+                      syncController.userAttendance.last.checkOutTime != null
+                  ? Row(
+                      children: [
+                        Text(
+                          '   checkout time ',
+                          style: CustomTextStyles.darkHeadingTextStyle(
+                              color: Colors.red),
+                        ),
+                        Text(
+                          syncController.userAttendance.last.checkOutTime
+                              .toString(),
+                          style: CustomTextStyles.lightTextStyle(),
+                        ),
+                      ],
                     )
-                  ],
-                )
-              : Container())
+                  : Container())
 
           // formattedDateTime.isNotEmpty || checkOutTime.isNotEmpty
           //     ? Padding(

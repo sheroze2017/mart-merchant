@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart'; // To format date and time
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/user_detail.dart';
+
 class SyncController extends GetxController with WidgetsBindingObserver {
   var username = ''.obs;
   var userRole = ''.obs;
@@ -17,12 +19,14 @@ class SyncController extends GetxController with WidgetsBindingObserver {
   RxList<Product> userProducts = <Product>[].obs;
   RxList<Sales> userSales = <Sales>[].obs;
   RxList<Attendance> userAttendance = <Attendance>[].obs;
+  RxList<ULocations> uLocation = <ULocations>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
-    loadAppData();
+    loadJsonUserData();
+    loadJsonData();
   }
 
   void loadAppData() async {
@@ -81,6 +85,41 @@ class SyncController extends GetxController with WidgetsBindingObserver {
     prefs.setString('appData', json.encode(appData.value.toJson()));
   }
 
+  Future<void> loadJsonUserData() async {
+    final String userDetail = await rootBundle.loadString('assets/data1.json');
+    final userData = json.decode(userDetail);
+    var userInfo = UserDetails.fromJson(userData);
+    var location = userInfo.locations;
+    var products = userInfo.products;
+    var personalInfo = userInfo.userInfo;
+    uLocation.value = location!.toList();
+  }
+
+  Future<void> loadJsonData() async {
+    final String response = await rootBundle.loadString('assets/data.json');
+    final data = json.decode(response);
+    var personalInfo = PersonalInfo.fromJson(data['personalInfo']);
+    var locations = (data['locations'] as List)
+        .map((loc) => Location.fromJson(loc))
+        .toList();
+    var products = (data['products'] as List)
+        .map((prod) => Product.fromJson(prod))
+        .toList();
+    var sales =
+        (data['sales'] as List).map((sale) => Sales.fromJson(sale)).toList();
+
+    var attendance = (data['attendance'] as List)
+        .map((atten) => Attendance.fromJson(atten))
+        .toList();
+
+    userRole.value = personalInfo.userRole;
+    username.value = personalInfo.name;
+    userLocation.value = locations;
+    userProducts.value = products;
+    userAttendance.value = attendance;
+    userSales.value = sales;
+  }
+
   @override
   void onClose() {
     saveAppData();
@@ -96,30 +135,3 @@ class SyncController extends GetxController with WidgetsBindingObserver {
     }
   }
 }
-
-
-
-  // Future<void> loadJsonData() async {
-  //   final String response = await rootBundle.loadString('assets/data.json');
-  //   final data = json.decode(response);
-  //   var personalInfo = PersonalInfo.fromJson(data['personalInfo']);
-  //   var locations = (data['locations'] as List)
-  //       .map((loc) => Location.fromJson(loc))
-  //       .toList();
-  //   var products = (data['products'] as List)
-  //       .map((prod) => Product.fromJson(prod))
-  //       .toList();
-  //   var sales =
-  //       (data['sales'] as List).map((sale) => Sales.fromJson(sale)).toList();
-
-  //   var attendance = (data['attendance'] as List)
-  //       .map((atten) => Attendance.fromJson(atten))
-  //       .toList();
-
-  //   userRole.value = personalInfo.userRole;
-  //   username.value = personalInfo.name;
-  //   userLocation.value = locations;
-  //   userProducts.value = products;
-  //   userAttendance.value = attendance;
-  //   userSales.value = sales;
-  // }

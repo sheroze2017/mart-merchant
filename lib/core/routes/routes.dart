@@ -7,6 +7,7 @@ import 'package:ba_merchandise/modules/b.a/record_data/view/product_priceset.dar
 import 'package:ba_merchandise/modules/b.a/record_data/view/record_intercept.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/record_sales.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/stock_count.dart';
+import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';
 import 'package:ba_merchandise/modules/merchandiser/dasboard/view/dashboard.dart';
 import 'package:get/get.dart';
 
@@ -22,6 +23,7 @@ class Routes {
   static const RECORD_INTERCEPT = '/recordIntercept';
   static const SYNC_DATA = '/syncData';
   static const MERCHANTDASHBOARD = '/merchantHome';
+  static const COMPANY_HOME = '/companyHome';
 
   static final routes = [
     GetPage(
@@ -61,6 +63,10 @@ class Routes {
     GetPage(
         name: MERCHANTDASHBOARD,
         page: () => MerchantDashboard(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: COMPANY_HOME,
+        page: () => CompanyHome(),
         transition: Transition.rightToLeft),
   ];
 }

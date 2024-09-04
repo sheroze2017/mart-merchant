@@ -1,6 +1,7 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/record_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
+import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -13,29 +14,28 @@ class ProductPriceSet extends StatefulWidget {
 }
 
 class _ProductPriceSetState extends State<ProductPriceSet> {
-  final TextEditingController _controller = TextEditingController();
+  List<TextEditingController> _controllers = [];
   bool _isDetailVisible = false;
-  final RecordController controller = Get.put(RecordController());
+  final RecordController controller = Get.find();
   @override
   void initState() {
     super.initState();
-    //_initializeControllers();
+    _initializeControllers();
   }
 
-  // void _initializeControllers() {
-  //   _controllers = List.generate(
-  //     controller.records.length,
-  //     (index) => TextEditingController(
-  //         text: controller.records[index].pricePkr.toString()),
-  //   );
-  // }
+  void _initializeControllers() async {
+    _controllers = await List.generate(
+      controller.records.length,
+      (index) => TextEditingController(text: '0'),
+    );
+    setState(() {});
+  }
 
   @override
   void dispose() {
-    // Dispose of all controllers to prevent memory leaks
-    // for (var controller in _controllers) {
-    //   controller.dispose();
-    // }
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -76,39 +76,52 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                         borderRadius: BorderRadiusDirectional.circular(12)),
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      'Mark your individual product sales of each product in quantity',
+                      'Change individual product price of each product',
                       style: TextStyle(fontSize: 14),
                     ),
                   ),
                 ),
                 Obx(
-                  () => ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: controller.records.length,
-                      itemBuilder: (context, index) {
-                        final toothpaste = controller.records[index];
-                        return Card(
-                          color: Colors.blue.shade50,
-                          elevation: 2,
-                          child: ListTile(
-                              minVerticalPadding: 20,
-                              title: Text(toothpaste.name,
-                                  style: CustomTextStyles.darkTextStyle()),
-                              subtitle: Text('${toothpaste.quantityGm} gm',
-                                  style:
-                                      CustomTextStyles.lightSmallTextStyle()),
-                              trailing: SizedBox(
-                                width: 33.w, // Adjust width as needed
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Expanded(
+                  () => (_controllers.length != controller.records.length)
+                      ? Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: controller.records.length,
+                          itemBuilder: (context, index) {
+                            final toothpaste = controller.records[index];
+                            return Card(
+                              color: Colors.blue.shade50,
+                              elevation: 2,
+                              child: ListTile(
+                                  minVerticalPadding: 20,
+                                  title: Text(toothpaste.name,
+                                      style: CustomTextStyles.darkTextStyle()),
+                                  subtitle: Text(
+                                      '${toothpaste.quantityGm} gm\n Current Price ${toothpaste.pricePkr} ',
+                                      style: CustomTextStyles
+                                          .lightSmallTextStyle()),
+                                  trailing: SizedBox(
+                                    width: 30.w,
+                                    child: Expanded(
                                       child: TextField(
-                                        controller: _controller,
+                                        controller: _controllers[index],
                                         keyboardType: TextInputType.number,
-                                        decoration: const InputDecoration(
+                                        decoration: InputDecoration(
+                                          suffixIcon: InkWell(
+                                            onTap: () {
+                                              _controllers[index].clear();
+                                              setState(() {});
+                                            },
+                                            child: Icon(
+                                              Icons.clear,
+                                              size: 15,
+                                            ),
+                                          ),
                                           label: Text('Price'),
+                                          labelStyle:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 10),
                                           focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
                                                   color: Colors.black)),
@@ -126,17 +139,27 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                                             CustomTextStyles.lightTextStyle(),
                                       ),
                                     ),
-                                    IconButton(
-                                      icon: Icon(Icons.clear),
-                                      onPressed: () {
-                                        _controller.clear();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        );
-                      }),
+                                  )),
+                            );
+                          }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: RoundedButtonSmall(
+                            text: 'Save',
+                            onPressed: () {
+                              controller
+                                  .updateProductPriceOfflineStore(_controllers);
+                            },
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),

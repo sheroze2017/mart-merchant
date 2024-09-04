@@ -1,6 +1,7 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/model/record_model.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
+import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -16,34 +17,30 @@ class RecordSales extends StatefulWidget {
 }
 
 class _RecordSalesState extends State<RecordSales> {
-  TextEditingController? _controllers;
+  List<TextEditingController> _controllers = [];
   bool _isDetailVisible = false;
   bool statusCheck = false;
-  final RecordController controller = Get.put(RecordController());
+  final RecordController controller = Get.find();
   @override
   void initState() {
     super.initState();
-    screenloaded();
+    _initializeControllers();
   }
 
-  // _initializeControllers() {
-  //   _controllers = List.generate(
-  //     controller.records.length,
-  //     (index) => TextEditingController(text: '0'),
-  //   );
-  // }
-
-  void screenloaded() async {
-    // await _initializeControllers();
-    // statusCheck = true;
-    // setState(() {});
+  void _initializeControllers() async {
+    _controllers = await List.generate(
+      controller.records.length,
+      (index) => TextEditingController(text: '0'),
+    );
+    setState(() {});
   }
 
   @override
   void dispose() {
     // Dispose of all controllers to prevent memory leaks
-    controller.dispose();
-
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -90,60 +87,82 @@ class _RecordSalesState extends State<RecordSales> {
                   ),
                 ),
                 Obx(
-                  () => ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: controller.records.length,
-                      itemBuilder: (context, index) {
-                        final toothpaste = controller.records[index];
-                        return Card(
-                          color: Colors.blue.shade50,
-                          elevation: 2,
-                          child: ListTile(
-                              minVerticalPadding: 20,
-                              title: Text(toothpaste.name,
-                                  style: CustomTextStyles.darkTextStyle()),
-                              subtitle: Text(
-                                  '${toothpaste.quantityGm} gm - PKR ${toothpaste.pricePkr}',
-                                  style:
-                                      CustomTextStyles.lightSmallTextStyle()),
-                              trailing: SizedBox(
-                                width: 100, // Adjust width as needed
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Expanded(
-                                      child: TextField(
-                                        controller: _controllers,
-                                        keyboardType: TextInputType.number,
-                                        decoration: const InputDecoration(
-                                          label: Text('Qty'),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.black)),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.black)),
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.grey)),
-                                          isDense: true,
-                                          hintText: '0',
+                  () => (_controllers.length != controller.records.length)
+                      ? Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: controller.records.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              color: Colors.blue.shade50,
+                              elevation: 2,
+                              child: ListTile(
+                                  minVerticalPadding: 10,
+                                  title: Text(controller.records[index].name,
+                                      style: CustomTextStyles.darkTextStyle()),
+                                  subtitle: Obx(() => Text(
+                                      '${controller.records[index].quantityGm} gm - PKR ${controller.records[index].pricePkr} - Stock ${controller.records.value[index].stock}',
+                                      style: CustomTextStyles
+                                          .lightSmallTextStyle())),
+                                  trailing: SizedBox(
+                                    width: 100,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Expanded(
+                                          child: TextField(
+                                            controller: _controllers[index],
+                                            keyboardType: TextInputType.number,
+                                            style: TextStyle(fontSize: 10),
+                                            decoration: const InputDecoration(
+                                              labelText: 'Qty',
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.black)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.black)),
+                                              border: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.grey)),
+                                              isDense: false,
+                                              hintText: '0',
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
-                                        textAlign: TextAlign.center,
-                                      ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.clear,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            _controllers[index].clear();
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    IconButton(
-                                      icon: Icon(Icons.clear),
-                                      onPressed: () {
-                                        _controllers!.clear();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        );
-                      }),
+                                  )),
+                            );
+                          }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: RoundedButtonSmall(
+                            text: 'Save',
+                            onPressed: () {
+                              controller.updateSalesRecord(_controllers);
+                            },
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),

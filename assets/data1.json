@@ -1,0 +1,42 @@
+{
+    "userInfo": {
+      "username": "merchantUser",
+      "userRole": "Seller"
+    },
+    "locations": [
+      {
+        "locationName": "Downtown Market",
+        "latitude": 24.865289474406016,
+        "longitude": 67.07881103540363,
+        "brands": [
+          {
+            "brandId": 1,
+            "brandName": "Brand A"
+          }
+        ]
+      }
+    ],
+    "products": [
+      {
+        "productName": "Product 1",
+        "price": 15.99,
+        "brandId": 1
+      },
+      {
+        "productName": "Product 2",
+        "price": 9.99,
+        "brandId": 1
+      },
+      {
+        "productName": "Product 3",
+        "price": 20.00,
+        "brandId": 1
+      },
+      {
+        "productName": "Product 4",
+        "price": 25.50,
+        "brandId": 1
+      }
+    ]
+  }
+  

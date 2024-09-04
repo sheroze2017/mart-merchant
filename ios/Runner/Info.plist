@@ -8,6 +8,14 @@
 	<string>We need your location to show the map.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need your location to show the map.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to show it on the map.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location to show it on the map.</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+	<key>GMSApiKey</key>
+	<string>YOUR_API_KEY_HERE</string>
 	<key>CFBundleDisplayName</key>
 	<string>Ba Merchandise</string>
 	<key>CFBundleExecutable</key>
