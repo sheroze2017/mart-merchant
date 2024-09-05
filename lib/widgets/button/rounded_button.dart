@@ -104,3 +104,58 @@ class RoundedButtonSmall extends StatelessWidget {
     );
   }
 }
+
+class IconButtonSmall extends StatelessWidget {
+  final String text;
+  final bool isBorder;
+  final Color backgroundColor;
+  final Color textColor;
+  final VoidCallback onPressed;
+  bool? isSmall = false;
+  bool isBold;
+  bool showLoader;
+
+  IconButtonSmall(
+      {required this.text,
+      required this.onPressed,
+      required this.backgroundColor,
+      required this.textColor,
+      this.isSmall,
+      this.showLoader = false,
+      this.isBold = false,
+      this.isBorder = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+        ),
+        child: showLoader
+            ? Container(
+                height: 2.h,
+                width: 2.h,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              )
+            : Column(
+                children: [
+                  Text(
+                    text,
+                    style: TextStyle(
+                        color: textColor,
+                        fontWeight: isBold ? FontWeight.w700 : FontWeight.w500,
+                        fontSize: isBold ? (14 / 3.9).w : (12.18 / 3.9).w),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+}

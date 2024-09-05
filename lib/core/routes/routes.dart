@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/modules/admin/dashboard/view/admin_dashboard.dart';
 import 'package:ba_merchandise/modules/attendence/view/attendece_view.dart';
 import 'package:ba_merchandise/modules/auth/view/login_view.dart';
 import 'package:ba_merchandise/modules/auth/view/role_select_view.dart';
@@ -24,8 +25,13 @@ class Routes {
   static const SYNC_DATA = '/syncData';
   static const MERCHANTDASHBOARD = '/merchantHome';
   static const COMPANY_HOME = '/companyHome';
+  static const ADMIN_HOME = '/adminHome';
 
   static final routes = [
+    GetPage(
+        name: ADMIN_HOME,
+        page: () => AdminHome(),
+        transition: Transition.rightToLeft),
     GetPage(
         name: LOGIN,
         page: () => LoginScreen(),

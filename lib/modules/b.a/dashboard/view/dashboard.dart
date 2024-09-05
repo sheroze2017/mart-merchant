@@ -166,6 +166,24 @@ class _BaHomeState extends State<BaHome> {
   }
 }
 
+class darkHeading extends StatelessWidget {
+  final String title;
+  final Color color;
+  const darkHeading({
+    super.key,
+    required this.title,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Text(title,
+            style: CustomTextStyles.lightSmallTextStyle(color: color)));
+  }
+}
+
 class heading extends StatelessWidget {
   final String title;
   const heading({

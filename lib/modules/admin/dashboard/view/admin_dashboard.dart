@@ -7,17 +7,15 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../b.a/dashboard/view/dashboard.dart';
-import '../../operation/view/location/location_view.dart';
-import '../../operation/view/product_view.dart';
 
-class CompanyHome extends StatelessWidget {
-  const CompanyHome({super.key});
+class AdminHome extends StatelessWidget {
+  const AdminHome({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        accType: 'Company',
+        accType: 'Admin',
         title: 'Dashboard',
       ),
       drawer: Drawer(),
@@ -28,7 +26,9 @@ class CompanyHome extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Profile Section
-              ProfileSection(),
+              ProfileSection(
+                showAddress: false,
+              ),
               SizedBox(
                 height: 2.h,
               ),
@@ -39,52 +39,39 @@ class CompanyHome extends StatelessWidget {
                 height: 0.5.h,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Get.to(ProductScreen(),
-                          transition: Transition.cupertino,
-                          duration: Duration(milliseconds: 500));
-                    },
-                    child: DashboardCard(
-                      asset: 'assets/images/product.png',
-                      title: 'Products',
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(CompanyLocationScreen(),
-                          transition: Transition.cupertino,
-                          duration: Duration(milliseconds: 500));
-                    },
-                    child: const DashboardCard(
-                      asset: 'assets/images/location.png',
-                      title: 'Locations',
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        // Get.to(ProductScreen(),
+                        //     transition: Transition.cupertino,
+                        //     duration: Duration(milliseconds: 500));
+                      },
+                      child: DashboardCard(
+                        asset: 'assets/images/product.png',
+                        title: 'Add New Company',
+                      ),
                     ),
                   ),
                 ],
               ),
               SizedBox(
-                height: 0.5.h,
+                height: 1.h,
               ),
 
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  DashboardCard(
-                    asset: 'assets/images/economy.png',
-                    title: 'Sales',
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(EmployeeListScreen(),
-                          transition: Transition.cupertino,
-                          duration: Duration(milliseconds: 500));
-                    },
-                    child: DashboardCard(
-                      asset: 'assets/images/employee.png',
-                      title: 'Employees',
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(EmployeeListScreen(),
+                            transition: Transition.cupertino,
+                            duration: Duration(milliseconds: 500));
+                      },
+                      child: DashboardCard(
+                        asset: 'assets/images/economy.png',
+                        title: 'Find Company Sales',
+                      ),
                     ),
                   )
                 ],

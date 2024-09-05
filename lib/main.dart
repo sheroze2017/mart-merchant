@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     return Sizer(builder: (context, orientation, deviceType) {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: Routes.COMPANY_HOME,
+        initialRoute: Routes.USERROLE,
         getPages: Routes.routes,
         title: 'Merchandiser',
         initialBinding: YourBinding(),
