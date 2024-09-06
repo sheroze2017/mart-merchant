@@ -10,17 +10,16 @@ import 'package:latlong2/latlong.dart';
 
 class AttendanceController extends GetxController {
   Rx<LatLng?> currentLocation = Rx<LatLng?>(null);
-  // final LatLng _targetLocation =
-  //     LatLng(24.929681, 67.039365); // Example: San Francisco
-  final double _radius = 50.0; // 50 meters radius
-  var formattedDateTime = ''.obs;
-  var checkOutTime = ''.obs;
+  final double _radius = 50.0;
+  // var formattedDateTime = ''.obs;
+  // var checkOutTime = ''.obs;
   final SyncController syncController = Get.find();
-
+  late Rx<Attendance> attenToday = Attendance().obs;
   @override
   void onInit() {
     super.onInit();
     getCurrentLocation();
+    getTodayAttendance();
   }
 
   void getCurrentLocation() async {
@@ -29,15 +28,19 @@ class AttendanceController extends GetxController {
     currentLocation.value = LatLng(position.latitude, position.longitude);
   }
 
-  Future<void> markAttendance(String today) async {
-    if (currentLocation == null) {
-      Fluttertoast.showToast(msg: "Unable to get current location.");
-      return;
-    }
+  getTodayAttendance() {
+    String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    attenToday.value = syncController.userAttendance.firstWhere(
+      (att) => att.date == today,
+      orElse: () => Attendance(),
+    );
+  }
 
+  Future<void> markAttendance(
+      String today, double latitude, double longitude) async {
     double distanceInMeters = Geolocator.distanceBetween(
-      currentLocation.value!.latitude,
-      currentLocation.value!.longitude,
+      latitude,
+      longitude,
       syncController.userLocation[0].latitude,
       syncController.userLocation[0].longitude,
     );
@@ -45,8 +48,8 @@ class AttendanceController extends GetxController {
     if (distanceInMeters <= _radius) {
       Fluttertoast.showToast(msg: "Attendance marked successfully!");
       DateTime now = DateTime.now();
-      formattedDateTime.value =
-          await DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+      // formattedDateTime.value =
+      //     await DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
       syncController.userAttendance.add(Attendance(
           date: today,
           status: true,
@@ -56,15 +59,10 @@ class AttendanceController extends GetxController {
     }
   }
 
-  Future<void> checkOut() async {
-    if (currentLocation == null) {
-      Fluttertoast.showToast(msg: "Unable to get current location.");
-      return;
-    }
-
+  Future<void> checkOut(latitude, longitude, today) async {
     double distanceInMeters = Geolocator.distanceBetween(
-      currentLocation.value!.latitude,
-      currentLocation.value!.longitude,
+      latitude,
+      longitude,
       syncController.userLocation[0].latitude,
       syncController.userLocation[0].longitude,
     );
@@ -72,9 +70,33 @@ class AttendanceController extends GetxController {
     if (distanceInMeters <= _radius) {
       Fluttertoast.showToast(msg: "checkout marked successfully!");
       DateTime now = DateTime.now();
-      checkOutTime.value = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
-      syncController.userAttendance.last.checkOutTime =
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+      //checkOutTime.value = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+      final attendanceIndex =
+          syncController.userAttendance.indexWhere((att) => att.date == today);
+
+      if (attendanceIndex != -1) {
+        // Get the existing attendance
+        final existingAttendance =
+            syncController.userAttendance[attendanceIndex];
+
+        // Create a new Attendance object with updated checkout time
+        Attendance updatedAttendance = Attendance(
+          date: existingAttendance.date,
+          status: existingAttendance.status,
+          checkInTime: existingAttendance.checkInTime,
+          checkOutTime: DateFormat('yyyy-MM-dd HH:mm:ss')
+              .format(now), // Set the new checkout time
+        );
+
+        // Update the attendance entry in the list
+        syncController.userAttendance[attendanceIndex] = updatedAttendance;
+      } else {
+        // If no attendance found for today, handle the case
+        Fluttertoast.showToast(msg: "No attendance record found for today!");
+      }
+      // syncController.userAttendance
+      // syncController.userAttendance.last.checkOutTime =
+      //     DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
     } else {
       Fluttertoast.showToast(msg: "You are not within the attendance radius.");
     }
@@ -83,6 +105,7 @@ class AttendanceController extends GetxController {
   Future<void> markAbsent(String todayDate) async {
     syncController.userAttendance
         .add(Attendance(date: todayDate, status: false));
+
     Get.back();
   }
 }

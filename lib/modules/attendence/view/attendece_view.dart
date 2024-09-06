@@ -37,13 +37,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   final attendanceController = Get.put(AttendanceController());
   final SyncController syncController = Get.find();
 
-  // LatLng? _currentLocation;
-  // final LatLng _targetLocation =
-  //     LatLng(24.929681, 67.039365); // Example: San Francisco
-  // final double _radius = 50.0; // 50 meters radius
-  // String formattedDateTime = '';
-  // String checkOutTime = '';
-
   @override
   void initState() {
     super.initState();
@@ -91,29 +84,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     });
   }
 
-  Future<void> _checkPermission() async {
-    var status = await Permission.location.status;
-    if (status.isGranted) {
-      attendanceController.getCurrentLocation();
-    } else if (status.isDenied) {
-      if (await Permission.location.request().isGranted) {
-        attendanceController.getCurrentLocation();
-      } else {
-        Fluttertoast.showToast(msg: "Location permission denied.");
-      }
-    } else if (status.isPermanentlyDenied) {
-      openAppSettings();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
-        title: 'Attendance',
-        accType: 'Merchant',
+        title: 'Mark Attendance',
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,34 +117,17 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       onTap: () {
                         getCurrentLocation();
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Column(
-                            children: [
-                              Icon(Icons.pin_drop),
-                              Text(
-                                'Point Your Location',
-                                style:
-                                    CustomTextStyles.lightTextStyle(size: 10),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                      child: Image(
+                          height: 6.h,
+                          width: 6.h,
+                          image: const AssetImage('assets/images/marker.png')),
                     ))
               ],
             ),
           ),
           Obx(
-            () => attendanceController.formattedDateTime.value.isNotEmpty ||
-                    (syncController.userAttendance.last.date!
-                            .contains(todayDate) &&
-                        (syncController.userAttendance.last.status == false ||
-                            syncController.userAttendance.last.status == true))
+            () => attendanceController.attenToday.value.status == false ||
+                    attendanceController.attenToday.value.checkInTime != null
                 ? Container()
                 : Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -175,13 +135,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       children: [
                         Expanded(
                           child: InkWell(
-                            onTap: () {
-                              attendanceController.markAttendance(todayDate);
+                            onTap: () async {
+                              await attendanceController.markAttendance(
+                                  todayDate, _latitude, _longitude);
+                              attendanceController.getTodayAttendance();
                             },
                             child: StatusContainer(
                               img: 'assets/images/present.png',
                               number: '',
-                              label: 'Mark attendence',
+                              label: 'Mark attendance',
                               color: Colors.green,
                             ),
                           ),
@@ -193,14 +155,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           InkWell(
               child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Obx(
-              () => Row(
-                children: [
-                  syncController.userAttendance.last.date!
-                              .contains(todayDate) &&
-                          syncController.userAttendance.last.status == true &&
-                          syncController.userAttendance.last.checkOutTime ==
-                              null
+            child: Row(
+              children: [
+                Obx(
+                  () => attendanceController.attenToday.value.checkOutTime ==
+                              null &&
+                          attendanceController.attenToday.value.status == true
                       ? Expanded(
                           child: InkWell(
                             onTap: () {
@@ -210,7 +170,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                   dailogText:
                                       'Are you certain you wish to mark off today?',
                                   onMarkAbsent: () async {
-                                    await attendanceController.checkOut();
+                                    await attendanceController.checkOut(
+                                        _latitude, _longitude, todayDate);
+                                    setState(() {});
+                                    attendanceController.getTodayAttendance();
+
                                     Get.back();
                                   },
                                   markAbsentText: 'Mark Off',
@@ -226,33 +190,36 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           ),
                         )
                       : Container(),
-                  syncController.userAttendance.last.date!.contains(todayDate)
-                      ? Container()
-                      : Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => MarkAbsentDialog(
-                                  dailogText:
-                                      'Are you certain you wish to mark today as absent?',
-                                  onMarkAbsent: () {
-                                    attendanceController.markAbsent(todayDate);
-                                  },
-                                  markAbsentText: 'Mark Absent',
-                                ),
-                              );
-                            },
-                            child: StatusContainer(
-                              img: 'assets/images/absent.png',
-                              number: '',
-                              label: 'Absent',
-                              color: Colors.red,
+                ),
+                Obx(() =>
+                    attendanceController.attenToday.value.checkInTime == null
+                        ? Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => MarkAbsentDialog(
+                                    dailogText:
+                                        'Are you certain you wish to mark today as absent?',
+                                    onMarkAbsent: () async {
+                                      await attendanceController
+                                          .markAbsent(todayDate);
+                                      attendanceController.getTodayAttendance();
+                                    },
+                                    markAbsentText: 'Mark Absent',
+                                  ),
+                                );
+                              },
+                              child: StatusContainer(
+                                img: 'assets/images/absent.png',
+                                number: '',
+                                label: 'Absent',
+                                color: Colors.red,
+                              ),
                             ),
-                          ),
-                        )
-                ],
-              ),
+                          )
+                        : Container())
+              ],
             ),
           )),
           SizedBox(
@@ -286,45 +253,42 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 : Container(),
           ),
           Obx(
-            () =>
-                syncController.userAttendance.last.date!.contains(todayDate) &&
-                        syncController.userAttendance.last.status!
-                    ? Row(
-                        children: [
-                          Text(
-                            '   checkin time ',
-                            style: CustomTextStyles.darkHeadingTextStyle(
-                                color: Colors.green),
-                          ),
-                          Obx(
-                            () => Text(
-                              syncController.userAttendance.last.checkInTime
-                                  .toString(),
-                              style: CustomTextStyles.lightTextStyle(),
-                            ),
-                          )
-                        ],
-                      )
-                    : Container(),
-          ),
-          Obx(() =>
-              syncController.userAttendance.last.date!.contains(todayDate) &&
-                      syncController.userAttendance.last.checkOutTime != null
-                  ? Row(
-                      children: [
-                        Text(
-                          '   checkout time ',
-                          style: CustomTextStyles.darkHeadingTextStyle(
-                              color: Colors.red),
-                        ),
-                        Text(
-                          syncController.userAttendance.last.checkOutTime
+            () => attendanceController.attenToday.value.status == true
+                ? Row(
+                    children: [
+                      Text(
+                        '   checkin time ',
+                        style: CustomTextStyles.darkHeadingTextStyle(
+                            color: Colors.green),
+                      ),
+                      Obx(
+                        () => Text(
+                          attendanceController.attenToday.value.checkInTime
                               .toString(),
                           style: CustomTextStyles.lightTextStyle(),
                         ),
-                      ],
-                    )
-                  : Container())
+                      )
+                    ],
+                  )
+                : Container(),
+          ),
+          Obx(() => attendanceController.attenToday.value.checkOutTime != null
+              ? Row(
+                  children: [
+                    Text(
+                      '   checkout time ',
+                      style: CustomTextStyles.darkHeadingTextStyle(
+                          color: Colors.red),
+                    ),
+                    Text(
+                      attendanceController.attenToday.value.checkOutTime
+                          .toString()
+                          .toString(),
+                      style: CustomTextStyles.lightTextStyle(),
+                    ),
+                  ],
+                )
+              : Container())
 
           // formattedDateTime.isNotEmpty || checkOutTime.isNotEmpty
           //     ? Padding(

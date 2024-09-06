@@ -16,7 +16,7 @@ class StatusContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: color, width: 3),
+        border: Border.all(color: color, width: 1),
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
       ),
