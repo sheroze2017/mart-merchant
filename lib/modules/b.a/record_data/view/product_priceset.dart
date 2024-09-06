@@ -42,6 +42,8 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            backgroundColor: Colors.white,
+
       appBar: CustomAppBar(
         title: 'Product Price',
       ),

@@ -1,6 +1,5 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
-import 'package:ba_merchandise/modules/auth/view/login_view.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,8 +16,6 @@ class _LoginScreenState extends State<UserRoleSelect> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   // final authController = Get.put(AuthController());
-  final FocusNode _focusNode1 = FocusNode();
-  final FocusNode _focusNode2 = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
   //final dio = Dio();
@@ -32,17 +29,9 @@ class _LoginScreenState extends State<UserRoleSelect> {
 
   @override
   Widget build(BuildContext context) {
-    @override
-    void initState() {
-      super.initState();
-    }
-
-    @override
-    void dispose() {
-      super.dispose();
-    }
-
     return Scaffold(
+            backgroundColor: Colors.white,
+
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,

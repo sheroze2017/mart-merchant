@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../model/operation_model.dart';
 
 class OperationBloc extends GetxController {
+  List<String> employeeRole = ['B.A', 'Merchant'];
   RxList<Location> locations = [
     Location(
       placeId: '1',

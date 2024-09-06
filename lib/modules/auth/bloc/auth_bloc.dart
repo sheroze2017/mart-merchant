@@ -11,7 +11,7 @@ class AuthenticationController extends GetxController {
 
   void login(String username, String password, context) async {
     isLoading.value = true;
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     isLoading.value = false;
 
     if (username == "admin@gmail.com" && password == "admin123") {

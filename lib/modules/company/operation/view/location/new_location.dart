@@ -125,6 +125,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Select Location'),
         actions: [
@@ -263,12 +264,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               child: Container(
                 child: Wrap(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: Text(
-                        'Add new location',
-                        style: CustomTextStyles.darkHeadingTextStyle(size: 20),
-                      ),
+                    Text(
+                      'Add New Location',
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 0),
@@ -281,7 +279,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
-                      child: heading(title: 'Address'),
+                      child: headingSmall(title: 'Address'),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(),
@@ -294,7 +292,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
-                      child: heading(title: 'Latitude'),
+                      child: headingSmall(title: 'Latitude'),
                     ),
                     RoundedBorderTextField(
                       isenable: false,
@@ -304,7 +302,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
-                      child: heading(title: 'Longitude'),
+                      child: headingSmall(title: 'Longitude'),
                     ),
                     RoundedBorderTextField(
                       isenable: false,
@@ -314,7 +312,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
-                      child: heading(title: 'Place Id'),
+                      child: headingSmall(title: 'Place Id'),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
@@ -328,21 +326,31 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: RoundedButtonSmall(
-                            text: 'Add Location',
-                            onPressed: () {
-                              if (nameController.text.isNotEmpty &&
-                                  addressController.text.isNotEmpty) {
-                                operationBloc.addNewLocation(placeId, placeName,
-                                    latitude, longitude, nameController.text);
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: 'Please fill in all fields',
-                                    backgroundColor: Colors.red);
-                              }
-                            },
-                            backgroundColor: Colors.black,
-                            textColor: Colors.white),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: RoundedButton(
+                                  text: 'Add Location',
+                                  onPressed: () {
+                                    if (nameController.text.isNotEmpty &&
+                                        addressController.text.isNotEmpty) {
+                                      operationBloc.addNewLocation(
+                                          placeId,
+                                          placeName,
+                                          latitude,
+                                          longitude,
+                                          nameController.text);
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: 'Please fill in all fields',
+                                          backgroundColor: Colors.red);
+                                    }
+                                  },
+                                  backgroundColor: Colors.black,
+                                  textColor: Colors.white),
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   ],

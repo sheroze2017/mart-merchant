@@ -1,4 +1,5 @@
 import 'package:ba_merchandise/modules/admin/dashboard/view/admin_dashboard.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/new_company.dart';
 import 'package:ba_merchandise/modules/attendence/view/attendece_view.dart';
 import 'package:ba_merchandise/modules/auth/view/login_view.dart';
 import 'package:ba_merchandise/modules/auth/view/role_select_view.dart';
@@ -26,6 +27,7 @@ class Routes {
   static const MERCHANTDASHBOARD = '/merchantHome';
   static const COMPANY_HOME = '/companyHome';
   static const ADMIN_HOME = '/adminHome';
+  static const NEW_COMPANTY = '/newCompany';
 
   static final routes = [
     GetPage(
@@ -73,6 +75,10 @@ class Routes {
     GetPage(
         name: COMPANY_HOME,
         page: () => CompanyHome(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: NEW_COMPANTY,
+        page: () => NewCompany(),
         transition: Transition.rightToLeft),
   ];
 }

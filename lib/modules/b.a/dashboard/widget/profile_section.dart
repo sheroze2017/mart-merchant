@@ -1,11 +1,7 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
-import 'package:ba_merchandise/widgets/button/rounded_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileSection extends StatelessWidget {

@@ -24,6 +24,7 @@ class _BaHomeState extends State<MerchantDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: 'Dashboard',
       ),

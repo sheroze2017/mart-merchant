@@ -1,5 +1,6 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
+import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:ba_merchandise/widgets/textfield/rounded_textfield.dart';
@@ -28,6 +29,7 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _profileImgController = TextEditingController();
+  final TextEditingController _userRoleController = TextEditingController();
 
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
@@ -78,16 +80,24 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Add Employee'),
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar(title: ''),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Container(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    'Add New Employee',
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
                   // Obx(
                   //   () => mediaController.profileUpload.value
                   //       ? Container(
@@ -162,18 +172,23 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                   // SizedBox(
                   //   height: 2.h,
                   // ),
+                  headingSmall(title: 'Name'),
                   RoundedBorderTextField(
                     validator: Validator.validateName,
                     focusNode: _focusNode1,
                     nextFocusNode: _focusNode2,
                     controller: _nameController,
+                    icondata: Icons.person,
                     hintText: 'Name',
                     icon: '',
                   ),
                   SizedBox(
-                    height: 2.h,
+                    height: 1.h,
                   ),
+
+                  headingSmall(title: 'Email'),
                   RoundedBorderTextField(
+                    icondata: Icons.email,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -190,10 +205,12 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                     icon: '',
                   ),
                   SizedBox(
-                    height: 2.h,
+                    height: 1.h,
                   ),
+                  headingSmall(title: 'Phone No'),
 
                   RoundedBorderTextField(
+                      icondata: Icons.phone,
                       validator: Validator.validatePhoneNumber,
                       textInputType: TextInputType.number,
                       focusNode: _focusNode3,
@@ -202,18 +219,20 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                       hintText: 'Phone No',
                       icon: ''),
                   SizedBox(
-                    height: 2.h,
+                    height: 1.h,
                   ),
+                  headingSmall(title: 'Age'),
                   RoundedBorderTextField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your phone age';
+                          return 'Please enter your age';
                         } else {
                           return null;
                         }
                       },
                       textInputType: TextInputType.number,
                       focusNode: _focusNode4,
+                      icondata: Icons.calendar_month,
                       nextFocusNode: _focusNode5,
                       controller: _dobController,
                       hintText: 'Age',
@@ -231,7 +250,7 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                     },
                   ),
                   SizedBox(
-                    height: 2.h,
+                    height: 1.h,
                   ),
                   CustomDropdown(
                     hintText: 'Select Location',
@@ -241,6 +260,18 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                     onChanged: (value) {
                       setState(() {
                         _locationController.text = value.toString();
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  CustomDropdown(
+                    hintText: 'Select Role',
+                    items: operationBloc.employeeRole,
+                    onChanged: (value) {
+                      setState(() {
+                        _userRoleController.text = value.toString();
                       });
                     },
                   ),

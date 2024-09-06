@@ -43,17 +43,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final arguments = Get.arguments as Map<String, dynamic>? ?? {};
     final role = arguments['role'] ?? '';
-    @override
-    void initState() {
-      super.initState();
-    }
-
-    @override
-    void dispose() {
-      super.dispose();
-    }
 
     return Scaffold(
+            backgroundColor: Colors.white,
+
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,

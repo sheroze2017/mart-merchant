@@ -23,6 +23,8 @@ class _StockCountState extends State<StockCount> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            backgroundColor: Colors.white,
+
       appBar: AppBar(
         title: Text(
           'Stock Management',

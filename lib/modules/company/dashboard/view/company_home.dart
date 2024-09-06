@@ -3,6 +3,7 @@ import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart
 import 'package:ba_merchandise/modules/company/operation/view/employee/employee_view.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
@@ -16,6 +17,7 @@ class CompanyHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         accType: 'Company',
         title: 'Dashboard',
@@ -28,39 +30,46 @@ class CompanyHome extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Profile Section
-              ProfileSection(),
+              ProfileSection(
+                showAddress: false,
+              ),
               SizedBox(
                 height: 2.h,
+              ),
+              const Divider(
+                color: Colors.grey,
+                thickness: 0.3,
               ),
               const heading(
                 title: 'Quick Actions',
               ),
-              SizedBox(
-                height: 0.5.h,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Get.to(ProductScreen(),
-                          transition: Transition.cupertino,
-                          duration: Duration(milliseconds: 500));
-                    },
-                    child: DashboardCard(
-                      asset: 'assets/images/product.png',
-                      title: 'Products',
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(ProductScreen(),
+                            transition: Transition.cupertino,
+                            duration: Duration(milliseconds: 500));
+                      },
+                      child: DashboardCard(
+                        asset: 'assets/images/product.png',
+                        title: 'Products',
+                      ),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(CompanyLocationScreen(),
-                          transition: Transition.cupertino,
-                          duration: Duration(milliseconds: 500));
-                    },
-                    child: const DashboardCard(
-                      asset: 'assets/images/location.png',
-                      title: 'Locations',
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(CompanyLocationScreen(),
+                            transition: Transition.cupertino,
+                            duration: Duration(milliseconds: 500));
+                      },
+                      child: const DashboardCard(
+                        asset: 'assets/images/location.png',
+                        title: 'Locations',
+                      ),
                     ),
                   ),
                 ],
@@ -72,25 +81,33 @@ class CompanyHome extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  DashboardCard(
-                    asset: 'assets/images/economy.png',
-                    title: 'Sales',
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(EmployeeListScreen(),
-                          transition: Transition.cupertino,
-                          duration: Duration(milliseconds: 500));
-                    },
+                  Expanded(
                     child: DashboardCard(
-                      asset: 'assets/images/employee.png',
-                      title: 'Employees',
+                      asset: 'assets/images/economy.png',
+                      title: 'Sales',
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(EmployeeListScreen(),
+                            transition: Transition.cupertino,
+                            duration: Duration(milliseconds: 500));
+                      },
+                      child: DashboardCard(
+                        asset: 'assets/images/employee.png',
+                        title: 'Employees',
+                      ),
                     ),
                   )
                 ],
               ),
               SizedBox(
                 height: 0.5.h,
+              ),
+              const Divider(
+                color: Colors.grey,
+                thickness: 0.3,
               ),
             ],
           ),

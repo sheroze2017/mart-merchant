@@ -1,11 +1,11 @@
-import 'dart:ffi';
-
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
 import 'package:ba_merchandise/modules/sync/model/user_sync_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart'; // To format date and time
+// ignore: depend_on_referenced_packages
 import 'package:latlong2/latlong.dart';
 
 class AttendanceController extends GetxController {

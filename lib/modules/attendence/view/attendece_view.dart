@@ -4,18 +4,17 @@ import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/dailog/mark_absent_dailog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+// ignore: depend_on_referenced_packages
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart'; // To format date and time
+import 'package:location/location.dart' as locat;
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../b.a/dashboard/view/dashboard.dart';
-import '../../b.a/dashboard/widget/gradient_card.dart';
 import '../bloc/attendance_bloc.dart';
 
 class AttendanceScreen extends StatefulWidget {
@@ -24,6 +23,17 @@ class AttendanceScreen extends StatefulWidget {
 }
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
+  final locat.Location _location = locat.Location();
+  final Map<String, Marker> _markers = {};
+  double _latitude = 0.00;
+  double _longitude = 0.00;
+  final double _zoom = 15;
+
+  GoogleMapController? _mapController;
+  BitmapDescriptor _markerIcon = BitmapDescriptor.defaultMarker;
+
+  String _placeName = '';
+  String _placeId = '';
   final attendanceController = Get.put(AttendanceController());
   final SyncController syncController = Get.find();
 
@@ -37,7 +47,48 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   void initState() {
     super.initState();
-    _checkPermission();
+    getCurrentLocation();
+  }
+
+  getCurrentLocation() async {
+    bool serviceEnabled;
+    locat.PermissionStatus permissionGranted;
+
+    serviceEnabled = await _location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await _location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    permissionGranted = await _location.hasPermission();
+    if (permissionGranted == locat.PermissionStatus.denied) {
+      permissionGranted = await _location.requestPermission();
+      if (permissionGranted != locat.PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    locat.LocationData currentPosition = await _location.getLocation();
+    _latitude = currentPosition.latitude!;
+    _longitude = currentPosition.longitude!;
+    final marker = Marker(
+      icon: _markerIcon,
+      markerId: const MarkerId('myLocation'),
+      position: LatLng(_latitude, _longitude),
+      infoWindow: const InfoWindow(
+        title: 'you can add any message here',
+      ),
+    );
+    setState(() {
+      _markers['myLocation'] = marker;
+      _mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: LatLng(_latitude, _longitude), zoom: _zoom),
+        ),
+      );
+    });
   }
 
   Future<void> _checkPermission() async {
@@ -59,6 +110,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   Widget build(BuildContext context) {
     final String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: 'Attendance',
         accType: 'Merchant',
@@ -71,43 +123,22 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             width: 100.w,
             child: Stack(
               children: [
-                FlutterMap(
-                  options: MapOptions(
-                      initialCenter:
-                          attendanceController.currentLocation.value ??
-                              LatLng(24.929681, 67.039365),
-                      initialZoom: 15),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      subdomains: ['a', 'b', 'c'],
-                    ),
-                    MarkerLayer(
-                      markers: [
-                        Marker(
-                          width: 80.0,
-                          height: 80.0,
-                          point: LatLng(24.929681, 67.039365),
-                          child: Icon(Icons.location_on, color: Colors.red),
-                        ),
-                        if (attendanceController.currentLocation.value != null)
-                          Marker(
-                            width: 80.0,
-                            height: 80.0,
-                            point: attendanceController.currentLocation.value!,
-                            child: Icon(Icons.location_on, color: Colors.blue),
-                          ),
-                      ],
-                    ),
-                  ],
+                GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(_latitude, _longitude),
+                    zoom: _zoom,
+                  ),
+                  onMapCreated: (controller) {
+                    _mapController = controller;
+                  },
+                  markers: _markers.values.toSet(),
                 ),
                 Positioned(
-                    bottom: 10,
-                    right: 10,
+                    bottom: 30,
+                    left: 10,
                     child: InkWell(
                       onTap: () {
-                        _checkPermission();
+                        getCurrentLocation();
                       },
                       child: Container(
                         decoration: BoxDecoration(

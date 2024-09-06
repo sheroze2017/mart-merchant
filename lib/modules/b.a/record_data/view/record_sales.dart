@@ -1,11 +1,9 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
-import 'package:ba_merchandise/modules/b.a/record_data/model/record_model.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 
 import '../bloc/record_bloc.dart';
 
@@ -47,6 +45,8 @@ class _RecordSalesState extends State<RecordSales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            backgroundColor: Colors.white,
+
       appBar: CustomAppBar(
         title: 'Record Sales',
       ),

@@ -1,4 +1,5 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
 import 'package:ba_merchandise/modules/company/operation/view/employee/employee_view.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
@@ -14,6 +15,7 @@ class AdminHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         accType: 'Admin',
         title: 'Dashboard',
@@ -43,9 +45,7 @@ class AdminHome extends StatelessWidget {
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                        // Get.to(ProductScreen(),
-                        //     transition: Transition.cupertino,
-                        //     duration: Duration(milliseconds: 500));
+                        Get.toNamed(Routes.NEW_COMPANTY);
                       },
                       child: DashboardCard(
                         asset: 'assets/images/product.png',
@@ -77,7 +77,22 @@ class AdminHome extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 0.5.h,
+                height: 1.h,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Get.toNamed(Routes.NEW_COMPANTY);
+                      },
+                      child: DashboardCard(
+                        asset: 'assets/images/product.png',
+                        title: 'Find Company',
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

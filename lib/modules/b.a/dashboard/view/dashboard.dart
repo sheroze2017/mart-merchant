@@ -1,6 +1,5 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
-import 'package:ba_merchandise/modules/b.a/dashboard/widget/feature_box.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/gradient_card.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
@@ -26,6 +25,8 @@ class _BaHomeState extends State<BaHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            backgroundColor: Colors.white,
+
       appBar: CustomAppBar(
         title: 'Dashboard',
       ),
@@ -198,6 +199,25 @@ class heading extends StatelessWidget {
       child: Text(
         title,
         style: CustomTextStyles.lightTextStyle(size: 16),
+      ),
+    );
+  }
+}
+
+class headingSmall extends StatelessWidget {
+  final String title;
+  const headingSmall({
+    super.key,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Text(
+        title,
+        style: CustomTextStyles.lightTextStyle(size: 12),
       ),
     );
   }

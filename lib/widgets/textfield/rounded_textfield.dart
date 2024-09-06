@@ -1,6 +1,7 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class RoundedBorderTextField extends StatefulWidget {
@@ -24,7 +25,7 @@ class RoundedBorderTextField extends StatefulWidget {
     this.showLoader = false,
     required this.controller,
     required this.hintText,
-    required this.icon,
+    this.icon = '',
     this.icondata,
     this.onTap,
     this.focusNode,
@@ -130,12 +131,10 @@ class _RoundedBorderTextFieldState extends State<RoundedBorderTextField> {
                     : null,
         hintText: widget.hintText,
         hintStyle: CustomTextStyles.lightTextStyle(color: Color(0xff9CA3AF)),
-        prefixIcon: widget.icon.isEmpty
+        prefixIcon: widget.icondata.isNull
             ? null
             : Padding(
-                padding: EdgeInsets.all(12.0),
-                child: SvgPicture.asset(widget.icon),
-              ),
+                padding: EdgeInsets.all(12.0), child: Icon(widget.icondata)),
       ),
       onFieldSubmitted: (value) {
         widget.focusNode?.unfocus();
