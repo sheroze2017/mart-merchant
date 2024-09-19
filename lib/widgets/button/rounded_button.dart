@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -83,13 +84,13 @@ class RoundedButtonSmall extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          padding: EdgeInsets.symmetric(vertical: 4.0),
           child: showLoader
               ? Container(
                   height: 2.h,
                   width: 2.h,
                   child: CircularProgressIndicator(
-                    color: Colors.white,
+                    color: AppColors.whiteColor,
                   ),
                 )
               : Text(
@@ -141,7 +142,7 @@ class IconButtonSmall extends StatelessWidget {
                 height: 2.h,
                 width: 2.h,
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: AppColors.whiteColor,
                 ),
               )
             : Column(

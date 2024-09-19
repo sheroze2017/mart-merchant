@@ -1,4 +1,5 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
@@ -39,8 +40,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: Colors.white,
-
+      backgroundColor: AppColors.whiteColor,
       appBar: CustomAppBar(
         title: 'Product',
       ),
@@ -91,7 +91,7 @@ class _ProductScreenState extends State<ProductScreen> {
               if (selectedBrand != null)
                 ...productData[selectedBrand]!.map((product) {
                   return Card(
-                    color: Colors.blue.shade50,
+                    color: AppColors.primaryColor,
                     elevation: 2,
                     child: ListTile(
                       title: Text(
@@ -175,7 +175,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             Get.back();
                           },
                           backgroundColor: Colors.black,
-                          textColor: Colors.white),
+                          textColor: AppColors.whiteColor),
                     )
                   ],
                 ),
@@ -264,7 +264,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               }
                             },
                             backgroundColor: Colors.black,
-                            textColor: Colors.white),
+                            textColor: AppColors.whiteColor),
                       ),
                     )
                   ],
@@ -328,7 +328,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               }
                             },
                             backgroundColor: Colors.black,
-                            textColor: Colors.white),
+                            textColor: AppColors.whiteColor),
                       ),
                     )
                   ],

@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class MarkAbsentDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
@@ -57,7 +58,7 @@ class MarkAbsentDialog extends StatelessWidget {
                     onPressed: () {
                       Get.back();
                     },
-                    backgroundColor: Colors.white,
+                    backgroundColor: AppColors.whiteColor,
                     textColor: Colors.black,
                   ),
                 ),
@@ -67,7 +68,7 @@ class MarkAbsentDialog extends StatelessWidget {
                     text: markAbsentText,
                     onPressed: onMarkAbsent,
                     backgroundColor: Colors.red,
-                    textColor: Colors.white,
+                    textColor: AppColors.whiteColor,
                   ),
                 ),
               ],

@@ -26,15 +26,15 @@ class PersonalInfo {
   }
 }
 
-class Attendance {
+class AttendanceAll {
   String? date;
   String? checkInTime;
   String? checkOutTime;
   bool? status;
 
-  Attendance({this.date, this.checkInTime, this.checkOutTime, this.status});
+  AttendanceAll({this.date, this.checkInTime, this.checkOutTime, this.status});
 
-  Attendance.fromJson(Map<String, dynamic> json) {
+  AttendanceAll.fromJson(Map<String, dynamic> json) {
     date = json['date'];
     checkInTime = json['checkInTime'];
     checkOutTime = json['checkOutTime'];
@@ -173,7 +173,7 @@ class Sales {
 
 class AppData {
   PersonalInfo? personalInfo;
-  List<Attendance> attendance;
+  List<AttendanceAll> attendance;
   List<Location> locations;
   List<Product> products;
   List<Sales> sales;
@@ -188,8 +188,8 @@ class AppData {
 
   factory AppData.fromJson(Map<String, dynamic> json) {
     var attendanceFromJson = json['attendance'] as List;
-    List<Attendance> attendanceList =
-        attendanceFromJson.map((i) => Attendance.fromJson(i)).toList();
+    List<AttendanceAll> attendanceList =
+        attendanceFromJson.map((i) => AttendanceAll.fromJson(i)).toList();
 
     var locationsFromJson = json['locations'] as List;
     List<Location> locationList =

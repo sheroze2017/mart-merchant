@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
@@ -125,8 +126,8 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
+        forceMaterialTransparency: true,
         title: Text('Select Location'),
         actions: [
           IconButton(
@@ -175,7 +176,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               child: Column(
                 children: [
                   Container(
-                    decoration: BoxDecoration(color: Colors.white),
+                    decoration: BoxDecoration(color: AppColors.whiteColor),
                     child: GooglePlaceAutoCompleteTextField(
                       textEditingController: _searchController,
                       googleAPIKey: "AIzaSyBz1Z8bj49e6GWxSxdyzX1BdeRGNXPkU_4",
@@ -347,7 +348,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                                     }
                                   },
                                   backgroundColor: Colors.black,
-                                  textColor: Colors.white),
+                                  textColor: AppColors.whiteColor),
                             ),
                           ],
                         ),

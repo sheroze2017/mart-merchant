@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/record_bloc.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
@@ -23,9 +24,9 @@ class _StockCountState extends State<StockCount> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: Colors.white,
-
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
+        forceMaterialTransparency: true,
         title: Text(
           'Stock Management',
           style: CustomTextStyles.w600TextStyle(),
@@ -65,7 +66,7 @@ class StockPage extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
             child: Card(
-              color: Colors.blue.shade50,
+              color: AppColors.primaryColor,
               elevation: 2,
               child: ListTile(
                 minVerticalPadding: 20,
@@ -75,10 +76,12 @@ class StockPage extends StatelessWidget {
                     '${toothpaste.quantityGm} gm\nQty Available ${toothpaste.stock}',
                     style: CustomTextStyles.lightSmallTextStyle()),
                 trailing: RoundedButtonSmall(
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.RestockRecord(toothpaste);
+                  },
                   text: 'Restock',
-                  textColor: Colors.white,
-                  backgroundColor: Colors.blue.shade500,
+                  textColor: AppColors.whiteColor,
+                  backgroundColor: Colors.blue,
                 ),
               ),
             ),
@@ -100,13 +103,13 @@ class RestockPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return ListView.builder(
-        itemCount: controller.records.length,
+        itemCount: controller.restockRecord.length,
         itemBuilder: (context, index) {
-          final toothpaste = controller.records[index];
+          final toothpaste = controller.restockRecord[index];
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
             child: Card(
-              color: Colors.blue.shade50,
+              color: AppColors.primaryColor,
               elevation: 2,
               child: ListTile(
                 minVerticalPadding: 20,
@@ -116,10 +119,12 @@ class RestockPage extends StatelessWidget {
                     '${toothpaste.quantityGm} gm\nQty Available ${toothpaste.stock}',
                     style: CustomTextStyles.lightSmallTextStyle()),
                 trailing: RoundedButtonSmall(
-                  onPressed: () {},
-                  text: 'Restock',
-                  textColor: Colors.white,
-                  backgroundColor: Colors.blue.shade500,
+                  onPressed: () {
+                    controller.RemoveRestockRecord(toothpaste);
+                  },
+                  text: 'Remove',
+                  textColor: AppColors.whiteColor,
+                  backgroundColor: Colors.green,
                 ),
               ),
             ),

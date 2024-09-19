@@ -18,7 +18,7 @@ class SyncController extends GetxController with WidgetsBindingObserver {
   RxList<Location> userLocation = <Location>[].obs;
   RxList<Product> userProducts = <Product>[].obs;
   RxList<Sales> userSales = <Sales>[].obs;
-  RxList<Attendance> userAttendance = <Attendance>[].obs;
+  RxList<AttendanceAll> userAttendance = <AttendanceAll>[].obs;
   RxList<ULocations> uLocation = <ULocations>[].obs;
 
   @override
@@ -54,7 +54,7 @@ class SyncController extends GetxController with WidgetsBindingObserver {
     appData.value = await AppData(
       personalInfo: PersonalInfo(),
       attendance: [
-        Attendance(
+        AttendanceAll(
             date: date,
             checkInTime: '00:00:00',
             checkOutTime: '00:00:00',
@@ -109,7 +109,7 @@ class SyncController extends GetxController with WidgetsBindingObserver {
         (data['sales'] as List).map((sale) => Sales.fromJson(sale)).toList();
 
     var attendance = (data['attendance'] as List)
-        .map((atten) => Attendance.fromJson(atten))
+        .map((atten) => AttendanceAll.fromJson(atten))
         .toList();
 
     userRole.value = personalInfo.userRole;

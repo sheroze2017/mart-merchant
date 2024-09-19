@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../widgets/custom/feature_card.dart';
+import '../../../attendence/bloc/attendance_bloc.dart';
 import '../../record_data/view/record_intercept.dart';
 
 class BaHome extends StatefulWidget {
@@ -21,12 +22,11 @@ class BaHome extends StatefulWidget {
 class _BaHomeState extends State<BaHome> {
   bool markAttendence = true;
   final SyncController syncController = Get.find();
+  final attendanceController = Get.put(AttendanceController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: Colors.white,
-
       appBar: CustomAppBar(
         title: 'Dashboard',
       ),
@@ -94,71 +94,76 @@ class _BaHomeState extends State<BaHome> {
               const heading(
                 title: 'Daily Tasks',
               ),
-              markAttendence
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FeatureCard(
-                          icon: Icons.co_present_sharp,
-                          title: 'Record sales',
-                          onTap: () {
-                            Get.toNamed(Routes.RECORD_SALES);
-                          },
-                          subtitle: 'Record your product sales',
+              Obx(
+                () => attendanceController.attenToday.value.status == true
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FeatureCard(
+                            icon: Icons.co_present_sharp,
+                            title: 'Record sales',
+                            onTap: () {
+                              Get.toNamed(Routes.RECORD_SALES);
+                            },
+                            subtitle: 'Record your product sales',
+                          ),
+                          // FeatureCard(
+                          //   icon: Icons.co_present_sharp,
+                          //   title: 'Competitior data',
+                          //   onTap: () {
+                          //     Get.toNamed(Routes.COMPETITORDATA);
+                          //   },
+                          //   subtitle: 'Record competitor data for product',
+                          // ),
+                          FeatureCard(
+                            icon: Icons.co_present_sharp,
+                            title: 'Short Stock/Restock',
+                            onTap: () {
+                              Get.toNamed(Routes.STOCK_COUNT);
+                            },
+                            subtitle: 'Report low/short stock',
+                          ),
+                          FeatureCard(
+                            icon: Icons.co_present_sharp,
+                            title: 'Product Price',
+                            onTap: () {
+                              Get.toNamed(Routes.PRODUCT_PRICE);
+                            },
+                            subtitle: 'Set product price',
+                          ),
+                          FeatureCard(
+                            isDone: true,
+                            icon: Icons.co_present_sharp,
+                            title: 'Record Intercepts',
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => CustomDialog(),
+                              );
+                            },
+                            subtitle: 'Record customer interception',
+                          ),
+                          FeatureCard(
+                            icon: Icons.co_present_sharp,
+                            title: 'Sync data',
+                            onTap: () {
+                              Get.toNamed(Routes.SYNC_DATA);
+                            },
+                            subtitle: 'Synchroize data for offline use',
+                          ),
+                        ],
+                      )
+                    : Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: Text(
+                            'Daily Task will appear after marking your attendance',
+                            textAlign: TextAlign.center,
+                            style: CustomTextStyles.lightTextStyle(size: 16),
+                          ),
                         ),
-                        // FeatureCard(
-                        //   icon: Icons.co_present_sharp,
-                        //   title: 'Competitior data',
-                        //   onTap: () {
-                        //     Get.toNamed(Routes.COMPETITORDATA);
-                        //   },
-                        //   subtitle: 'Record competitor data for product',
-                        // ),
-                        FeatureCard(
-                          icon: Icons.co_present_sharp,
-                          title: 'Short Stock/Restock',
-                          onTap: () {
-                            Get.toNamed(Routes.STOCK_COUNT);
-                          },
-                          subtitle: 'Report low/short stock',
-                        ),
-                        FeatureCard(
-                          icon: Icons.co_present_sharp,
-                          title: 'Product Price',
-                          onTap: () {
-                            Get.toNamed(Routes.PRODUCT_PRICE);
-                          },
-                          subtitle: 'Set product price',
-                        ),
-                        FeatureCard(
-                          isDone: true,
-                          icon: Icons.co_present_sharp,
-                          title: 'Record Intercepts',
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => CustomDialog(),
-                            );
-                          },
-                          subtitle: 'Record customer interception',
-                        ),
-                        FeatureCard(
-                          icon: Icons.co_present_sharp,
-                          title: 'Sync data',
-                          onTap: () {
-                            Get.toNamed(Routes.SYNC_DATA);
-                          },
-                          subtitle: 'Synchroize data for offline use',
-                        ),
-                      ],
-                    )
-                  : Center(
-                      child: Text(
-                        'Daily Task will appear after marking your attendence',
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyles.lightTextStyle(),
                       ),
-                    ),
+              )
             ],
           ),
         ),

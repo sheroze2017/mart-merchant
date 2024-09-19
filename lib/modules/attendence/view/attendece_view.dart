@@ -1,6 +1,6 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/attendence/widget/status_container.dart';
-import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/dailog/mark_absent_dailog.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +33,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   BitmapDescriptor _markerIcon = BitmapDescriptor.defaultMarker;
 
   String _placeName = '';
+
   String _placeId = '';
   final attendanceController = Get.put(AttendanceController());
-  final SyncController syncController = Get.find();
-
+  // final SyncController syncController = Get.find();
   @override
   void initState() {
     super.initState();
@@ -88,7 +88,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   Widget build(BuildContext context) {
     final String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteColor,
       appBar: CustomAppBar(
         title: 'Mark Attendance',
       ),
@@ -127,7 +127,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           ),
           Obx(
             () => attendanceController.attenToday.value.status == false ||
-                    attendanceController.attenToday.value.checkInTime != null
+                    attendanceController.attenToday.value.checkInTime != ''
                 ? Container()
                 : Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -137,7 +137,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           child: InkWell(
                             onTap: () async {
                               await attendanceController.markAttendance(
-                                  todayDate, _latitude, _longitude);
+                                  _latitude, _longitude);
                               attendanceController.getTodayAttendance();
                             },
                             child: StatusContainer(
@@ -159,7 +159,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               children: [
                 Obx(
                   () => attendanceController.attenToday.value.checkOutTime ==
-                              null &&
+                              '' &&
                           attendanceController.attenToday.value.status == true
                       ? Expanded(
                           child: InkWell(
@@ -171,7 +171,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                       'Are you certain you wish to mark off today?',
                                   onMarkAbsent: () async {
                                     await attendanceController.checkOut(
-                                        _latitude, _longitude, todayDate);
+                                        _latitude, _longitude);
                                     setState(() {});
                                     attendanceController.getTodayAttendance();
 
@@ -192,7 +192,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       : Container(),
                 ),
                 Obx(() =>
-                    attendanceController.attenToday.value.checkInTime == null
+                    attendanceController.attenToday.value.checkInTime == '' &&
+                            attendanceController.attenToday.value.status == null
                         ? Expanded(
                             child: InkWell(
                               onTap: () {
@@ -234,7 +235,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             ],
           ),
           Obx(
-            () => syncController.userAttendance.last.date!.contains(todayDate)
+            () => attendanceController.attenToday.value.status != null
                 ? Row(
                     children: [
                       Text(
@@ -244,8 +245,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       ),
                       Obx(
                         () => Text(
-                          syncController.userAttendance.last.status.toString(),
-                          style: CustomTextStyles.lightTextStyle(),
+                          attendanceController.attenToday.value.status
+                              .toString(),
+                          style: CustomTextStyles.lightTextStyle(size: 15),
                         ),
                       )
                     ],
@@ -272,7 +274,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   )
                 : Container(),
           ),
-          Obx(() => attendanceController.attenToday.value.checkOutTime != null
+          Obx(() => attendanceController.attenToday.value.checkOutTime != ''
               ? Row(
                   children: [
                     Text(

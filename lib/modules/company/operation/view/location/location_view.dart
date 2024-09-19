@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';
 import 'package:ba_merchandise/modules/company/operation/view/location/new_location.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
@@ -22,8 +23,7 @@ class CompanyLocationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: Colors.white,
-
+      backgroundColor: AppColors.whiteColor,
       appBar: CustomAppBar(
         title: 'Set Location',
       ),
@@ -83,14 +83,14 @@ class CompanyLocationScreen extends StatelessWidget {
                           endActionPane: ActionPane(
                             motion: ScrollMotion(),
                             children: [
-                              const SlidableAction(
+                               SlidableAction(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
                                 spacing: 1,
                                 flex: 2,
                                 onPressed: null,
                                 backgroundColor: Color(0xFF0392CF),
-                                foregroundColor: Colors.white,
+                                foregroundColor: AppColors.whiteColor,
                                 icon: Icons.edit,
                               ),
                               SlidableAction(
@@ -113,7 +113,7 @@ class CompanyLocationScreen extends StatelessWidget {
                                 },
                                 backgroundColor:
                                     Color.fromARGB(255, 240, 110, 101),
-                                foregroundColor: Colors.white,
+                                foregroundColor: AppColors.whiteColor,
                                 icon: Icons.delete,
                               ),
                             ],
@@ -122,7 +122,7 @@ class CompanyLocationScreen extends StatelessWidget {
                           // The child of the Slidable is what the user sees when the
                           // component is not dragged.
                           child: Card(
-                              color: Colors.blue.shade50,
+                              color: AppColors.primaryColor,
                               elevation: 4,
                               child: Column(
                                 children: [
@@ -179,7 +179,7 @@ class CompanyLocationScreen extends StatelessWidget {
                                 ],
                               )));
                       // Card(
-                      //     color: Colors.blue.shade50,
+                      //     color: AppColors.primaryColor,
                       //     elevation: 4,
                       //     child: Column(
                       //       children: [

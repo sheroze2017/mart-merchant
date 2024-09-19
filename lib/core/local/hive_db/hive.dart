@@ -5,22 +5,22 @@ part 'hive.g.dart'; // This links the generated code
 @HiveType(typeId: 0)
 class Attendance extends HiveObject {
   @HiveField(0)
-  String date;
+  String? date;
 
   @HiveField(1)
-  String checkInTime;
+  String? checkInTime;
 
   @HiveField(2)
-  String checkOutTime;
+  String? checkOutTime;
 
   @HiveField(3)
-  bool status;
+  bool? status;
 
   Attendance({
-    required this.date,
+    this.date,
     this.checkInTime = '',
     this.checkOutTime = '',
-    required this.status,
+    this.status,
   });
 }
 

@@ -30,8 +30,6 @@ class _LoginScreenState extends State<UserRoleSelect> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: Colors.white,
-
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,

@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:flutter/material.dart';
 
 class GradientCard extends StatelessWidget {
@@ -21,7 +22,7 @@ class GradientCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade50, Colors.blue.shade100],
+            colors: [AppColors.primaryColor, Colors.blue.shade100],
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
           ),

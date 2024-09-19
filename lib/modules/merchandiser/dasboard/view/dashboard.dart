@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../widgets/custom/feature_card.dart';
+import '../../operation/view/restock_inventory.dart';
 
 class MerchantDashboard extends StatefulWidget {
   MerchantDashboard({super.key});
@@ -24,7 +25,6 @@ class _BaHomeState extends State<MerchantDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: 'Dashboard',
       ),
@@ -101,7 +101,10 @@ class _BaHomeState extends State<MerchantDashboard> {
                         FeatureCard(
                           icon: Icons.co_present_sharp,
                           title: 'Restock Invertory',
-                          onTap: () {},
+                          onTap: () {
+                            Get.to(RestockInventory(),
+                                transition: Transition.rightToLeft);
+                          },
                           subtitle: 'Record the inventory restock',
                         ),
                         FeatureCard(

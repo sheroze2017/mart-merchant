@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
@@ -24,9 +25,9 @@ class ProfileSection extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.blue.shade50,
+              AppColors.primaryColor,
               Colors.blue.shade100,
-              Colors.blue.shade50,
+              AppColors.primaryColor,
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -59,7 +60,7 @@ class ProfileSection extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: AppColors.whiteColor,
                   radius: 30,
                   backgroundImage: AssetImage('assets/images/logo.png'),
                 ),

@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/modules/auth/bloc/auth_bloc.dart';
@@ -45,8 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final role = arguments['role'] ?? '';
 
     return Scaffold(
-            backgroundColor: Colors.white,
-
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -184,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 20.h,
                         width: 50.w,
                         decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: AppColors.whiteColor,
                             borderRadius: BorderRadius.circular(20)),
                         child: Column(
                           children: [

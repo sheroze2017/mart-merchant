@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedSnackbar {

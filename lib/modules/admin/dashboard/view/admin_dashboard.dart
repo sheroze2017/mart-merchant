@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
@@ -15,7 +16,7 @@ class AdminHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteColor,
       appBar: CustomAppBar(
         accType: 'Admin',
         title: 'Dashboard',
@@ -117,7 +118,7 @@ class DashboardCard extends StatelessWidget {
     return Container(
       width: 120,
       child: Card(
-        color: Colors.white,
+        color: AppColors.whiteColor,
         elevation: 4,
         child: Padding(
           padding: const EdgeInsets.all(8.0),

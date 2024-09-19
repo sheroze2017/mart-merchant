@@ -17,10 +17,10 @@ class AttendanceAdapter extends TypeAdapter<Attendance> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Attendance(
-      date: fields[0] as String,
-      checkInTime: fields[1] as String,
-      checkOutTime: fields[2] as String,
-      status: fields[3] as bool,
+      date: fields[0] as String?,
+      checkInTime: fields[1] as String?,
+      checkOutTime: fields[2] as String?,
+      status: fields[3] as bool?,
     );
   }
 

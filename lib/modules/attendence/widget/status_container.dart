@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:flutter/material.dart';
 
 class StatusContainer extends StatelessWidget {
@@ -17,7 +18,7 @@ class StatusContainer extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: color, width: 1),
-        color: Colors.white,
+        color: AppColors.whiteColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(

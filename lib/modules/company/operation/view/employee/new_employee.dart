@@ -1,4 +1,5 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
@@ -80,7 +81,7 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteColor,
       appBar: CustomAppBar(title: ''),
       body: Form(
         key: _formKey,

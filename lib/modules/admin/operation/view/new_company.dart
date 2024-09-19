@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
@@ -63,7 +64,7 @@ class _NewCompanyState extends State<NewCompany> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteColor,
       appBar: CustomAppBar(title: 'New Company'),
       body: SingleChildScrollView(
         child: Form(
@@ -169,7 +170,7 @@ class _NewCompanyState extends State<NewCompany> {
                             } else {}
                           },
                           backgroundColor: Colors.black,
-                          textColor: Colors.white),
+                          textColor: AppColors.whiteColor),
                     )
                   ],
                 )

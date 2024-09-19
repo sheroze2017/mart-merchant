@@ -7,14 +7,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/state_manager.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/local/hive_db/hive.dart';
 import 'package:intl/intl.dart'; // To format date and time
 
-class RecordController extends GetxController {
+class MerchantOperationBloc extends GetxController {
   RxList records = <RecordModelData>[].obs;
   RxList restockRecord = <RecordModelData>[].obs;
 
@@ -51,7 +50,7 @@ class RecordController extends GetxController {
       prefs.setBool('DataLoaded', true);
       _setDefaultData();
     }
-    SalesRecordModel? todaySales = getSalesByDate();
+    SalesRecordModel? todaySales = getSalesByDate(DateTime.now());
     for (int i = 0; i < todaySales!.productsSold.length; i++) {
       print(todaySales.date);
       print(todaySales.productsSold.length);
@@ -140,6 +139,7 @@ class RecordController extends GetxController {
     records.removeWhere((element) => element.id == da.id);
     restockRecord.add(da);
 
+    print(restockRecord.value);
     final jsonString =
         json.encode(restockRecord.map((tp) => tp.toMap()).toList());
     prefs.setString('RestockStock', jsonString);
@@ -178,16 +178,13 @@ class RecordController extends GetxController {
             pricePkr: records[i].pricePkr,
             stock: records[i].stock,
             stockSold: int.parse(controller[i].text)));
+        salesRecord.put(today,
+            SalesRecordModel(date: DateTime.now(), productsSold: recordList));
       }
     }
-    salesRecord.put(today,
-        SalesRecordModel(date: DateTime.now(), productsSold: recordList));
-    SalesRecordModel? sr = salesRecord.get(today);
-    print(sr!.date);
-    print(sr!.productsSold[1].stockSold);
-    _saveRecordModels();
 
-    // addOrUpdateSales(DateTime.now(), recordList);
+    _saveRecordModels();
+    addOrUpdateSales(DateTime.now(), recordList);
     Fluttertoast.showToast(msg: 'Record saved');
   }
 
@@ -235,8 +232,8 @@ class RecordController extends GetxController {
   }
 
   // Fetch sales for a specific day
-  SalesRecordModel? getSalesByDate() {
-    return salesRecord.get(today);
+  SalesRecordModel? getSalesByDate(DateTime date) {
+    return salesRecord.get(_formatDateKey(date));
   }
 
   // Format date as a string key

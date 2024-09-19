@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/record_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
@@ -42,8 +43,7 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: Colors.white,
-
+      backgroundColor: AppColors.whiteColor,
       appBar: CustomAppBar(
         title: 'Product Price',
       ),
@@ -74,7 +74,7 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                   child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 0.5),
-                        color: Colors.white,
+                        color: AppColors.whiteColor,
                         borderRadius: BorderRadiusDirectional.circular(12)),
                     padding: EdgeInsets.all(8.0),
                     child: Text(
@@ -93,7 +93,7 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                           itemBuilder: (context, index) {
                             final toothpaste = controller.records[index];
                             return Card(
-                              color: Colors.blue.shade50,
+                              color: AppColors.primaryColor,
                               elevation: 2,
                               child: ListTile(
                                   minVerticalPadding: 20,
@@ -146,19 +146,19 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                           }),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 16),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
                   child: Row(
                     children: [
                       Expanded(
-                        child: RoundedButtonSmall(
+                        child: RoundedButton(
                             text: 'Save',
                             onPressed: () {
                               controller
                                   .updateProductPriceOfflineStore(_controllers);
                             },
                             backgroundColor: Colors.black,
-                            textColor: Colors.white),
+                            textColor: AppColors.whiteColor),
                       ),
                     ],
                   ),

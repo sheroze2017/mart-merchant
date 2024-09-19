@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ class CustomDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
@@ -55,7 +55,7 @@ class CustomDialog extends StatelessWidget {
                     onPressed: () {
                       Get.back();
                     },
-                    backgroundColor: Colors.white,
+                    backgroundColor: AppColors.whiteColor,
                     textColor: Colors.black),
                 SizedBox(width: 10),
                 RoundedButtonSmall(
@@ -67,7 +67,7 @@ class CustomDialog extends StatelessWidget {
                       Navigator.of(context).pop(); // Close the dialog
                     },
                     backgroundColor: Colors.blue.shade900,
-                    textColor: Colors.white),
+                    textColor: AppColors.whiteColor),
               ],
             ),
           ],

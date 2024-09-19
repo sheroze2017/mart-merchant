@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';
@@ -15,8 +16,6 @@ class EmployeeListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: Colors.white,
-
       appBar: CustomAppBar(
         title: 'Employee',
       ),
@@ -56,12 +55,12 @@ class EmployeeListScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.black),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.all(3.0),
                       child: Icon(
                         Icons.sort,
                         size: 20,
-                        color: Colors.white,
+                        color: AppColors.whiteColor,
                       ),
                     ),
                   ),

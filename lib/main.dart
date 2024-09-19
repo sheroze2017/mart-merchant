@@ -1,4 +1,6 @@
+import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/core/local/hive_db/hive.dart';
+import 'package:ba_merchandise/modules/attendence/bloc/attendance_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/record_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
@@ -10,14 +12,20 @@ import 'package:sizer/sizer.dart';
 import 'core/routes/routes.dart';
 import 'modules/auth/bloc/auth_bloc.dart';
 
+late Box attendanceBox;
+late Box<SalesRecordModel> salesRecord;
+late Box<RecordModel> recordModel;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-
   Hive.registerAdapter(AttendanceAdapter());
-  Hive.registerAdapter(RecordModelAdapter());
   Hive.registerAdapter(SalesRecordModelAdapter());
-  await Hive.openBox<Attendance>('attendanceBox');
+  Hive.registerAdapter(RecordModelAdapter());
+
+  attendanceBox = await Hive.openBox<Attendance>('attendanceBox');
+  salesRecord = await Hive.openBox<SalesRecordModel>('SalesRecord');
+  recordModel = await Hive.openBox<RecordModel>('RecordModel');
   runApp(MyApp());
 }
 
@@ -34,6 +42,7 @@ class MyApp extends StatelessWidget {
         title: 'Merchandiser',
         initialBinding: YourBinding(),
         theme: ThemeData(
+          scaffoldBackgroundColor: AppColors.whiteColor,
           // Define the headline text styles in the textTheme
           textTheme: const TextTheme(
             displayLarge: TextStyle(
@@ -66,10 +75,11 @@ class MyApp extends StatelessWidget {
 
 class YourBinding extends Bindings {
   @override
-  void dependencies() {
+  void dependencies() async {
     Get.put(SyncController());
     Get.put(AuthenticationController());
     Get.put(RecordController());
     Get.put(OperationBloc());
+    Get.put(AttendanceController());
   }
 }
