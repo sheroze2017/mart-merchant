@@ -1,5 +1,9 @@
 import 'package:ba_merchandise/modules/admin/dashboard/view/admin_dashboard.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/assign_employee.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/ba_attendance.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/grant_revoke_access.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/new_company.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/search_company_product.dart';
 import 'package:ba_merchandise/modules/attendence/view/attendece_view.dart';
 import 'package:ba_merchandise/modules/auth/view/login_view.dart';
 import 'package:ba_merchandise/modules/auth/view/role_select_view.dart';
@@ -20,6 +24,8 @@ class Routes {
   static const ATTENDENCE = '/attendence';
   static const RECORD_SALES = '/recordSales';
   static const COMPETITORDATA = '/competitorData';
+  static const SEARCHCOMPANYPRODUCT = '/searchCompanyProduct';
+
   static const STOCK_COUNT = '/stockCount';
   static const PRODUCT_PRICE = '/productPrice';
   static const RECORD_INTERCEPT = '/recordIntercept';
@@ -28,7 +34,9 @@ class Routes {
   static const COMPANY_HOME = '/companyHome';
   static const ADMIN_HOME = '/adminHome';
   static const NEW_COMPANTY = '/newCompany';
-
+  static const ASSIGNNEWEMPLOYEE = "/assignNewEmployee";
+  static const BAADMINATTENDANCE = "/BaAttendance";
+  static const GRANTREVOKEACCESS = "/grantRevokeAccess";
   static final routes = [
     GetPage(
         name: ADMIN_HOME,
@@ -80,5 +88,21 @@ class Routes {
         name: NEW_COMPANTY,
         page: () => NewCompany(),
         transition: Transition.rightToLeft),
+    GetPage(
+        name: SEARCHCOMPANYPRODUCT,
+        page: () => SearchCompanyProduct(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: ASSIGNNEWEMPLOYEE,
+        page: () => AssignNewEmploye(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: BAADMINATTENDANCE,
+        page: () => BaAttendance(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: GRANTREVOKEACCESS,
+        page: () => GrantRevokeAccess(),
+        transition: Transition.rightToLeft)
   ];
 }

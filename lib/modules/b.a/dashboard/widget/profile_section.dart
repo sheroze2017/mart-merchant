@@ -79,13 +79,15 @@ class ProfileSection extends StatelessWidget {
                       SizedBox(
                         height: 0.5.h,
                       ),
-                      Obx(() => Text(
-                            syncController
-                                .uLocation.first.brands!.first.brandName
-                                .toString(),
-                            style: CustomTextStyles.lightSmallTextStyle(
-                                size: 16, color: Colors.grey),
-                          ))
+                      showAddress
+                          ? Obx(() => Text(
+                                syncController
+                                    .uLocation.first.brands!.first.brandName
+                                    .toString(),
+                                style: CustomTextStyles.lightSmallTextStyle(
+                                    size: 16, color: Colors.grey),
+                              ))
+                          : Container()
                     ],
                   ),
                 ),

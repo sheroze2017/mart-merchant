@@ -191,35 +191,35 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         )
                       : Container(),
                 ),
-                Obx(() =>
-                    attendanceController.attenToday.value.checkInTime == '' &&
-                            attendanceController.attenToday.value.status == null
-                        ? Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => MarkAbsentDialog(
-                                    dailogText:
-                                        'Are you certain you wish to mark today as absent?',
-                                    onMarkAbsent: () async {
-                                      await attendanceController
-                                          .markAbsent(todayDate);
-                                      attendanceController.getTodayAttendance();
-                                    },
-                                    markAbsentText: 'Mark Absent',
-                                  ),
-                                );
-                              },
-                              child: StatusContainer(
-                                img: 'assets/images/absent.png',
-                                number: '',
-                                label: 'Absent',
-                                color: Colors.red,
-                              ),
-                            ),
-                          )
-                        : Container())
+                // Obx(() =>
+                //     attendanceController.attenToday.value.checkInTime == '' &&
+                //             attendanceController.attenToday.value.status == null
+                //         ? Expanded(
+                //             child: InkWell(
+                //               onTap: () {
+                //                 showDialog(
+                //                   context: context,
+                //                   builder: (context) => MarkAbsentDialog(
+                //                     dailogText:
+                //                         'Are you certain you wish to mark today as absent?',
+                //                     onMarkAbsent: () async {
+                //                       await attendanceController
+                //                           .markAbsent(todayDate);
+                //                       attendanceController.getTodayAttendance();
+                //                     },
+                //                     markAbsentText: 'Mark Absent',
+                //                   ),
+                //                 );
+                //               },
+                //               child: StatusContainer(
+                //                 img: 'assets/images/absent.png',
+                //                 number: '',
+                //                 label: 'Absent',
+                //                 color: Colors.red,
+                //               ),
+                //             ),
+                //           )
+                //         : Container())
               ],
             ),
           )),

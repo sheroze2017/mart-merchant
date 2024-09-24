@@ -15,13 +15,13 @@ class AuthenticationController extends GetxController {
     isLoading.value = false;
 
     if (username == "admin@gmail.com" && password == "admin123") {
-      Get.toNamed(Routes.ADMIN_HOME);
+      Get.offAllNamed(Routes.ADMIN_HOME);
     } else if (username == "company@gmail.com" && password == "admin123") {
-      Get.toNamed(Routes.COMPANY_HOME);
+      Get.offAllNamed(Routes.COMPANY_HOME);
     } else if (username == "ba@gmail.com" && password == "admin123") {
-      Get.toNamed(Routes.BAHOME);
+      Get.offAllNamed(Routes.BAHOME);
     } else if (username == "merchant@gmail.com" && password == "admin123") {
-      Get.toNamed(Routes.MERCHANTDASHBOARD);
+      Get.offAllNamed(Routes.MERCHANTDASHBOARD);
     } else {
       AnimatedSnackbar.showSnackbar(
         context: context,

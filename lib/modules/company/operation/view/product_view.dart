@@ -62,15 +62,15 @@ class _ProductScreenState extends State<ProductScreen> {
                       title: 'New Product',
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      _addBrand();
-                    },
-                    child: DashboardCard(
-                      asset: 'assets/images/product.png',
-                      title: 'New Brand',
-                    ),
-                  )
+                  // InkWell(
+                  //   onTap: () {
+                  //     _addBrand();
+                  //   },
+                  //   child: DashboardCard(
+                  //     asset: 'assets/images/product.png',
+                  //     title: 'New Brand',
+                  //   ),
+                  // )
                 ],
               ),
               SizedBox(
@@ -190,9 +190,10 @@ class _ProductScreenState extends State<ProductScreen> {
     TextEditingController priceController = TextEditingController();
     String? _selectedBrand;
     showModalBottomSheet(
+      backgroundColor: AppColors.whiteColor,
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
       ),
       builder: (context) {
