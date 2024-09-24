@@ -7,8 +7,7 @@ import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:sizer/sizer.dart';
-
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'core/routes/routes.dart';
 import 'modules/auth/bloc/auth_bloc.dart';
 
@@ -34,10 +33,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Sizer(builder: (context, orientation, deviceType) {
+    return ResponsiveSizer(builder: (context, orientation, screenType) {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: Routes.BAHOME,
+        initialRoute: Routes.USERROLE,
         getPages: Routes.routes,
         title: 'Merchandiser',
         initialBinding: YourBinding(),

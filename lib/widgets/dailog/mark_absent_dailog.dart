@@ -4,7 +4,7 @@ import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class MarkAbsentDialog extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();

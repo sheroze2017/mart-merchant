@@ -8,7 +8,7 @@ import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../common/style/color.dart';
 import '../bloc/record_bloc.dart';

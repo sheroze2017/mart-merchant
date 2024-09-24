@@ -8,7 +8,7 @@ import 'package:ba_merchandise/widgets/textfield/rounded_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ProductScreen extends StatefulWidget {
   ProductScreen({super.key});

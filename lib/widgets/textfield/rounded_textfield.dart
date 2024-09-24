@@ -2,7 +2,7 @@ import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class RoundedBorderTextField extends StatefulWidget {
   final TextEditingController controller;

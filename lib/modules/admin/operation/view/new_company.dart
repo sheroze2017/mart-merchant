@@ -6,7 +6,7 @@ import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:ba_merchandise/widgets/textfield/rounded_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class NewCompany extends StatefulWidget {
   NewCompany({super.key});

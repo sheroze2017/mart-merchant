@@ -6,7 +6,7 @@ import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../b.a/dashboard/view/dashboard.dart';
 import '../../operation/view/location/location_view.dart';

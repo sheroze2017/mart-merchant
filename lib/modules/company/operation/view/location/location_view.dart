@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sizer/sizer.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../../common/style/custom_textstyle.dart';
 import '../../../../b.a/dashboard/view/dashboard.dart';
@@ -83,7 +83,7 @@ class CompanyLocationScreen extends StatelessWidget {
                           endActionPane: ActionPane(
                             motion: ScrollMotion(),
                             children: [
-                               SlidableAction(
+                              SlidableAction(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
                                 spacing: 1,

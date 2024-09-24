@@ -13,7 +13,7 @@ import 'package:location/location.dart' as locat;
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:sizer/sizer.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../b.a/dashboard/view/dashboard.dart';
 import '../bloc/attendance_bloc.dart';
 
