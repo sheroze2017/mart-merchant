@@ -1,7 +1,10 @@
 import 'package:ba_merchandise/core/local/hive_db/hive.dart';
 import 'package:ba_merchandise/main.dart';
+import 'package:ba_merchandise/modules/attendence/bloc/attendance_api.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
 import 'package:ba_merchandise/modules/sync/model/user_sync_model.dart';
+import 'package:ba_merchandise/widgets/custom/error_toast.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -13,6 +16,8 @@ import 'package:intl/intl.dart'; // To format date and time
 import 'package:latlong2/latlong.dart';
 
 class AttendanceController extends GetxController {
+  final AttendanceService _attendanceService = AttendanceService();
+
   Rx<LatLng?> currentLocation = Rx<LatLng?>(null);
   final double _radius = 50.0;
   final SyncController syncController = Get.find();
@@ -24,6 +29,40 @@ class AttendanceController extends GetxController {
     super.onInit();
     getCurrentLocation();
     getTodayAttendance();
+  }
+
+  Future<void> markAttendanceApi(
+      double latitude, double longitude, context) async {
+    final response = await _attendanceService.attendance(
+        lat: latitude.toString(), lng: longitude.toString());
+    if (response.data != null && response.code == 200) {
+      DateTime now = DateTime.now();
+      Attendance attendance = Attendance(
+          date: today,
+          status: true,
+          checkOutTime: '',
+          checkInTime: DateFormat('yyyy-MM-dd HH:mm:ss').format(now));
+
+      attenToday.value = attendance;
+      attendanceBox.put(today, attendance);
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response.message.toString(),
+        icon: Icons.info,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    } else {
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response.message.toString(),
+        icon: Icons.info,
+        backgroundColor: Color.fromARGB(255, 241, 235, 235),
+        textColor: Colors.black,
+        fontSize: 14.0,
+      );
+    }
   }
 
   void getCurrentLocation() async {

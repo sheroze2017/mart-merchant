@@ -83,10 +83,6 @@ class Validator {
       return 'Please enter your password';
     } else if (value.length < 8) {
       return 'Password must be at least 8 characters long';
-    } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
-      return 'Password must contain one uppercase letter';
-    } else if (!RegExp(r'[a-z]').hasMatch(value)) {
-      return 'Password must contain one lowercase letter';
     } else if (!RegExp(r'[0-9]').hasMatch(value)) {
       return 'Password must contain at least one number';
     }

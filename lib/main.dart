@@ -4,6 +4,7 @@ import 'package:ba_merchandise/modules/attendence/bloc/attendance_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/record_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
+import 'package:ba_merchandise/services/local_storage/auth_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
     return ResponsiveSizer(builder: (context, orientation, screenType) {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: Routes.USERROLE,
+        initialRoute: Routes.WELCOMESCREEN,
         getPages: Routes.routes,
         title: 'Merchandiser',
         initialBinding: YourBinding(),
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
 class YourBinding extends Bindings {
   @override
   void dependencies() async {
+    Get.lazyPut(() => AuthStorage(), fenix: true);
     Get.put(SyncController());
     Get.put(AuthenticationController());
     Get.put(RecordController());

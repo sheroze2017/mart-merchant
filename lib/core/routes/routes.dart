@@ -3,6 +3,7 @@ import 'package:ba_merchandise/modules/admin/operation/view/assign_employee.dart
 import 'package:ba_merchandise/modules/admin/operation/view/ba_attendance.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/grant_revoke_access.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/new_company.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/new_employee.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/search_company_product.dart';
 import 'package:ba_merchandise/modules/attendence/view/attendece_view.dart';
 import 'package:ba_merchandise/modules/auth/view/login_view.dart';
@@ -15,6 +16,7 @@ import 'package:ba_merchandise/modules/b.a/record_data/view/record_sales.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/stock_count.dart';
 import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';
 import 'package:ba_merchandise/modules/merchandiser/dasboard/view/dashboard.dart';
+import 'package:ba_merchandise/modules/welcome/screen/welcome.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -25,7 +27,6 @@ class Routes {
   static const RECORD_SALES = '/recordSales';
   static const COMPETITORDATA = '/competitorData';
   static const SEARCHCOMPANYPRODUCT = '/searchCompanyProduct';
-
   static const STOCK_COUNT = '/stockCount';
   static const PRODUCT_PRICE = '/productPrice';
   static const RECORD_INTERCEPT = '/recordIntercept';
@@ -34,9 +35,12 @@ class Routes {
   static const COMPANY_HOME = '/companyHome';
   static const ADMIN_HOME = '/adminHome';
   static const NEW_COMPANTY = '/newCompany';
+  static const NEW_EMPLOYEE = '/newEmployee';
   static const ASSIGNNEWEMPLOYEE = "/assignNewEmployee";
   static const BAADMINATTENDANCE = "/BaAttendance";
   static const GRANTREVOKEACCESS = "/grantRevokeAccess";
+  static const WELCOMESCREEN = "/welcomeScreen";
+
   static final routes = [
     GetPage(
         name: ADMIN_HOME,
@@ -103,6 +107,14 @@ class Routes {
     GetPage(
         name: GRANTREVOKEACCESS,
         page: () => GrantRevokeAccess(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: NEW_EMPLOYEE,
+        page: () => NewEmployee(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: WELCOMESCREEN,
+        page: () => SplashScreen(),
         transition: Transition.rightToLeft)
   ];
 }

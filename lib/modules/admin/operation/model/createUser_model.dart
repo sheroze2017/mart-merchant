@@ -1,12 +1,12 @@
-class AuthResponse {
+class CreateUserModel {
   int? code;
-  bool? success; // Fixed the typo from 'sucess' to 'success'
+  bool? success; 
   Data? data;
   String? message;
 
-  AuthResponse({this.code, this.success, this.data, this.message});
+  CreateUserModel({this.code, this.success, this.data, this.message});
 
-  AuthResponse.fromJson(Map<String, dynamic> json) {
+  CreateUserModel.fromJson(Map<String, dynamic> json) {
     code = json['code'] ?? 0; // Default to 0 if null
     success = json['success'] ?? false; // Default to false if null
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -38,8 +38,8 @@ class Data {
   String? createdAt;
   String? role;
   String? image;
-  int? martId;
-  int? companyId;
+  String? martId;
+  String? companyId;
   String? deviceToken;
 
   Data({
@@ -67,14 +67,14 @@ class Data {
     password = json['password'] ?? ''; // Default to empty string if null
     phone = json['phone'] ?? ''; // Default to empty string if null
     location = json['location'] ?? ''; // Default to empty string if null
-    lat = json['lat'] ?? '0.0'; // Default to '0.0' if null
-    lng = json['lng'] ?? '0.0'; // Default to '0.0' if null
+    lat = json['lat'] ?? ''; // Default to empty string if null
+    lng = json['lng'] ?? ''; // Default to empty string if null
     status = json['status'] ?? 'inactive'; // Default to 'inactive' if null
     createdAt = json['created_at'] ?? ''; // Default to empty string if null
     role = json['role'] ?? 'user'; // Default to 'user' if null
     image = json['image'] ?? ''; // Default to empty string if null
-    martId = json['mart_id'] ?? 0; // Default to 0 if null
-    companyId = json['company_id'] ?? 0; // Default to 0 if null
+    martId = json['mart_id'] ?? ''; // Default to empty string if null
+    companyId = json['company_id'] ?? ''; // Default to empty string if null
     deviceToken = json['device_token'] ?? ''; // Default to empty string if null
   }
 

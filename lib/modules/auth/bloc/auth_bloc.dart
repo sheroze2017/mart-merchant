@@ -1,4 +1,7 @@
 import 'package:ba_merchandise/core/routes/routes.dart';
+import 'package:ba_merchandise/modules/auth/bloc/auth_api.dart';
+import 'package:ba_merchandise/modules/auth/model/auth_model.dart';
+import 'package:ba_merchandise/services/local_storage/auth_storage.dart';
 import 'package:ba_merchandise/widgets/custom/error_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,19 +11,46 @@ import 'package:get/get.dart';
 
 class AuthenticationController extends GetxController {
   var isLoading = false.obs;
+  final AuthService _authService = AuthService();
+  final AuthStorage _authStorage = AuthStorage();
 
-  void login(String username, String password, context) async {
+  Future<void> login(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
     isLoading.value = true;
-    await Future.delayed(const Duration(seconds: 3));
-    isLoading.value = false;
+    AuthResponse response = await _authService.login(
+      email: email,
+      password: password,
+    );
+    if (response.data != null && response.code == 200) {
+      // ignore: use_build_context_synchronously
+      userRoute(response.data!.role ?? '', context);
+      await _authStorage.set(response);
+      isLoading.value = false;
+    } else {
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response.message.toString(),
+        icon: Icons.info,
+        backgroundColor: Color.fromARGB(255, 241, 235, 235),
+        textColor: Colors.black,
+        fontSize: 14.0,
+      );
+      isLoading.value = false;
+    }
+  }
 
-    if (username == "admin@gmail.com" && password == "admin123") {
+  
+  userRoute(String role, context) {
+ 
+    if (role == 'ADMIN') {
       Get.offAllNamed(Routes.ADMIN_HOME);
-    } else if (username == "company@gmail.com" && password == "admin123") {
+    } else if (role == 'COMPANY') {
       Get.offAllNamed(Routes.COMPANY_HOME);
-    } else if (username == "ba@gmail.com" && password == "admin123") {
+    } else if (role == 'BA') {
       Get.offAllNamed(Routes.BAHOME);
-    } else if (username == "merchant@gmail.com" && password == "admin123") {
+    } else if (role == 'MERCHANT') {
       Get.offAllNamed(Routes.MERCHANTDASHBOARD);
     } else {
       AnimatedSnackbar.showSnackbar(
@@ -33,4 +63,6 @@ class AuthenticationController extends GetxController {
       );
     }
   }
+
+
 }

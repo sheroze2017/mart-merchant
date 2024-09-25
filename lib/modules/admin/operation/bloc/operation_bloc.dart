@@ -1,6 +1,13 @@
+import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/createUser_model.dart';
+import 'package:ba_merchandise/widgets/custom/error_toast.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AdminOperation extends GetxController {
+  var newCompanyLoader = false.obs;
+  final AdminOperationService _adminOperationService = AdminOperationService();
+
   var companies = <Company>[].obs; // List of companies
   var selectedCompany = Rxn<Company>(); // Currently selected company
   final RxList<Employee> _employees = [
@@ -46,7 +53,6 @@ class AdminOperation extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Initialize the list of companies with products
     companies.value = [
       Company(
         name: 'Company A',
@@ -63,6 +69,49 @@ class AdminOperation extends GetxController {
         ],
       ),
     ];
+  }
+
+  Future<void> addNewCompany(
+      {required String email,
+      required String password,
+      required String location,
+      required String image,
+      required String phoneNo,
+      required String name,
+      required BuildContext context}) async {
+    newCompanyLoader.value = true;
+    CreateUserModel response = await _adminOperationService.createCompany(
+        location: location,
+        name: name,
+        image: image,
+        deviceToken: '',
+        email: email,
+        password: password,
+        phoneNo: phoneNo);
+    if (response.data != null && response.code == 200) {
+      newCompanyLoader.value = false;
+
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response.message.toString(),
+        icon: Icons.info,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      Get.back();
+    } else {
+      newCompanyLoader.value = false;
+
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response.message.toString(),
+        icon: Icons.info,
+        backgroundColor: Color.fromARGB(255, 241, 235, 235),
+        textColor: Colors.black,
+        fontSize: 14.0,
+      );
+    }
   }
 
   void changeEmployeeStatus(Employee employee) {
