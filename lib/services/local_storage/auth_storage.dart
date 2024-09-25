@@ -17,4 +17,8 @@ class AuthStorage extends LocalStorage<AuthResponse> {
   Future<void> set(AuthResponse obj) {
     return storage.setString(key, jsonEncode(obj.toJson()));
   }
+
+  Future<void> clear() async {
+    await storage.remove(key);
+  }
 }

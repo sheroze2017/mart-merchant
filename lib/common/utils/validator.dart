@@ -31,6 +31,14 @@ class Validator {
     }
   }
 
+  static String? ValidText(String? text) {
+    if (text == null || text.isEmpty) {
+      return 'Please fill in the details';
+    } else {
+      return null;
+    }
+  }
+
   static String? validatePhoneNumber(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your phone number';

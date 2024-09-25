@@ -1,7 +1,7 @@
 class AuthResponse {
   int? code;
   bool? success; // Fixed the typo from 'sucess' to 'success'
-  Data? data;
+  UserData? data;
   String? message;
 
   AuthResponse({this.code, this.success, this.data, this.message});
@@ -9,7 +9,7 @@ class AuthResponse {
   AuthResponse.fromJson(Map<String, dynamic> json) {
     code = json['code'] ?? 0; // Default to 0 if null
     success = json['success'] ?? false; // Default to false if null
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? UserData.fromJson(json['data']) : null;
     message = json['message'] ?? ''; // Default to an empty string if null
   }
 
@@ -25,7 +25,7 @@ class AuthResponse {
   }
 }
 
-class Data {
+class UserData {
   int? userId;
   String? name;
   String? email;
@@ -38,11 +38,11 @@ class Data {
   String? createdAt;
   String? role;
   String? image;
-  int? martId;
-  int? companyId;
+  String? martId;
+  String? companyId;
   String? deviceToken;
 
-  Data({
+  UserData({
     this.userId,
     this.name,
     this.email,
@@ -60,7 +60,7 @@ class Data {
     this.deviceToken,
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
+  UserData.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'] ?? 0; // Default to 0 if null
     name = json['name'] ?? ''; // Default to empty string if null
     email = json['email'] ?? ''; // Default to empty string if null
@@ -73,8 +73,8 @@ class Data {
     createdAt = json['created_at'] ?? ''; // Default to empty string if null
     role = json['role'] ?? 'user'; // Default to 'user' if null
     image = json['image'] ?? ''; // Default to empty string if null
-    martId = json['mart_id'] ?? 0; // Default to 0 if null
-    companyId = json['company_id'] ?? 0; // Default to 0 if null
+    martId = json['mart_id'] ?? ''; // Default to 0 if null
+    companyId = json['company_id'] ?? ''; // Default to 0 if null
     deviceToken = json['device_token'] ?? ''; // Default to empty string if null
   }
 

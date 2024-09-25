@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   _checkLoginStatus() async {
     // check if user is logged in
     String? userRole = await Utils.getUserRole();
-    if (userRole != null) {
+    if (userRole != null && userRole.isNotEmpty) {
       userRoute(userRole, context);
     } else {
       Get.offAllNamed(Routes.USERROLE);

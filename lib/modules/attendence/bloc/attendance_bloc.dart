@@ -55,6 +55,7 @@ class AttendanceController extends GetxController {
       );
     } else {
       AnimatedSnackbar.showSnackbar(
+        
         context: context,
         message: response.message.toString(),
         icon: Icons.info,

@@ -6,6 +6,9 @@ import 'package:get/get.dart';
 
 class AdminOperation extends GetxController {
   var newCompanyLoader = false.obs;
+  var newBALoader = false.obs;
+  var isBASelected = false.obs;
+
   final AdminOperationService _adminOperationService = AdminOperationService();
 
   var companies = <Company>[].obs; // List of companies
@@ -102,6 +105,94 @@ class AdminOperation extends GetxController {
       Get.back();
     } else {
       newCompanyLoader.value = false;
+
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response.message.toString(),
+        icon: Icons.info,
+        backgroundColor: Color.fromARGB(255, 241, 235, 235),
+        textColor: Colors.black,
+        fontSize: 14.0,
+      );
+    }
+  }
+
+  Future<void> addNewBA(
+      {required String email,
+      required String password,
+      required String martId,
+      required String companyId,
+      required String location,
+      required String image,
+      required String phoneNo,
+      required String name,
+      required BuildContext context}) async {
+    newBALoader.value = true;
+    CreateUserModel response = await _adminOperationService.createBA(
+        martId: martId,
+        companyId: companyId,
+        location: location,
+        name: name,
+        image: image,
+        deviceToken: '',
+        email: email,
+        password: password,
+        phoneNo: phoneNo);
+    if (response.data != null && response.code == 200) {
+      newBALoader.value = false;
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response.message.toString(),
+        icon: Icons.info,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      Get.back();
+    } else {
+      newBALoader.value = false;
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response.message.toString(),
+        icon: Icons.info,
+        backgroundColor: Color.fromARGB(255, 241, 235, 235),
+        textColor: Colors.black,
+        fontSize: 14.0,
+      );
+    }
+  }
+
+  Future<void> addNewMerchant(
+      {required String email,
+      required String password,
+      required String location,
+      required String image,
+      required String phoneNo,
+      required String name,
+      required BuildContext context}) async {
+    newBALoader.value = true;
+    CreateUserModel response = await _adminOperationService.createMerchant(
+        location: location,
+        name: name,
+        image: image,
+        deviceToken: '',
+        email: email,
+        password: password,
+        phoneNo: phoneNo);
+    if (response.data != null && response.code == 200) {
+      newBALoader.value = false;
+
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response.message.toString(),
+        icon: Icons.info,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      Get.back();
+    } else {
+      newBALoader.value = false;
 
       AnimatedSnackbar.showSnackbar(
         context: context,

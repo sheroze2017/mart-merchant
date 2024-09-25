@@ -1,5 +1,6 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/modules/admin/dashboard/bloc/dashboard_controller.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ class ProfileSection extends StatelessWidget {
   });
   @override
   final SyncController syncController = Get.find();
+  final DashBoardController controller = Get.find();
 
   Widget build(BuildContext context) {
     return Card(
@@ -48,10 +50,9 @@ class ProfileSection extends StatelessWidget {
                           color: Colors.blue.shade100,
                         ),
                         Obx(() => Text(
-                              syncController.uLocation.first.locationName
-                                  .toString(),
+                              controller.userData.value!.phone.toString(),
                               style: CustomTextStyles.lightSmallTextStyle(
-                                  size: 18, color: Colors.grey),
+                                  size: 14, color: Colors.green),
                             ))
                       ],
                     ),
@@ -64,14 +65,14 @@ class ProfileSection extends StatelessWidget {
                   radius: 30,
                   backgroundImage: AssetImage('assets/images/logo.png'),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Obx(
                         () => Text(
-                          syncController.username.value,
+                          controller.userData.value!.name.toString(),
                           style:
                               CustomTextStyles.darkHeadingTextStyle(size: 22),
                         ),
@@ -81,11 +82,9 @@ class ProfileSection extends StatelessWidget {
                       ),
                       showAddress
                           ? Obx(() => Text(
-                                syncController
-                                    .uLocation.first.brands!.first.brandName
-                                    .toString(),
+                                controller.userData.value!.location.toString(),
                                 style: CustomTextStyles.lightSmallTextStyle(
-                                    size: 16, color: Colors.grey),
+                                    size: 12, color: Colors.green),
                               ))
                           : Container()
                     ],

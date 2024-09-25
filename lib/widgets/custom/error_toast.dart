@@ -9,7 +9,7 @@ class AnimatedSnackbar {
     Color backgroundColor = Colors.grey,
     Color textColor = Colors.white,
     double fontSize = 14.0,
-    Duration duration = const Duration(seconds: 2),
+    Duration duration = const Duration(seconds: 3),
   }) {
     final overlay = Overlay.of(context)!;
     final overlayEntry = OverlayEntry(
@@ -117,6 +117,7 @@ class __AnimatedSnackbarState extends State<_AnimatedSnackbar>
                     Expanded(
                       child: Text(
                         widget.message,
+                        maxLines: 2,
                         style: TextStyle(
                             color: widget.textColor, fontSize: widget.fontSize),
                         overflow: TextOverflow.ellipsis,

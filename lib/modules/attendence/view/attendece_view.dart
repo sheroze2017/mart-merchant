@@ -136,8 +136,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         Expanded(
                           child: InkWell(
                             onTap: () async {
-                              await attendanceController.markAttendance(
-                                  _latitude, _longitude);
+                              await attendanceController.markAttendanceApi(
+                                  _latitude, _longitude,context);
                               attendanceController.getTodayAttendance();
                             },
                             child: StatusContainer(

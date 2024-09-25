@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
+import 'package:ba_merchandise/modules/admin/dashboard/bloc/dashboard_controller.dart';
 import 'package:ba_merchandise/modules/admin/dashboard/widget/dashboard_card.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
 import 'package:ba_merchandise/modules/company/operation/view/employee/employee_view.dart';
@@ -16,8 +17,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../b.a/dashboard/view/dashboard.dart';
 
 class AdminHome extends StatelessWidget {
-  const AdminHome({super.key});
-
+  AdminHome({super.key});
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -55,7 +55,7 @@ class AdminHome extends StatelessWidget {
               children: [
                 // Profile Section
                 ProfileSection(
-                  showAddress: false,
+                  showAddress: true,
                 ),
                 SizedBox(
                   height: 2.h,
@@ -80,6 +80,7 @@ class AdminHome extends StatelessWidget {
                     Get.toNamed(Routes.NEW_EMPLOYEE);
                   },
                 ),
+
                 DashboardCard(
                   asset: 'assets/images/search.png',
                   title: 'Search Company Products',

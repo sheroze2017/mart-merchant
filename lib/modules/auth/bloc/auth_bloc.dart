@@ -25,8 +25,8 @@ class AuthenticationController extends GetxController {
     );
     if (response.data != null && response.code == 200) {
       // ignore: use_build_context_synchronously
-      userRoute(response.data!.role ?? '', context);
       await _authStorage.set(response);
+      userRoute(response.data!.role ?? '', context);
       isLoading.value = false;
     } else {
       AnimatedSnackbar.showSnackbar(
@@ -41,9 +41,7 @@ class AuthenticationController extends GetxController {
     }
   }
 
-  
   userRoute(String role, context) {
- 
     if (role == 'ADMIN') {
       Get.offAllNamed(Routes.ADMIN_HOME);
     } else if (role == 'COMPANY') {
@@ -63,6 +61,4 @@ class AuthenticationController extends GetxController {
       );
     }
   }
-
-
 }

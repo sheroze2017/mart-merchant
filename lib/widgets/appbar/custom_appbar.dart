@@ -1,4 +1,5 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/modules/admin/dashboard/bloc/dashboard_controller.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   CustomAppBar({required this.title, this.accType = ''});
 
   final SyncController syncController = Get.find();
+  final controller = Get.put(DashBoardController());
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions: [
           InkWell(
             onTap: () async {
-              await Hive.deleteFromDisk();
-              print("Hive database cleared");
+              // await Hive.deleteFromDisk();
+              // print("Hive database cleared");
             },
             child: Container(
               decoration: BoxDecoration(
@@ -47,7 +49,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                     Obx(
                       () => Text(
-                        " ${syncController.userRole.value}",
+                        " ${controller.userData.value!.role}",
                         style: CustomTextStyles.lightTextStyle(
                             size: 14, color: Colors.green),
                       ),

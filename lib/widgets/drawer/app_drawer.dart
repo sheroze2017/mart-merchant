@@ -1,8 +1,10 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
+import 'package:ba_merchandise/modules/admin/dashboard/bloc/dashboard_controller.dart';
 import 'package:ba_merchandise/modules/auth/view/role_select_view.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/record_intercept.dart';
+import 'package:ba_merchandise/services/local_storage/auth_storage.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,7 @@ class CustomDrawer extends StatelessWidget {
   final String userRole;
 
   CustomDrawer({required this.userRole});
+  final controller = Get.put(DashBoardController());
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +37,10 @@ class CustomDrawer extends StatelessWidget {
             style:
                 CustomTextStyles.w600TextStyle(size: 20, color: Colors.black),
           ),
-          Text(
-            'Sheroze',
-            style: CustomTextStyles.lightTextStyle(size: 16),
-          ),
+          Obx(() => Text(
+                controller.userData.value!.name.toString(),
+                style: CustomTextStyles.lightTextStyle(size: 16),
+              )),
           SizedBox(
             height: 2.h,
           ),
@@ -46,10 +49,10 @@ class CustomDrawer extends StatelessWidget {
             style:
                 CustomTextStyles.w600TextStyle(size: 20, color: Colors.black),
           ),
-          Text(
-            userRole,
-            style: CustomTextStyles.lightTextStyle(size: 16),
-          ),
+          Obx(() => Text(
+                controller.userData.value!.role.toString(),
+                style: CustomTextStyles.lightTextStyle(size: 16),
+              )),
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -69,6 +72,9 @@ class CustomDrawer extends StatelessWidget {
                               Get.back();
                             },
                             onButton2Pressed: () {
+                              final AuthStorage authStorage =
+                                  Get.find<AuthStorage>();
+                              authStorage.clear();
                               Get.offAllNamed(Routes.USERROLE);
                             },
                           ),

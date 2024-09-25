@@ -102,17 +102,14 @@ class AdminOperationService extends BaseService {
     }
   }
 
-  Future<CreateUserModel> createEmployee(
-      {required String lat,
-      required String lng,
-      required String name,
+  Future<CreateUserModel> createBA(
+      {required String name,
       required String email,
       required String password,
       required String phoneNo,
       required String companyId,
       required String martId,
       required String image,
-      required String role,
       required String deviceToken,
       required String location}) async {
     try {
@@ -120,12 +117,10 @@ class AdminOperationService extends BaseService {
         "name": name,
         "email": email,
         "password": password,
-        "role": role,
+        "role": 'BA',
         "phone": phoneNo,
         "company_id": companyId,
         "mart_id": martId,
-        "lat": lat,
-        "lng": lng,
         "device_token": deviceToken,
         "image": image,
         "location": location,
