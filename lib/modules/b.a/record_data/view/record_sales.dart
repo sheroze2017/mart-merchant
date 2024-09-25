@@ -1,5 +1,6 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
+import 'package:ba_merchandise/modules/b.a/record_data/bloc/insert_sales_bloc.dart';
 import 'package:ba_merchandise/modules/merchandiser/dasboard/view/dashboard.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:intl/intl.dart'; // To format date and time
@@ -25,6 +26,7 @@ class _RecordSalesState extends State<RecordSales> {
   bool _isDetailVisible = false;
   bool statusCheck = false;
   final RecordController controller = Get.find();
+  final InsertSalesRecord salesController = Get.put(InsertSalesRecord());
   @override
   void initState() {
     super.initState();
@@ -173,14 +175,18 @@ class _RecordSalesState extends State<RecordSales> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: RoundedButton(
+                          child: Obx(
+                        () => RoundedButton(
+                            showLoader:
+                                salesController.statusRecordLoader.value,
                             text: 'Save',
                             onPressed: () {
-                              controller.updateSalesRecord(_controllers);
+                              salesController.insertSalesRecord(context);
+                              // controller.updateSalesRecord(_controllers);
                             },
                             backgroundColor: Colors.black,
                             textColor: Colors.white),
-                      ),
+                      )),
                     ],
                   ),
                 )

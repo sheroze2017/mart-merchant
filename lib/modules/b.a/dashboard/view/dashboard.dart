@@ -154,7 +154,6 @@ class _BaHomeState extends State<BaHome> {
                       subtitle: 'Set product price',
                     ),
                     FeatureCard(
-                      isDone: true,
                       icon: Icons.co_present_sharp,
                       title: 'Record Intercepts',
                       onTap: () {

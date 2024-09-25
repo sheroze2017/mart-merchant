@@ -3,21 +3,20 @@ import 'package:ba_merchandise/constant/endpoints.dart';
 import 'package:ba_merchandise/modules/auth/model/auth_model.dart';
 import 'package:ba_merchandise/services/base_service.dart';
 
-class AttendanceService extends BaseService {
-  Future<Map<String, dynamic>> attendance(
-      {required String lat, required String lng}) async {
+class BaOperationService extends BaseService {
+  Future<Map<String, dynamic>> insertSalesRecord(
+      List<Map<String, String>> products) async {
     var userId = await Utils.getUserId();
     var martId = await Utils.getMartId();
 
     try {
       Map<String, dynamic> data = {
-        "lat": "24.831404548254817",
-        "lng": "67.08077914632807",
-        "user_id": userId.toString(),
-        "mart_id": martId.toString()
+        "products": products,
+        "user_id": userId,
+        "mart_id": martId
       };
 
-      final response = await dioClient.post(Endpoints.attendance, data: data);
+      final response = await dioClient.post(Endpoints.recordSales, data: data);
       return response;
     } catch (e) {
       rethrow;
