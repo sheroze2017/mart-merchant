@@ -132,4 +132,25 @@ class AdminOperationService extends BaseService {
       rethrow;
     }
   }
+
+  Future<Map<String, dynamic>> createMart({
+    required String martName,
+    required String address,
+    required String latitude,
+    required String longitude,
+  }) async {
+    try {
+      Map<String, dynamic> data = {
+        "mart_name": martName,
+        "location": address,
+        "lat": latitude,
+        "lng": longitude
+      };
+
+      final response = await dioClient.post(Endpoints.createMart, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

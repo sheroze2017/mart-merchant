@@ -22,7 +22,7 @@ class LocationPickerScreen extends StatefulWidget {
 }
 
 class _LocationPickerScreenState extends State<LocationPickerScreen> {
-  final OperationBloc operationBloc = Get.find();
+  final CompanyOperationBloc operationBloc = Get.find();
 
   final locat.Location _location = locat.Location();
   final Map<String, Marker> _markers = {};

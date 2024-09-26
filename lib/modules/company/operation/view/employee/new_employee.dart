@@ -40,7 +40,7 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
   final FocusNode _focusNode6 = FocusNode();
   final FocusNode _focusNode7 = FocusNode();
   TextEditingController controller = TextEditingController();
-  final OperationBloc operationBloc = Get.find();
+  final CompanyOperationBloc operationBloc = Get.find();
 
   //final authController = Get.put(AuthController());
 

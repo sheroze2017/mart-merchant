@@ -13,4 +13,8 @@ class Endpoints {
   static const String attendance = "auth/attendance";
   static const String recordSales = "auth/insertSales";
   static const String createUser = "auth/createUser";
+  static const String createMart = "auth/createMart";
+  static const String createProduct = "auth/createProduct";
+  static const String getAllCategories = "auth/getAllCategories";
+  static const String getAllMart = "auth/getAllMarts";
 }

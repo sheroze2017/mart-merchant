@@ -1,7 +1,9 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';
+import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:ba_merchandise/widgets/textfield/rounded_textfield.dart';
@@ -36,6 +38,7 @@ class _ProductScreenState extends State<ProductScreen> {
       {'id': 8, 'name': 'Colgate Clear', 'price': 120.99},
     ],
   };
+  final controller = Get.put(CompanyOperationBloc());
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +56,15 @@ class _ProductScreenState extends State<ProductScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      _addProduct();
-                    },
-                    child: DashboardCard(
-                      asset: 'assets/images/product.png',
-                      title: 'New Product',
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        _addProduct();
+                      },
+                      child: DashboardCard(
+                        asset: 'assets/images/product.png',
+                        title: 'New Product',
+                      ),
                     ),
                   ),
                   // InkWell(
@@ -76,44 +81,45 @@ class _ProductScreenState extends State<ProductScreen> {
               SizedBox(
                 height: 1.h,
               ),
-              CustomDropdown(
-                hintText: 'Select Brand',
-                items: productData.keys.toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedBrand = value;
-                  });
-                },
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              if (selectedBrand != null)
-                ...productData[selectedBrand]!.map((product) {
-                  return Card(
-                    color: AppColors.primaryColor,
-                    elevation: 2,
-                    child: ListTile(
-                      title: Text(
-                        product['name'],
-                        style: CustomTextStyles.lightSmallTextStyle(
-                            size: 16, color: Colors.blue),
-                      ),
-                      subtitle: Text(
-                        'Price: PKR ${product['price']}',
-                        style: CustomTextStyles.lightSmallTextStyle(),
-                      ),
-                      trailing: IconButton(
-                          icon: const Icon(
-                            Icons.edit_note,
-                            color: Colors.blue,
-                          ),
-                          onPressed: () {
-                            _editProduct(product);
-                          }),
-                    ),
-                  );
-                }).toList(),
+              //   CustomDropdown(
+              //     hintText: 'Select Brand',
+              //     items: productData.keys.toList(),
+              //     onChanged: (value) {
+              //       setState(() {
+              //         selectedBrand = value;
+              //       });
+              //     },
+              //   ),
+              //   SizedBox(
+              //     height: 1.h,
+              //   ),
+              //   if (selectedBrand != null)
+              //     ...productData[selectedBrand]!.map((product) {
+              //       return Card(
+              //         color: AppColors.primaryColor,
+              //         elevation: 2,
+              //         child: ListTile(
+              //           title: Text(
+              //             product['name'],
+              //             style: CustomTextStyles.lightSmallTextStyle(
+              //                 size: 16, color: Colors.blue),
+              //           ),
+              //           subtitle: Text(
+              //             'Price: PKR ${product['price']}',
+              //             style: CustomTextStyles.lightSmallTextStyle(),
+              //           ),
+              //           trailing: IconButton(
+              //               icon: const Icon(
+              //                 Icons.edit_note,
+              //                 color: Colors.blue,
+              //               ),
+              //               onPressed: () {
+              //                 _editProduct(product);
+              //               }),
+              //         ),
+              //       );
+              //     }).toList(),
+              //
             ],
           ),
         ),
@@ -188,7 +194,12 @@ class _ProductScreenState extends State<ProductScreen> {
   void _addProduct() {
     TextEditingController nameController = TextEditingController();
     TextEditingController priceController = TextEditingController();
-    String? _selectedBrand;
+    TextEditingController desc = TextEditingController();
+    TextEditingController varient = TextEditingController();
+    TextEditingController qty = TextEditingController();
+    TextEditingController martId = TextEditingController();
+    TextEditingController categoryId = TextEditingController();
+
     showModalBottomSheet(
       backgroundColor: AppColors.whiteColor,
       context: context,
@@ -211,12 +222,33 @@ class _ProductScreenState extends State<ProductScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: CustomDropdown(
-                        hintText: 'Select Brand',
-                        items: productData.keys.toList(),
+                        hintText: 'Select Category',
+                        items: controller.categories
+                            .map((category) => category.name)
+                            .toList(),
                         onChanged: (value) {
-                          setState(() {
-                            _selectedBrand = value;
-                          });
+                          int exactIndex = controller.categories
+                              .indexWhere((m) => m.name == value);
+                          if (exactIndex != -1) {
+                            categoryId.text = controller
+                                .categories[exactIndex].categoryId
+                                .toString();
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: CustomDropdown(
+                        hintText: 'Select Mart',
+                        items: controller.marts.map((m) => m.martName).toList(),
+                        onChanged: (value) {
+                          int exactIndex = controller.marts
+                              .indexWhere((m) => m.martName == value);
+                          if (exactIndex != -1) {
+                            martId.text =
+                                controller.marts[exactIndex].martId.toString();
+                          }
                         },
                       ),
                     ),
@@ -224,50 +256,70 @@ class _ProductScreenState extends State<ProductScreen> {
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: RoundedBorderTextField(
                         controller: nameController,
+                        validator: Validator.ValidText,
                         hintText: 'Name',
                         icon: '',
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: RoundedBorderTextField(
+                        controller: priceController,
+                        textInputType: TextInputType.number,
+                        hintText: 'Price',
+                        validator: Validator.ValidText,
+                        icon: '',
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: RoundedBorderTextField(
+                        controller: desc,
+                        validator: Validator.ValidText,
+                        hintText: 'description',
+                        icon: '',
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: RoundedBorderTextField(
+                        controller: varient,
+                        validator: Validator.ValidText,
+                        hintText: 'Varient eg gm,mg,lt,ml and kg etc',
+                        icon: '',
+                      ),
+                    ),
                     RoundedBorderTextField(
-                      controller: priceController,
+                      controller: qty,
+                      validator: Validator.ValidText,
                       textInputType: TextInputType.number,
-                      hintText: 'Price',
+                      hintText: 'Quantity',
                       icon: '',
                     ),
-                    Center(
-                      child: Padding(
+                    Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: RoundedButtonSmall(
-                            text: 'Add Product',
-                            onPressed: () {
-                              if (nameController.text.isNotEmpty &&
-                                  priceController.text.isNotEmpty &&
-                                  _selectedBrand!.isNotEmpty &&
-                                  _selectedBrand != null) {
-                                final newProduct = {
-                                  'id': DateTime.now()
-                                      .millisecondsSinceEpoch, // Unique ID
-                                  'name': nameController.text,
-                                  'price': double.parse(priceController.text),
-                                };
-
-                                setState(() {
-                                  productData[selectedBrand]!.add(newProduct);
-                                });
-
-                                Fluttertoast.showToast(msg: 'Product Added');
-                                Navigator.pop(
-                                    context); // Close the bottom sheet
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: 'Please fill in all fields',
-                                    backgroundColor: Colors.red);
-                              }
-                            },
-                            backgroundColor: Colors.black,
-                            textColor: AppColors.whiteColor),
-                      ),
-                    )
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Obx(() => RoundedButton(
+                                  showLoader: controller.addProductLoader.value,
+                                  text: 'Add Product',
+                                  onPressed: () {
+                                    controller.addNewProduct(
+                                        categoryId.text,
+                                        nameController.text,
+                                        desc.text,
+                                        priceController.text,
+                                        qty.text,
+                                        varient.text,
+                                        martId.text,
+                                        context);
+                                  },
+                                  backgroundColor: Colors.black,
+                                  textColor: AppColors.whiteColor)),
+                            ),
+                          ],
+                        ))
                   ],
                 ),
               ),

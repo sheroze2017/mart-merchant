@@ -8,6 +8,7 @@ class AdminOperation extends GetxController {
   var newCompanyLoader = false.obs;
   var newBALoader = false.obs;
   var isBASelected = false.obs;
+  var newMartLoader = false.obs;
 
   final AdminOperationService _adminOperationService = AdminOperationService();
 
@@ -74,6 +75,46 @@ class AdminOperation extends GetxController {
     ];
   }
 
+  Future<void> addNewMart(
+      {required String locationName,
+      required String address,
+      required String latitude,
+      required String longitude,
+      required BuildContext context}) async {
+    try {
+      newMartLoader.value = true;
+      final response = await _adminOperationService.createMart(
+          martName: locationName,
+          address: address,
+          latitude: latitude,
+          longitude: longitude);
+      if (response['data'] != null && response['code'] == 200) {
+        newMartLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'].toString(),
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        Get.back();
+      } else {
+        newMartLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'].toString(),
+          icon: Icons.info,
+          backgroundColor: Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      newMartLoader.value = false;
+    }
+  }
+
   Future<void> addNewCompany(
       {required String email,
       required String password,
@@ -82,38 +123,42 @@ class AdminOperation extends GetxController {
       required String phoneNo,
       required String name,
       required BuildContext context}) async {
-    newCompanyLoader.value = true;
-    CreateUserModel response = await _adminOperationService.createCompany(
-        location: location,
-        name: name,
-        image: image,
-        deviceToken: '',
-        email: email,
-        password: password,
-        phoneNo: phoneNo);
-    if (response.data != null && response.code == 200) {
-      newCompanyLoader.value = false;
+    try {
+      newCompanyLoader.value = true;
+      CreateUserModel response = await _adminOperationService.createCompany(
+          location: location,
+          name: name,
+          image: image,
+          deviceToken: '',
+          email: email,
+          password: password,
+          phoneNo: phoneNo);
+      if (response.data != null && response.code == 200) {
+        newCompanyLoader.value = false;
 
-      AnimatedSnackbar.showSnackbar(
-        context: context,
-        message: response.message.toString(),
-        icon: Icons.info,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
-      Get.back();
-    } else {
-      newCompanyLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response.message.toString(),
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        Get.back();
+      } else {
+        newCompanyLoader.value = false;
 
-      AnimatedSnackbar.showSnackbar(
-        context: context,
-        message: response.message.toString(),
-        icon: Icons.info,
-        backgroundColor: Color.fromARGB(255, 241, 235, 235),
-        textColor: Colors.black,
-        fontSize: 14.0,
-      );
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response.message.toString(),
+          icon: Icons.info,
+          backgroundColor: Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      newCompanyLoader.value = false;
     }
   }
 
@@ -127,38 +172,42 @@ class AdminOperation extends GetxController {
       required String phoneNo,
       required String name,
       required BuildContext context}) async {
-    newBALoader.value = true;
-    CreateUserModel response = await _adminOperationService.createBA(
-        martId: martId,
-        companyId: companyId,
-        location: location,
-        name: name,
-        image: image,
-        deviceToken: '',
-        email: email,
-        password: password,
-        phoneNo: phoneNo);
-    if (response.data != null && response.code == 200) {
+    try {
+      newBALoader.value = true;
+      CreateUserModel response = await _adminOperationService.createBA(
+          martId: martId,
+          companyId: companyId,
+          location: location,
+          name: name,
+          image: image,
+          deviceToken: '',
+          email: email,
+          password: password,
+          phoneNo: phoneNo);
+      if (response.data != null && response.code == 200) {
+        newBALoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response.message.toString(),
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        Get.back();
+      } else {
+        newBALoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response.message.toString(),
+          icon: Icons.info,
+          backgroundColor: Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
       newBALoader.value = false;
-      AnimatedSnackbar.showSnackbar(
-        context: context,
-        message: response.message.toString(),
-        icon: Icons.info,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
-      Get.back();
-    } else {
-      newBALoader.value = false;
-      AnimatedSnackbar.showSnackbar(
-        context: context,
-        message: response.message.toString(),
-        icon: Icons.info,
-        backgroundColor: Color.fromARGB(255, 241, 235, 235),
-        textColor: Colors.black,
-        fontSize: 14.0,
-      );
     }
   }
 
@@ -170,38 +219,42 @@ class AdminOperation extends GetxController {
       required String phoneNo,
       required String name,
       required BuildContext context}) async {
-    newBALoader.value = true;
-    CreateUserModel response = await _adminOperationService.createMerchant(
-        location: location,
-        name: name,
-        image: image,
-        deviceToken: '',
-        email: email,
-        password: password,
-        phoneNo: phoneNo);
-    if (response.data != null && response.code == 200) {
-      newBALoader.value = false;
+    try {
+      newBALoader.value = true;
+      CreateUserModel response = await _adminOperationService.createMerchant(
+          location: location,
+          name: name,
+          image: image,
+          deviceToken: '',
+          email: email,
+          password: password,
+          phoneNo: phoneNo);
+      if (response.data != null && response.code == 200) {
+        newBALoader.value = false;
 
-      AnimatedSnackbar.showSnackbar(
-        context: context,
-        message: response.message.toString(),
-        icon: Icons.info,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
-      Get.back();
-    } else {
-      newBALoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response.message.toString(),
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        Get.back();
+      } else {
+        newBALoader.value = false;
 
-      AnimatedSnackbar.showSnackbar(
-        context: context,
-        message: response.message.toString(),
-        icon: Icons.info,
-        backgroundColor: Color.fromARGB(255, 241, 235, 235),
-        textColor: Colors.black,
-        fontSize: 14.0,
-      );
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response.message.toString(),
+          icon: Icons.info,
+          backgroundColor: Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      newBALoader.value = false;
     }
   }
 

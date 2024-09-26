@@ -18,25 +18,29 @@ class AuthenticationController extends GetxController {
       {required String email,
       required String password,
       required BuildContext context}) async {
-    isLoading.value = true;
-    AuthResponse response = await _authService.login(
-      email: email,
-      password: password,
-    );
-    if (response.data != null && response.code == 200) {
-      // ignore: use_build_context_synchronously
-      await _authStorage.set(response);
-      userRoute(response.data!.role ?? '', context);
-      isLoading.value = false;
-    } else {
-      AnimatedSnackbar.showSnackbar(
-        context: context,
-        message: response.message.toString(),
-        icon: Icons.info,
-        backgroundColor: Color.fromARGB(255, 241, 235, 235),
-        textColor: Colors.black,
-        fontSize: 14.0,
+    try {
+      isLoading.value = true;
+      AuthResponse response = await _authService.login(
+        email: email,
+        password: password,
       );
+      if (response.data != null && response.code == 200) {
+        // ignore: use_build_context_synchronously
+        await _authStorage.set(response);
+        userRoute(response.data!.role ?? '', context);
+        isLoading.value = false;
+      } else {
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response.message.toString(),
+          icon: Icons.info,
+          backgroundColor: Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+        isLoading.value = false;
+      }
+    } catch (e) {
       isLoading.value = false;
     }
   }

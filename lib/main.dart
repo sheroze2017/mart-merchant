@@ -80,7 +80,7 @@ class YourBinding extends Bindings {
     Get.put(SyncController());
     Get.put(AuthenticationController());
     Get.put(RecordController());
-    Get.put(OperationBloc());
+    Get.put(CompanyOperationBloc());
     Get.put(AttendanceController());
   }
 }

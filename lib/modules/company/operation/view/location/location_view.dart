@@ -18,7 +18,7 @@ import '../../bloc/operation_bloc.dart';
 class CompanyLocationScreen extends StatelessWidget {
   CompanyLocationScreen({super.key});
 
-  final OperationBloc operationBloc = Get.find();
+  final CompanyOperationBloc operationBloc = Get.find();
 
   @override
   Widget build(BuildContext context) {

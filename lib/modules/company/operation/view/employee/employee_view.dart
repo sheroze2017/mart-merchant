@@ -11,7 +11,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 class EmployeeListScreen extends StatelessWidget {
   EmployeeListScreen({super.key});
-  final OperationBloc operationBloc = Get.find();
+  final CompanyOperationBloc operationBloc = Get.find();
 
   @override
   Widget build(BuildContext context) {
