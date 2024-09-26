@@ -17,4 +17,5 @@ class Endpoints {
   static const String createProduct = "auth/createProduct";
   static const String getAllCategories = "auth/getAllCategories";
   static const String getAllMart = "auth/getAllMarts";
+  static const String updateToken = "auth/updateDeviceToken";
 }

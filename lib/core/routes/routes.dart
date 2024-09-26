@@ -4,6 +4,7 @@ import 'package:ba_merchandise/modules/admin/operation/view/ba_attendance.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/grant_revoke_access.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/new_company.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/new_employee.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/new_mart.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/search_company_product.dart';
 import 'package:ba_merchandise/modules/attendence/view/attendece_view.dart';
 import 'package:ba_merchandise/modules/auth/view/login_view.dart';
@@ -36,6 +37,7 @@ class Routes {
   static const ADMIN_HOME = '/adminHome';
   static const NEW_COMPANTY = '/newCompany';
   static const NEW_EMPLOYEE = '/newEmployee';
+  static const NEW_MART = "/newMart";
   static const ASSIGNNEWEMPLOYEE = "/assignNewEmployee";
   static const BAADMINATTENDANCE = "/BaAttendance";
   static const GRANTREVOKEACCESS = "/grantRevokeAccess";
@@ -115,6 +117,10 @@ class Routes {
     GetPage(
         name: WELCOMESCREEN,
         page: () => SplashScreen(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: NEW_MART,
+        page: () => NewMartScreen(),
         transition: Transition.rightToLeft)
   ];
 }

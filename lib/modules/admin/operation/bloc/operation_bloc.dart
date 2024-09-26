@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/createUser_model.dart';
 import 'package:ba_merchandise/widgets/custom/error_toast.dart';
@@ -129,7 +130,6 @@ class AdminOperation extends GetxController {
           location: location,
           name: name,
           image: image,
-          deviceToken: '',
           email: email,
           password: password,
           phoneNo: phoneNo);
@@ -180,7 +180,6 @@ class AdminOperation extends GetxController {
           location: location,
           name: name,
           image: image,
-          deviceToken: '',
           email: email,
           password: password,
           phoneNo: phoneNo);
@@ -222,13 +221,7 @@ class AdminOperation extends GetxController {
     try {
       newBALoader.value = true;
       CreateUserModel response = await _adminOperationService.createMerchant(
-          location: location,
-          name: name,
-          image: image,
-          deviceToken: '',
-          email: email,
-          password: password,
-          phoneNo: phoneNo);
+          name: name, email: email, password: password, phoneNo: phoneNo);
       if (response.data != null && response.code == 200) {
         newBALoader.value = false;
 

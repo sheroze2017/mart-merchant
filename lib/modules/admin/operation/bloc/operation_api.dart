@@ -46,7 +46,6 @@ class AdminOperationService extends BaseService {
       required String password,
       required String phoneNo,
       required String image,
-      required String deviceToken,
       required String location}) async {
     try {
       Map<String, dynamic> data = {
@@ -57,10 +56,6 @@ class AdminOperationService extends BaseService {
         "phone": phoneNo,
         "company_id": '2',
         "mart_id": '2',
-        "lat": 0,
-        "lng": 0,
-        "device_token": deviceToken,
-        "image": image,
         "location": location,
       };
 
@@ -71,14 +66,12 @@ class AdminOperationService extends BaseService {
     }
   }
 
-  Future<CreateUserModel> createMerchant(
-      {required String name,
-      required String email,
-      required String password,
-      required String phoneNo,
-      required String image,
-      required String deviceToken,
-      required String location}) async {
+  Future<CreateUserModel> createMerchant({
+    required String name,
+    required String email,
+    required String password,
+    required String phoneNo,
+  }) async {
     try {
       Map<String, dynamic> data = {
         "name": name,
@@ -88,11 +81,6 @@ class AdminOperationService extends BaseService {
         "phone": phoneNo,
         "company_id": '2',
         "mart_id": '2',
-        "lat": 0,
-        "lng": 0,
-        "device_token": deviceToken,
-        "image": image,
-        "location": location,
       };
 
       final response = await dioClient.post(Endpoints.createUser, data: data);
@@ -110,7 +98,6 @@ class AdminOperationService extends BaseService {
       required String companyId,
       required String martId,
       required String image,
-      required String deviceToken,
       required String location}) async {
     try {
       Map<String, dynamic> data = {
@@ -121,7 +108,6 @@ class AdminOperationService extends BaseService {
         "phone": phoneNo,
         "company_id": companyId,
         "mart_id": martId,
-        "device_token": deviceToken,
         "image": image,
         "location": location,
       };

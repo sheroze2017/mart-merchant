@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/auth/bloc/auth_api.dart';
 import 'package:ba_merchandise/modules/auth/model/auth_model.dart';
@@ -26,6 +27,8 @@ class AuthenticationController extends GetxController {
       );
       if (response.data != null && response.code == 200) {
         // ignore: use_build_context_synchronously
+        var token = await Utils.getToken();
+        updateToken(userId: response.data!.userId.toString(), token: token);
         await _authStorage.set(response);
         userRoute(response.data!.role ?? '', context);
         isLoading.value = false;
@@ -42,6 +45,18 @@ class AuthenticationController extends GetxController {
       }
     } catch (e) {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> updateToken({
+    required String userId,
+    required String token,
+  }) async {
+    try {
+      await _authService.updateToken(userId: userId, token: token);
+      print('sheroze');
+    } catch (e) {
+      throw e;
     }
   }
 

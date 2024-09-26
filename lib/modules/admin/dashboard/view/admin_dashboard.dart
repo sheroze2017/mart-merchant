@@ -80,6 +80,13 @@ class AdminHome extends StatelessWidget {
                     Get.toNamed(Routes.NEW_EMPLOYEE);
                   },
                 ),
+                DashboardCard(
+                  asset: 'assets/images/location.png',
+                  title: 'Add New Mart',
+                  onTap: () {
+                    Get.toNamed(Routes.NEW_MART);
+                  },
+                ),
 
                 DashboardCard(
                   asset: 'assets/images/search.png',

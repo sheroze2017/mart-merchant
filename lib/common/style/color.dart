@@ -5,4 +5,5 @@ class AppColors {
   static final primaryColorDark = Colors.blue.shade900;
 
   static final whiteColor = Colors.white;
+  static final blackColor = Colors.black;
 }

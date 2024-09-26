@@ -1,8 +1,10 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/core/local/hive_db/hive.dart';
+import 'package:ba_merchandise/firebase_options.dart';
 import 'package:ba_merchandise/modules/attendence/bloc/attendance_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/record_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
+import 'package:ba_merchandise/modules/notification/api/firebase_api.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
 import 'package:ba_merchandise/services/local_storage/auth_storage.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'core/routes/routes.dart';
 import 'modules/auth/bloc/auth_bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 late Box attendanceBox;
 late Box<SalesRecordModel> salesRecord;
@@ -19,6 +22,11 @@ late Box<RecordModel> recordModel;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseApi().initNotification();
+
   Hive.registerAdapter(AttendanceAdapter());
   Hive.registerAdapter(SalesRecordModelAdapter());
   Hive.registerAdapter(RecordModelAdapter());
@@ -39,7 +47,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: Routes.WELCOMESCREEN,
         getPages: Routes.routes,
-        title: 'Merchandiser',
+        title: 'Canvas Connect',
         initialBinding: YourBinding(),
         theme: ThemeData(
           scaffoldBackgroundColor: AppColors.whiteColor,
