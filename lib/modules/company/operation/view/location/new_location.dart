@@ -133,11 +133,10 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () {
-              _addLocation(_latitude, _longitude, _placeName, _placeId);
-              // Navigator.pop(context, {
-              //   'latLng': LatLng(_latitude, _longitude),
-              //   'placeName': _placeName,
-              // });
+              Navigator.pop(context, {
+                'latLng': LatLng(_latitude, _longitude),
+                'placeName': _placeName,
+              });
             },
           ),
         ],

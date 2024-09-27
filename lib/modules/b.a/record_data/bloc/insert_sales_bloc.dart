@@ -1,20 +1,36 @@
+import 'package:ba_merchandise/common/utils/function.dart';
+import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/ba_operation_api.dart';
 import 'package:ba_merchandise/widgets/custom/error_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class InsertSalesRecord extends GetxController {
+  var fetchProductCompanyLoader = false.obs;
   var statusRecordLoader = false.obs;
   BaOperationService baOperationService = BaOperationService();
+  final AdminOperationService _adminOperationService = AdminOperationService();
+  RxList<ProductCMData> productList = RxList();
+  RxList<TextEditingController> textControllers = RxList();
+
+  @override
+  void onInit() {
+    super.onInit();
+    getAllProductByCompanyMart();
+  }
 
   Future<void> insertSalesRecord(BuildContext context) async {
     statusRecordLoader.value = true;
+    final List<Map<String, String>> salesRecords = await List.generate(
+      productList.length,
+      (index) => {
+        "product_id": productList[index].productId.toString(),
+        "qty": textControllers[index].text.toString(),
+      },
+    );
     try {
-      final response = await baOperationService.insertSalesRecord([
-        {"product_id": "1", "qty": "3"},
-        {"product_id": "1", "qty": "5"},
-        {"product_id": "1", "qty": "2"},
-      ]);
+      final response = await baOperationService.insertSalesRecord(salesRecords);
 
       if (response != null &&
           response['data'] != null &&
@@ -53,6 +69,28 @@ class InsertSalesRecord extends GetxController {
         textColor: Colors.white,
         fontSize: 14.0,
       );
+    }
+  }
+
+  Future<void> getAllProductByCompanyMart() async {
+    productList.clear();
+    var companyId = await Utils.getCompanyId();
+    print(companyId);
+    var martId = await Utils.getMartId();
+    try {
+      fetchProductCompanyLoader.value = true;
+      AllCompanyProductData response = await _adminOperationService
+          .getAllProducts(int.parse(companyId!), int.parse(martId!));
+      if (response.data != null && response.code == 200) {
+        fetchProductCompanyLoader.value = false;
+        productList.value = response.data ?? [];
+        textControllers.value = List.generate(
+            response.data!.length, (index) => TextEditingController(text: '0'));
+      } else {
+        fetchProductCompanyLoader.value = false;
+      }
+    } catch (e) {
+      fetchProductCompanyLoader.value = false;
     }
   }
 }

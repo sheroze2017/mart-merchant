@@ -2,11 +2,15 @@ import 'dart:io';
 
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
+import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/view/employee/employee_view.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
+import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
 import 'package:ba_merchandise/widgets/drawer/app_drawer.dart';
+import 'package:ba_merchandise/widgets/textfield/rounded_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -16,8 +20,15 @@ import '../../../b.a/dashboard/view/dashboard.dart';
 import '../../operation/view/location/location_view.dart';
 import '../../operation/view/add_product/product_view.dart';
 
-class CompanyHome extends StatelessWidget {
-  const CompanyHome({super.key});
+class CompanyHome extends StatefulWidget {
+  CompanyHome({super.key});
+
+  @override
+  State<CompanyHome> createState() => _CompanyHomeState();
+}
+
+class _CompanyHomeState extends State<CompanyHome> {
+  final controller = Get.put(CompanyOperationBloc());
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +67,7 @@ class CompanyHome extends StatelessWidget {
               children: [
                 // Profile Section
                 ProfileSection(
-                  showAddress: false,
+                  showAddress: true,
                 ),
                 SizedBox(
                   height: 2.h,
@@ -102,7 +113,25 @@ class CompanyHome extends StatelessWidget {
                 SizedBox(
                   height: 0.5.h,
                 ),
-
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          addCategory();
+                        },
+                        child: DashboardCard(
+                          asset: 'assets/images/category.png',
+                          title: 'Add Category',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 0.5.h,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -139,6 +168,63 @@ class CompanyHome extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void addCategory() {
+    TextEditingController nameController = TextEditingController();
+
+    showModalBottomSheet(
+      backgroundColor: AppColors.whiteColor,
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      builder: (context) {
+        return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                child: Wrap(
+                  children: [
+                    Text(
+                      'Add new Category',
+                      style: CustomTextStyles.darkHeadingTextStyle(size: 20),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: RoundedBorderTextField(
+                        controller: nameController,
+                        validator: Validator.ValidText,
+                        hintText: 'Name',
+                        icon: '',
+                      ),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Obx(() => RoundedButton(
+                                  showLoader:
+                                      controller.addCategoryLoader.value,
+                                  text: 'Add Category',
+                                  onPressed: () {
+                                    controller.addNewCategory(
+                                        nameController.text, context);
+                                  },
+                                  backgroundColor: Colors.black,
+                                  textColor: AppColors.whiteColor)),
+                            ),
+                          ],
+                        ))
+                  ],
+                ),
+              ),
+            ));
+      },
     );
   }
 }

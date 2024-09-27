@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/main.dart';
+import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/model/record_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -23,7 +26,6 @@ class RecordController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    init().then((value) => _loadRecordModels());
   }
 
   Future<void> init() async {

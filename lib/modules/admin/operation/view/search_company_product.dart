@@ -2,6 +2,7 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
+import 'package:ba_merchandise/modules/attendence/bloc/attendance_bloc.dart';
 import 'package:ba_merchandise/modules/merchandiser/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
@@ -19,6 +20,7 @@ class SearchCompanyProduct extends StatelessWidget {
   final TextEditingController locationController = TextEditingController();
   String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
   final AdminOperation companyController = Get.put(AdminOperation());
+
   List<int> restockCount = [];
   @override
   Widget build(BuildContext context) {
@@ -32,22 +34,30 @@ class SearchCompanyProduct extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const heading(title: 'Select location to find company products'),
-              CustomDropdown(
-                decoration: CustomDropdownDecoration(
-                  prefixIcon: Icon(Icons.location_on_sharp),
-                  expandedFillColor: AppColors.primaryColor,
-                  closedFillColor: AppColors.primaryColor,
-                ),
-                hintText: 'Select Company',
-                items: companyController.companies
-                    .map((company) => company.name)
-                    .toList(),
-                onChanged: (selected) {
-                  if (selected != null) {
-                    companyController.selectCompanyByName(selected);
-                  }
-                },
-              ),
+              Obx(() => CustomDropdown(
+                    decoration: CustomDropdownDecoration(
+                      prefixIcon: Icon(Icons.location_on_sharp),
+                      expandedFillColor: AppColors.primaryColor,
+                      closedFillColor: AppColors.primaryColor,
+                    ),
+                    hintText: 'Select Company',
+                    items: companyController.companyNameList
+                        .map((company) => company.name)
+                        .toList(),
+                    onChanged: (selected) async {
+                      if (selected != null) {
+                        companyController.selectedCompanyIndividual.value =
+                            await companyController.companyNameList
+                                .firstWhere((c) => c.name == selected);
+                        companyController.getAllProductByCompanyMart(
+                            companyController
+                                .selectedCompanyIndividual.value!.userId!
+                                .toInt(),
+                            null,
+                            context);
+                      }
+                    },
+                  )),
               SizedBox(
                 height: 1.h,
               ),
@@ -55,28 +65,32 @@ class SearchCompanyProduct extends StatelessWidget {
                 title: 'Product List ${locationController.text}',
               ),
               Obx(() {
-                if (companyController.selectedCompany.value == null) {
+                if (companyController.productList.value.isEmpty) {
                   return const Center(
-                    child: headingSmall(
-                        title: 'Select a company to view its products'),
+                    child: headingSmall(title: 'No Products to show'),
+                  );
+                } else if (companyController.fetchProductCompanyLoader.value) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
                 }
-                final selectedCompany =
-                    companyController.selectedCompany.value!;
                 return ListView.builder(
                   shrinkWrap: true,
-                  itemCount: selectedCompany.products.length,
+                  itemCount: companyController.productList.length,
                   itemBuilder: (context, index) {
-                    final product = selectedCompany.products[index];
+                    final product = companyController.productList[index];
                     return Card(
                       color: AppColors.whiteColor,
                       elevation: 2,
                       child: ListTile(
                           minVerticalPadding: 10,
-                          title: Text(product.name,
+                          title: Text(product.productName.toString(),
                               style: CustomTextStyles.darkTextStyle()),
                           subtitle: Text(
-                              '${product.quantity} gm - PKR ${product.price}',
+                              '${product.variant} gm - PKR ${product.price}',
                               style: CustomTextStyles.lightSmallTextStyle())),
                     );
                   },

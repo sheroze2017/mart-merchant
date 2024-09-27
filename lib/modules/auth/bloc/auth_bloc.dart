@@ -28,7 +28,9 @@ class AuthenticationController extends GetxController {
       if (response.data != null && response.code == 200) {
         // ignore: use_build_context_synchronously
         var token = await Utils.getToken();
-        updateToken(userId: response.data!.userId.toString(), token: token);
+        print(token);
+        await updateToken(
+            userId: response.data!.userId.toString(), token: token);
         await _authStorage.set(response);
         userRoute(response.data!.role ?? '', context);
         isLoading.value = false;

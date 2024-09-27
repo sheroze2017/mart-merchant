@@ -136,6 +136,46 @@ class AttendanceController extends GetxController {
     }
   }
 
+  Future<void> markCheckoutApi(
+      double latitude, double longitude, context) async {
+    martAttendanceLoader.value = true;
+    try {
+      final response = await _attendanceService.attendance(
+          lat: latitude.toString(), lng: longitude.toString());
+      if (response['data'] != null && response['code'] == 200) {
+        martAttendanceLoader.value = false;
+        DateTime now = DateTime.now();
+        Attendance? at = attendanceBox.get(today);
+        if (at != null) {
+          at.checkOutTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+          attendanceBox.put(today, at);
+          attenToday.value = at;
+          Get.back();
+          AnimatedSnackbar.showSnackbar(
+            context: context,
+            message: response['message'].toString(),
+            icon: Icons.info,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+        }
+      } else {
+        martAttendanceLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'].toString(),
+          icon: Icons.info,
+          backgroundColor: Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      martAttendanceLoader.value = false;
+    }
+  }
+
   Future<void> markAbsent(String todayDate) async {
     attenToday.value = Attendance(date: todayDate, status: false);
     attendanceBox.put(todayDate, attenToday.value);

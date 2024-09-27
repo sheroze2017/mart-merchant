@@ -2,6 +2,7 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
+import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
@@ -20,24 +21,6 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  String? selectedBrand;
-
-  List<String> _list = ['Colgate', 'ColasNext'];
-
-  Map<String, List<Map<String, dynamic>>> productData = {
-    'Colanext': [
-      {'id': 1, 'name': 'Colanext Cola', 'price': 100.99},
-      {'id': 2, 'name': 'Colanext FizzUp', 'price': 122.49},
-      {'id': 3, 'name': 'Colanext Dew', 'price': 150.99},
-      {'id': 4, 'name': 'Colanext orange', 'price': 149.99},
-    ],
-    'Colgate': [
-      {'id': 5, 'name': 'Colgate Total', 'price': 300.99},
-      {'id': 6, 'name': 'Colgate MaxFresh', 'price': 400.49},
-      {'id': 7, 'name': 'Colgate Sensitive', 'price': 320.99},
-      {'id': 8, 'name': 'Colgate Clear', 'price': 120.99},
-    ],
-  };
   final controller = Get.put(CompanyOperationBloc());
 
   @override
@@ -81,113 +64,56 @@ class _ProductScreenState extends State<ProductScreen> {
               SizedBox(
                 height: 1.h,
               ),
-              //   CustomDropdown(
-              //     hintText: 'Select Brand',
-              //     items: productData.keys.toList(),
-              //     onChanged: (value) {
-              //       setState(() {
-              //         selectedBrand = value;
-              //       });
-              //     },
-              //   ),
-              //   SizedBox(
-              //     height: 1.h,
-              //   ),
-              //   if (selectedBrand != null)
-              //     ...productData[selectedBrand]!.map((product) {
-              //       return Card(
-              //         color: AppColors.primaryColor,
-              //         elevation: 2,
-              //         child: ListTile(
-              //           title: Text(
-              //             product['name'],
-              //             style: CustomTextStyles.lightSmallTextStyle(
-              //                 size: 16, color: Colors.blue),
-              //           ),
-              //           subtitle: Text(
-              //             'Price: PKR ${product['price']}',
-              //             style: CustomTextStyles.lightSmallTextStyle(),
-              //           ),
-              //           trailing: IconButton(
-              //               icon: const Icon(
-              //                 Icons.edit_note,
-              //                 color: Colors.blue,
-              //               ),
-              //               onPressed: () {
-              //                 _editProduct(product);
-              //               }),
-              //         ),
-              //       );
-              //     }).toList(),
-              //
+              CustomDropdown(
+                hintText: 'Select Mart',
+                items: controller.marts.map((m) => m.martName).toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    int exactIndex =
+                        controller.marts.indexWhere((m) => m.martName == value);
+                    if (exactIndex != -1) {
+                      controller.getAllProductByCompanyMart(
+                          null, controller.marts[exactIndex].martId, context);
+                    }
+                  }
+                },
+              ),
+              Obx(() {
+                if (controller.productList.isEmpty) {
+                  return const Center(
+                    child: headingSmall(title: 'No Products to show'),
+                  );
+                } else if (controller.fetchProductCompanyLoader.value) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: controller.productList.length,
+                  itemBuilder: (context, index) {
+                    final product = controller.productList[index];
+                    return Card(
+                      color: AppColors.whiteColor,
+                      elevation: 2,
+                      child: ListTile(
+                          minVerticalPadding: 10,
+                          title: Text(product.productName.toString(),
+                              style: CustomTextStyles.darkTextStyle()),
+                          subtitle: Text(
+                              '${product.variant} - PKR ${product.price}',
+                              style: CustomTextStyles.lightSmallTextStyle())),
+                    );
+                  },
+                );
+              }),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  void _editProduct(Map<String, dynamic> product) {
-    TextEditingController nameController =
-        TextEditingController(text: product['name']);
-    TextEditingController priceController =
-        TextEditingController(text: product['price'].toString());
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-      ),
-      builder: (context) {
-        return Padding(
-            padding: MediaQuery.of(context).viewInsets,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                child: Wrap(
-                  children: [
-                    Text(
-                      'Edit Product',
-                      style: CustomTextStyles.darkHeadingTextStyle(size: 20),
-                    ),
-                    SizedBox(height: 2.h),
-                    RoundedBorderTextField(
-                      controller: nameController,
-                      hintText: 'Name',
-                      icon: '',
-                    ),
-                    SizedBox(height: 2.h),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12.0),
-                      child: RoundedBorderTextField(
-                        controller: priceController,
-                        hintText: 'Price',
-                        textInputType: TextInputType.number,
-                        icon: '',
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Center(
-                      child: RoundedButtonSmall(
-                          text: 'Save',
-                          onPressed: () {
-                            setState(() {
-                              product['name'] = nameController.text;
-                              product['price'] =
-                                  double.parse(priceController.text);
-                            });
-                            Fluttertoast.showToast(msg: 'Product Saved');
-                            Get.back();
-                          },
-                          backgroundColor: Colors.black,
-                          textColor: AppColors.whiteColor),
-                    )
-                  ],
-                ),
-              ),
-            ));
-      },
     );
   }
 
@@ -285,7 +211,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       child: RoundedBorderTextField(
                         controller: varient,
                         validator: Validator.ValidText,
-                        hintText: 'Varient eg gm,mg,lt,ml and kg etc',
+                        hintText: 'Varient eg 50gm,50mg,50lt,60ml and 1kg etc',
                         icon: '',
                       ),
                     ),
@@ -320,70 +246,6 @@ class _ProductScreenState extends State<ProductScreen> {
                             ),
                           ],
                         ))
-                  ],
-                ),
-              ),
-            ));
-      },
-    );
-  }
-
-  void _addBrand() {
-    TextEditingController brandController = TextEditingController();
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-      ),
-      builder: (context) {
-        return Padding(
-            padding: MediaQuery.of(context).viewInsets,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                child: Wrap(
-                  children: [
-                    Text(
-                      'Add new brand',
-                      style: CustomTextStyles.darkHeadingTextStyle(size: 20),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      child: RoundedBorderTextField(
-                        controller: brandController,
-                        hintText: 'Name',
-                        icon: '',
-                      ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: RoundedButtonSmall(
-                            text: 'Add Brand',
-                            onPressed: () {
-                              if (brandController.text.isNotEmpty) {
-                                final newBrand = brandController.text;
-
-                                setState(() {
-                                  if (!productData.containsKey(newBrand)) {
-                                    productData[newBrand] = [];
-                                  }
-                                });
-                                setState(() {});
-
-                                Fluttertoast.showToast(msg: 'Brand Added');
-                                Navigator.pop(
-                                    context); // Close the bottom sheet
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: 'Please enter a brand name');
-                              }
-                            },
-                            backgroundColor: Colors.black,
-                            textColor: AppColors.whiteColor),
-                      ),
-                    )
                   ],
                 ),
               ),

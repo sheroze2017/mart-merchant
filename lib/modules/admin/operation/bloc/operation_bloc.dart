@@ -1,6 +1,8 @@
 import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/createUser_model.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
 import 'package:ba_merchandise/widgets/custom/error_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,8 +10,12 @@ import 'package:get/get.dart';
 class AdminOperation extends GetxController {
   var newCompanyLoader = false.obs;
   var newBALoader = false.obs;
+  var fetchProductCompanyLoader = false.obs;
   var isBASelected = false.obs;
   var newMartLoader = false.obs;
+  RxList<ProductCMData> productList = RxList();
+  RxList<ByUserRoleData> companyNameList = RxList();
+  Rxn<ByUserRoleData> selectedCompanyIndividual = Rxn();
 
   final AdminOperationService _adminOperationService = AdminOperationService();
 
@@ -58,6 +64,7 @@ class AdminOperation extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getAllCompany();
     companies.value = [
       Company(
         name: 'Company A',
@@ -263,6 +270,37 @@ class AdminOperation extends GetxController {
       orElse: () => throw Exception('Company not found'),
     );
     selectedCompany.value = company;
+  }
+
+  Future<void> getAllProductByCompanyMart(
+      int companyId, int? martId, BuildContext context) async {
+    productList.clear();
+    try {
+      fetchProductCompanyLoader.value = true;
+      AllCompanyProductData response =
+          await _adminOperationService.getAllProducts(companyId, martId);
+      if (response.data != null && response.code == 200) {
+        fetchProductCompanyLoader.value = false;
+        productList.value = response.data ?? [];
+      } else {
+        fetchProductCompanyLoader.value = false;
+      }
+    } catch (e) {
+      fetchProductCompanyLoader.value = false;
+    }
+  }
+
+ 
+ 
+  Future<void> getAllCompany() async {
+    companyNameList.clear();
+    try {
+      AllUserByRole response =
+          await _adminOperationService.getAllUserByRole('COMPANY');
+      if (response.data != null && response.code == 200) {
+        companyNameList.value = response.data ?? [];
+      } else {}
+    } catch (e) {}
   }
 }
 

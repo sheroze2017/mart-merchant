@@ -15,6 +15,11 @@ class Utils {
     AuthResponse? authResponse = await authStorage.get();
     return authResponse!.data?.martId;
   }
+   static Future<String?> getCompanyId() async {
+    final AuthStorage authStorage = Get.find<AuthStorage>();
+    AuthResponse? authResponse = await authStorage.get();
+    return authResponse!.data?.companyId;
+  }
 
   static Future<String?> getUserRole() async {
     final AuthStorage authStorage = Get.find<AuthStorage>();

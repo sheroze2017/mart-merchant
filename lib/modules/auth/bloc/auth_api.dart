@@ -21,10 +21,7 @@ class AuthService extends BaseService {
   Future<void> updateToken(
       {required String userId, required String token}) async {
     try {
-      Map<String, dynamic> data = {
-        "user_id": "1",
-        "device_token": "test device token"
-      };
+      Map<String, dynamic> data = {"user_id": userId, "device_token": token};
       final response = await dioClient.post(Endpoints.updateToken, data: data);
       return response;
     } catch (e) {

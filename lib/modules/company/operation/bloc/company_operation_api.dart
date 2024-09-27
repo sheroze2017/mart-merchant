@@ -37,12 +37,28 @@ class CompanyOperationService extends BaseService {
     }
   }
 
+  Future<Map<String, dynamic>> createNewCategory({
+    required String name,
+  }) async {
+    var userId = await Utils.getUserId();
+
+    try {
+      Map<String, dynamic> data = {"company_id": userId, "name": name};
+
+      final response =
+          await dioClient.post(Endpoints.createCategory, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<AllCategoryModel> getAllCategories() async {
     var userId = await Utils.getUserId();
 
     try {
-      final response =
-          await dioClient.get('${Endpoints.getAllCategories}?company_id=1');
+      final response = await dioClient
+          .get('${Endpoints.getAllCategories}?company_id=${userId}');
       return AllCategoryModel.fromJson(response);
     } catch (e) {
       rethrow;

@@ -180,8 +180,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                       dailogText:
                                           'Are you certain you wish to mark off today?',
                                       onMarkAbsent: () async {
-                                        await attendanceController.checkOut(
-                                            _latitude, _longitude);
+                                        await attendanceController
+                                            .markCheckoutApi(
+                                                _latitude, _longitude, context);
                                         setState(() {});
                                         attendanceController
                                             .getTodayAttendance();

@@ -1,5 +1,6 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/modules/b.a/record_data/bloc/insert_sales_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/record_bloc.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -55,14 +56,15 @@ class _StockCountState extends State<StockCount> with TickerProviderStateMixin {
 // Page to view stock
 class StockPage extends StatelessWidget {
   final RecordController controller = Get.find();
+  final InsertSalesRecord salesController = Get.put(InsertSalesRecord());
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       return ListView.builder(
-        itemCount: controller.records.length,
+        itemCount: salesController.productList.length,
         itemBuilder: (context, index) {
-          final toothpaste = controller.records[index];
+          final toothpaste = salesController.productList[index];
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
             child: Card(
@@ -70,14 +72,14 @@ class StockPage extends StatelessWidget {
               elevation: 2,
               child: ListTile(
                 minVerticalPadding: 20,
-                title: Text(toothpaste.name,
+                title: Text(toothpaste.productName.toString(),
                     style: CustomTextStyles.darkTextStyle()),
                 subtitle: Text(
-                    '${toothpaste.quantityGm} gm\nQty Available ${toothpaste.stock}',
+                    '${toothpaste.variant} \nQty Available ${toothpaste.qty}',
                     style: CustomTextStyles.lightSmallTextStyle()),
                 trailing: RoundedButtonSmall(
                   onPressed: () {
-                    controller.RestockRecord(toothpaste);
+                    //  controller.RestockRecord();
                   },
                   text: 'Restock',
                   textColor: AppColors.whiteColor,

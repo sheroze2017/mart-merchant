@@ -1,5 +1,7 @@
 import 'package:ba_merchandise/constant/endpoints.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/createUser_model.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
 import 'package:ba_merchandise/modules/auth/model/auth_model.dart';
 import 'package:ba_merchandise/services/base_service.dart';
 
@@ -135,6 +137,29 @@ class AdminOperationService extends BaseService {
 
       final response = await dioClient.post(Endpoints.createMart, data: data);
       return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<AllCompanyProductData> getAllProducts(
+      int companyId, int? martI) async {
+    try {
+      Map<String, dynamic> data = {"company_id": companyId, "mart_id": martI};
+
+      final response =
+          await dioClient.post(Endpoints.getAllCompanyMartProduct, data: data);
+      return AllCompanyProductData.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<AllUserByRole> getAllUserByRole(String userRole) async {
+    try {
+      final response =
+          await dioClient.get('${Endpoints.getUserByRole}?role=${userRole}');
+      return AllUserByRole.fromJson(response);
     } catch (e) {
       rethrow;
     }

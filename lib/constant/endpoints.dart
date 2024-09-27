@@ -15,6 +15,12 @@ class Endpoints {
   static const String createUser = "auth/createUser";
   static const String createMart = "auth/createMart";
   static const String createProduct = "auth/createProduct";
+  static const String createCategory = "auth/createCategory";
+
+  static const String getAllCompanyMartProduct =
+      "auth/getCompanyAndMartProducts";
+  static const String getUserByRole = "auth/getUsersByRole";
+
   static const String getAllCategories = "auth/getAllCategories";
   static const String getAllMart = "auth/getAllMarts";
   static const String updateToken = "auth/updateDeviceToken";

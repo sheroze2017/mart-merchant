@@ -3,7 +3,6 @@ import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
-import 'package:ba_merchandise/modules/company/operation/view/employee/new_employee.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,23 +24,6 @@ class EmployeeListScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () async {
-                        Get.to(AddNewEmployee(),
-                            transition: Transition.rightToLeft);
-                      },
-                      child: const DashboardCard(
-                        asset: 'assets/images/employee.png',
-                        title: 'Add New Employee',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(
                 height: 2.h,
               ),

@@ -4,10 +4,12 @@ import 'package:ba_merchandise/modules/admin/map/view/map_screen.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/company/operation/view/add_product/product_view.dart';
+import 'package:ba_merchandise/modules/company/operation/view/location/new_location.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../widgets/textfield/rounded_textfield.dart';
@@ -62,21 +64,20 @@ class NewMartScreen extends StatelessWidget {
                 ),
                 headingSmall(title: 'Address'),
                 InkWell(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    final result = await Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MapScreen()),
-                    ).then((value) {
-                      if (value != null) {
-                        double latitude = value['latitude'];
-                        double longitude = value['longitude'];
-                        String searchValue = value['searchValue'];
+                      MaterialPageRoute(
+                          builder: (context) => LocationPickerScreen()),
+                    );
 
-                        _latitudeController.text = value['latitude'];
-                        _longitudeController.text = value['longitude'];
-                        _addressController.text = (value['searchValue']);
-                      }
-                    });
+                    if (result != null) {
+                      final latLng = result['latLng'] as LatLng;
+                      final placeName = result['placeName'] as String;
+                      _latitudeController.text = latLng.latitude.toString();
+                      _longitudeController.text = latLng.longitude.toString();
+                      _addressController.text = placeName.toString();
+                    }
                   },
                   child: RoundedBorderTextField(
                       isenable: false,

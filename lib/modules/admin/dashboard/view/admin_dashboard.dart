@@ -1,19 +1,14 @@
 import 'dart:io';
-
 import 'package:ba_merchandise/common/style/color.dart';
-import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
-import 'package:ba_merchandise/modules/admin/dashboard/bloc/dashboard_controller.dart';
 import 'package:ba_merchandise/modules/admin/dashboard/widget/dashboard_card.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
-import 'package:ba_merchandise/modules/company/operation/view/employee/employee_view.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
 import 'package:ba_merchandise/widgets/drawer/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../b.a/dashboard/view/dashboard.dart';
 
 class AdminHome extends StatelessWidget {

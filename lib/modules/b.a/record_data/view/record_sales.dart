@@ -22,34 +22,15 @@ class RecordSales extends StatefulWidget {
 }
 
 class _RecordSalesState extends State<RecordSales> {
-  List<TextEditingController> _controllers = [];
   bool _isDetailVisible = false;
   bool statusCheck = false;
-  final RecordController controller = Get.find();
   final InsertSalesRecord salesController = Get.put(InsertSalesRecord());
   @override
   void initState() {
     super.initState();
-    _initializeControllers();
-  }
-
-  void _initializeControllers() async {
-    _controllers = await List.generate(
-      controller.records.length,
-      (index) => TextEditingController(text: '0'),
-    );
-    setState(() {});
   }
 
   final String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-  @override
-  void dispose() {
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,25 +86,26 @@ class _RecordSalesState extends State<RecordSales> {
                   ],
                 ),
                 Obx(
-                  () => (_controllers.length != controller.records.length)
+                  () => (salesController.fetchProductCompanyLoader.value)
                       ? Center(child: CircularProgressIndicator())
                       : ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: controller.records.length,
+                          itemCount: salesController.productList.length,
                           itemBuilder: (context, index) {
+                            final data = salesController.productList[index];
                             return Card(
                               color: AppColors.primaryColor,
                               elevation: 2,
                               child: ListTile(
                                   minVerticalPadding: 10,
-                                  title: Text(controller.records[index].name,
+                                  title: Text(data.productName!,
                                       style: CustomTextStyles.darkTextStyle()),
-                                  subtitle: Obx(() => Text(
-                                      '*${controller.records[index].quantityGm} gm \n*PKR ${controller.records[index].pricePkr} \n*Stock ${controller.records.value[index].stock}',
+                                  subtitle: Text(
+                                      '*${data.variant}\n*PKR ${data.price} \n*Stock ${data.qty}',
                                       style:
                                           CustomTextStyles.lightSmallTextStyle(
-                                              size: 13))),
+                                              size: 13)),
                                   trailing: SizedBox(
                                     width: 100,
                                     child: Row(
@@ -131,7 +113,8 @@ class _RecordSalesState extends State<RecordSales> {
                                       children: [
                                         Expanded(
                                           child: TextField(
-                                            controller: _controllers[index],
+                                            controller: salesController
+                                                .textControllers[index],
                                             keyboardType: TextInputType.number,
                                             style: TextStyle(fontSize: 12),
                                             decoration: const InputDecoration(
@@ -156,9 +139,11 @@ class _RecordSalesState extends State<RecordSales> {
                                         ),
                                         InkWell(
                                           onTap: () {
-                                            _controllers[index].clear();
+                                            salesController
+                                                .textControllers[index]
+                                                .clear();
                                           },
-                                          child: Icon(
+                                          child: const Icon(
                                             Icons.clear,
                                             size: 20,
                                           ),
@@ -169,30 +154,26 @@ class _RecordSalesState extends State<RecordSales> {
                             );
                           }),
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20.0, horizontal: 0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Obx(
-                        () => RoundedButton(
-                            showLoader:
-                                salesController.statusRecordLoader.value,
-                            text: 'Save',
-                            onPressed: () {
-                              salesController.insertSalesRecord(context);
-                              // controller.updateSalesRecord(_controllers);
-                            },
-                            backgroundColor: Colors.black,
-                            textColor: Colors.white),
-                      )),
-                    ],
-                  ),
-                )
               ],
             ),
           ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          children: [
+            Expanded(
+                child: Obx(
+              () => RoundedButton(
+                  showLoader: salesController.statusRecordLoader.value,
+                  text: 'Save',
+                  onPressed: () {
+                    salesController.insertSalesRecord(context);
+                  },
+                  backgroundColor: Colors.black,
+                  textColor: Colors.white),
+            )),
+          ],
         ),
       ),
     );
