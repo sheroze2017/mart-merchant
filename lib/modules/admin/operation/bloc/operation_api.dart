@@ -3,7 +3,6 @@ import 'package:ba_merchandise/modules/admin/operation/model/all_attendance_mode
 import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/createUser_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
-import 'package:ba_merchandise/modules/auth/model/auth_model.dart';
 import 'package:ba_merchandise/services/base_service.dart';
 
 class AdminOperationService extends BaseService {

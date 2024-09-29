@@ -79,7 +79,8 @@ class StockPage extends StatelessWidget {
                     style: CustomTextStyles.lightSmallTextStyle()),
                 trailing: RoundedButtonSmall(
                   onPressed: () {
-                    //  controller.RestockRecord();
+                    controller.restockRequest(
+                        toothpaste.productId.toString(), context);
                   },
                   text: 'Restock',
                   textColor: AppColors.whiteColor,

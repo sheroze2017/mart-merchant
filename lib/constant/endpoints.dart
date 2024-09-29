@@ -16,12 +16,13 @@ class Endpoints {
   static const String createMart = "auth/createMart";
   static const String createProduct = "auth/createProduct";
   static const String createCategory = "auth/createCategory";
-  static const String BaIntercept = "/auth/intercepts";
-
+  static const String baIntercept = "/auth/intercepts";
+  static const String updateProductPrice = "/auth/updateProductPrice";
+  static const String restockApi = "/auth/createRestock";
   static const String getAllCompanyMartProduct =
       "auth/getCompanyAndMartProducts";
   static const String getUserByRole = "auth/getUsersByRole";
-
+  static const String updateRestock = "/auth/updateRestock";
   static const String getAllCategories = "auth/getAllCategories";
   static const String getAllMart = "auth/getAllMarts";
   static const String updateToken = "auth/updateDeviceToken";

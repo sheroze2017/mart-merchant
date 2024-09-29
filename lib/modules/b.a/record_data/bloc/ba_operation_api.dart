@@ -37,7 +37,55 @@ class BaOperationService extends BaseService {
         "intercepts": interceptCount,
       };
 
-      final response = await dioClient.post(Endpoints.BaIntercept, data: data);
+      final response = await dioClient.post(Endpoints.baIntercept, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> restockRequest(String productID) async {
+    var userId = await Utils.getUserId();
+    var martId = await Utils.getMartId();
+    var companyId = await Utils.getCompanyId();
+
+    try {
+      Map<String, dynamic> data = {
+        "user_id": userId,
+        "mart_id": martId,
+        "company_id": companyId,
+        "product_id": productID
+      };
+
+      final response = await dioClient.post(Endpoints.restockApi, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> removeRestockRequest(String restockId) async {
+    try {
+      Map<String, dynamic> data = {
+        "restock_id": restockId,
+        "status": "completed"
+      };
+
+      final response =
+          await dioClient.post(Endpoints.updateRestock, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> updateProductPrice(
+      String newPrice, String productId) async {
+    try {
+      Map<String, dynamic> data = {"product_id": productId, "price": newPrice};
+
+      final response =
+          await dioClient.post(Endpoints.updateProductPrice, data: data);
       return response;
     } catch (e) {
       rethrow;

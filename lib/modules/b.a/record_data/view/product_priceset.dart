@@ -1,8 +1,13 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/validator.dart';
+import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
+import 'package:ba_merchandise/modules/b.a/record_data/bloc/insert_sales_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/record_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
+import 'package:ba_merchandise/widgets/custom/error_toast.dart';
+import 'package:ba_merchandise/widgets/textfield/rounded_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -15,40 +20,24 @@ class ProductPriceSet extends StatefulWidget {
 }
 
 class _ProductPriceSetState extends State<ProductPriceSet> {
-  List<TextEditingController> _controllers = [];
-  bool _isDetailVisible = false;
-  final RecordController controller = Get.find();
+  final InsertSalesRecord salesController = Get.put(InsertSalesRecord());
   @override
   void initState() {
     super.initState();
-    _initializeControllers();
   }
 
-  void _initializeControllers() async {
-    _controllers = await List.generate(
-      controller.records.length,
-      (index) => TextEditingController(text: '0'),
-    );
-    setState(() {});
-  }
-
-  @override
-  void dispose() {
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
-    super.dispose();
-  }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      appBar: CustomAppBar(
-        title: 'Product Price',
-      ),
-      body: SingleChildScrollView(
-        child: SafeArea(
+    return Form(
+      key: _formKey,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: CustomAppBar(
+          title: 'Update Product Price',
+        ),
+        body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Column(
@@ -56,113 +45,157 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                 Row(
                   children: [
                     Text(
-                      'Record your product price ',
-                      style: CustomTextStyles.lightSmallTextStyle(size: 16),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.error_outline_rounded),
-                      onPressed: () {
-                        setState(() {
-                          _isDetailVisible = !_isDetailVisible;
-                        });
-                      },
-                    ),
+                      'Select product to update price',
+                      style: CustomTextStyles.w600TextStyle(),
+                    )
                   ],
                 ),
-                Visibility(
-                  visible: _isDetailVisible,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 0.5),
-                        color: AppColors.whiteColor,
-                        borderRadius: BorderRadiusDirectional.circular(12)),
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'Change individual product price of each product',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ),
+                SizedBox(
+                  height: 2.h,
                 ),
-                Obx(
-                  () => (_controllers.length != controller.records.length)
-                      ? Center(child: CircularProgressIndicator())
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: controller.records.length,
-                          itemBuilder: (context, index) {
-                            final toothpaste = controller.records[index];
-                            return Card(
-                              color: AppColors.primaryColor,
-                              elevation: 2,
-                              child: ListTile(
-                                  minVerticalPadding: 20,
-                                  title: Text(toothpaste.name,
-                                      style: CustomTextStyles.darkTextStyle()),
-                                  subtitle: Text(
-                                      '${toothpaste.quantityGm} gm\n Current Price ${toothpaste.pricePkr} ',
-                                      style: CustomTextStyles
-                                          .lightSmallTextStyle()),
-                                  trailing: SizedBox(
-                                    width: 30.w,
-                                    child: Expanded(
-                                      child: TextField(
-                                        controller: _controllers[index],
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                          suffixIcon: InkWell(
-                                            onTap: () {
-                                              _controllers[index].clear();
-                                              setState(() {});
-                                            },
-                                            child: Icon(
-                                              Icons.clear,
-                                              size: 15,
-                                            ),
-                                          ),
-                                          label: Text('Price'),
-                                          labelStyle:
-                                              CustomTextStyles.lightTextStyle(
-                                                  size: 10),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.black)),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.black)),
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.grey)),
-                                          isDense: true,
-                                          hintText: '0',
-                                        ),
-                                        textAlign: TextAlign.center,
+                Expanded(
+                    child: Obx(() => (salesController
+                            .fetchProductCompanyLoader.value)
+                        ? Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: AlwaysScrollableScrollPhysics(),
+                            itemCount: salesController.productList.length,
+                            itemBuilder: (context, index) {
+                              final data = salesController.productList[index];
+                              return Card(
+                                color: AppColors.primaryColor,
+                                elevation: 2,
+                                child: ListTile(
+                                    leading: Text('PKR ${data.price}',
+                                        style: CustomTextStyles
+                                            .darkHeadingTextStyle(
+                                                color:
+                                                    AppColors.primaryColorDark,
+                                                size: 14)),
+                                    minVerticalPadding: 10,
+                                    title: Text('Name: ${data.productName!}',
                                         style:
-                                            CustomTextStyles.lightTextStyle(),
-                                      ),
-                                    ),
-                                  )),
-                            );
-                          }),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: RoundedButton(
-                            text: 'Save',
-                            onPressed: () {
-                              controller
-                                  .updateProductPriceOfflineStore(_controllers);
-                            },
-                            backgroundColor: Colors.black,
-                            textColor: AppColors.whiteColor),
-                      ),
-                    ],
-                  ),
-                )
+                                            CustomTextStyles.darkTextStyle()),
+                                    subtitle: Text(
+                                        '*${data.variant}\n*Stock ${data.qty}',
+                                        style: CustomTextStyles
+                                            .lightSmallTextStyle(size: 13)),
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: AppColors.whiteColor,
+                                        context: context,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(20)),
+                                        ),
+                                        builder: (context) {
+                                          final TextEditingController
+                                              _textFieldController =
+                                              TextEditingController();
+
+                                          return Padding(
+                                            padding: MediaQuery.of(context)
+                                                .viewInsets, // Adjusts for keyboard
+                                            child: SingleChildScrollView(
+                                              // Enables scrolling if needed
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      'Update Price',
+                                                      style: CustomTextStyles
+                                                          .darkTextStyle(),
+                                                    ),
+                                                    Text(
+                                                      'Name: ${data.productName}',
+                                                      style: CustomTextStyles
+                                                          .lightSmallTextStyle(),
+                                                    ),
+                                                    SizedBox(height: 16),
+                                                    RoundedBorderTextField(
+                                                      validator:
+                                                          Validator.ValidText,
+                                                      controller:
+                                                          _textFieldController,
+                                                      hintText: 'New Price',
+                                                      icondata:
+                                                          Icons.price_change,
+                                                    ),
+                                                    SizedBox(height: 20),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Obx(
+                                                              () =>
+                                                                  RoundedButton(
+                                                                    showLoader:
+                                                                        salesController
+                                                                            .updatePriceLoader
+                                                                            .value,
+                                                                    text:
+                                                                        'Update Price',
+                                                                    onPressed:
+                                                                        () {
+                                                                      FocusScope.of(
+                                                                              context)
+                                                                          .unfocus();
+                                                                      if (_textFieldController
+                                                                          .text
+                                                                          .isEmpty) {
+                                                                        AnimatedSnackbar
+                                                                            .showSnackbar(
+                                                                          context:
+                                                                              context,
+                                                                          message:
+                                                                              'Price Field Is Required',
+                                                                          icon:
+                                                                              Icons.info,
+                                                                          backgroundColor:
+                                                                              Colors.red,
+                                                                          textColor:
+                                                                              Colors.white,
+                                                                          fontSize:
+                                                                              14.0,
+                                                                        );
+                                                                      } else {
+                                                                        salesController
+                                                                            .updateProductPrice(
+                                                                          context,
+                                                                          _textFieldController
+                                                                              .text,
+                                                                          data.productId
+                                                                              .toString(),
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                    backgroundColor:
+                                                                        AppColors
+                                                                            .primaryColorDark,
+                                                                    textColor:
+                                                                        AppColors
+                                                                            .whiteColor,
+                                                                  )),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }),
+                              );
+                            })))
               ],
             ),
           ),

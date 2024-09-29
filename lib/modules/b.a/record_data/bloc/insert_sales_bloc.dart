@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 class InsertSalesRecord extends GetxController {
   var fetchProductCompanyLoader = false.obs;
   var statusRecordLoader = false.obs;
+  var updatePriceLoader = false.obs;
+
   BaOperationService baOperationService = BaOperationService();
   final AdminOperationService _adminOperationService = AdminOperationService();
   RxList<ProductCMData> productList = RxList();
@@ -91,6 +93,46 @@ class InsertSalesRecord extends GetxController {
       }
     } catch (e) {
       fetchProductCompanyLoader.value = false;
+    }
+  }
+
+  Future<void> updateProductPrice(context, String price, String id) async {
+    try {
+      updatePriceLoader.value = true;
+      final response = await baOperationService.updateProductPrice(price, id);
+      if (response['data'] != null && response['code'] == 200) {
+        updatePriceLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'],
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        Get.back();
+      } else {
+        updatePriceLoader.value = false;
+        // Failure message
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'],
+          icon: Icons.error,
+          backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: 'An error occured ${e}',
+        icon: Icons.error,
+        backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+        textColor: Colors.black,
+        fontSize: 14.0,
+      );
+      updatePriceLoader.value = false;
     }
   }
 }
