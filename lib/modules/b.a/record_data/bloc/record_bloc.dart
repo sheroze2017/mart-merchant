@@ -4,6 +4,7 @@ import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/main.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
+import 'package:ba_merchandise/modules/b.a/record_data/bloc/ba_operation_api.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/model/record_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,12 +16,16 @@ import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/local/hive_db/hive.dart';
-import 'package:intl/intl.dart'; // To format date and time
+import 'package:intl/intl.dart';
+
+import '../../../../widgets/custom/error_toast.dart'; // To format date and time
 
 class RecordController extends GetxController {
   RxList records = <RecordModelData>[].obs;
   RxList restockRecord = <RecordModelData>[].obs;
+  BaOperationService baOperationService = BaOperationService();
 
+  var statusRecordLoader = false.obs;
   String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
   RxList<RecordModel> recordData = <RecordModel>[].obs;
   @override
@@ -244,6 +249,52 @@ class RecordController extends GetxController {
   // Format date as a string key
   String _formatDateKey(DateTime date) {
     return '${date.year}-${date.month}-${date.day}';
+  }
+
+  Future<void> recordIntercept(BuildContext context, String count) async {
+    statusRecordLoader.value = true;
+
+    try {
+      final response = await baOperationService.insertInterceptRecord(count);
+
+      if (response != null &&
+          response['data'] != null &&
+          response['code'] == 200) {
+        statusRecordLoader.value = false;
+        Get.back();
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: 'Intercept recorded successfully', // Fallback message
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      } else {
+        statusRecordLoader.value = false;
+        // Failure message
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message']?.toString() ??
+              'Failed to record intercept', // Fallback error message
+          icon: Icons.error,
+          backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (error) {
+      statusRecordLoader.value = false;
+      Get.back();
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: 'An error occurred: ${error.toString()}',
+        icon: Icons.error,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    }
   }
 
   // Close the Hive box when not needed

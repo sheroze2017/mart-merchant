@@ -16,6 +16,7 @@ class Endpoints {
   static const String createMart = "auth/createMart";
   static const String createProduct = "auth/createProduct";
   static const String createCategory = "auth/createCategory";
+  static const String BaIntercept = "/auth/intercepts";
 
   static const String getAllCompanyMartProduct =
       "auth/getCompanyAndMartProducts";
@@ -24,4 +25,7 @@ class Endpoints {
   static const String getAllCategories = "auth/getAllCategories";
   static const String getAllMart = "auth/getAllMarts";
   static const String updateToken = "auth/updateDeviceToken";
+  static const String grandAccess = "auth/updateUser";
+  static const String getAllBaAttendance = "auth/getAttendence";
+  static const String assignBatoCompany = "auth/assignCompanyToBa";
 }

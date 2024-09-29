@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../../../widgets/textfield/rounded_textfield.dart';
+import '../../../../../widgets/textfield/rounded_textfield.dart';
 
 class NewMartScreen extends StatelessWidget {
   NewMartScreen({super.key});

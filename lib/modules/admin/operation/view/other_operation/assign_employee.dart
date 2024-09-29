@@ -2,22 +2,19 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
-import 'package:ba_merchandise/modules/merchandiser/operation/bloc/operation_bloc.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:input_quantity/input_quantity.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:intl/intl.dart';
-import '../../../b.a/dashboard/view/dashboard.dart';
+import '../../../../b.a/dashboard/view/dashboard.dart';
 
 class AssignNewEmploye extends StatelessWidget {
-  AssignNewEmploye({super.key});
-  final TextEditingController locationController = TextEditingController();
-  final AdminOperation companyController = Get.put(AdminOperation());
+  final ByUserRoleData user;
+  AssignNewEmploye({super.key, required this.user});
+  final AdminOperation companyController = Get.find<AdminOperation>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,40 +26,49 @@ class AssignNewEmploye extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const heading(title: 'BA Detail'),
+              Card(
+                child: ListTile(
+                  title: Text('Name: ' + user.name.toString(),
+                      style: CustomTextStyles.darkTextStyle()),
+                  subtitle: Text('Email: ' + user.email.toString(),
+                      style: CustomTextStyles.lightTextStyle()),
+                ),
+              ),
               const heading(title: 'Select Compnay'),
-              CustomDropdown(
+              CustomDropdown.search(
                 decoration: CustomDropdownDecoration(
                   prefixIcon: Icon(Icons.location_on_sharp),
                   expandedFillColor: AppColors.primaryColor,
                   closedFillColor: AppColors.primaryColor,
                 ),
                 hintText: 'Select Company',
-                items: companyController.companies
+                items: companyController.companyNameList
                     .map((company) => company.name)
                     .toList(),
                 onChanged: (selected) {
                   if (selected != null) {
                     companyController.selectCompanyByName(selected);
+                    companyController.getAllMart();
                   }
                 },
               ),
               SizedBox(
-                height: 1.h,
+                height: 2.h,
               ),
-              const heading(title: 'Select Employee'),
-              CustomDropdown(
+              const heading(title: 'Select Mart'),
+              CustomDropdown.search(
                 decoration: CustomDropdownDecoration(
                   prefixIcon: Icon(Icons.location_on_sharp),
                   expandedFillColor: AppColors.primaryColor,
                   closedFillColor: AppColors.primaryColor,
                 ),
-                hintText: 'Select Employee',
-                items: companyController.companies
-                    .map((company) => company.name)
-                    .toList(),
+                hintText: 'Select Mart',
+                items:
+                    companyController.marts.map((ba) => ba.martName).toList(),
                 onChanged: (selected) {
                   if (selected != null) {
-                    companyController.selectCompanyByName(selected);
+                    companyController.selectMartbyName(selected);
                   }
                 },
               ),
@@ -74,12 +80,18 @@ class AssignNewEmploye extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: RoundedButtonSmall(
+                child: Obx(
+              () => RoundedButtonSmall(
+                  showLoader: companyController.assignBaLoader.value,
                   text: 'Save',
-                  onPressed: () {},
+                  onPressed: () async {
+                    await companyController.assignBAToCompanyMart(
+                        user.userId.toString(), context);
+                  
+                  },
                   backgroundColor: AppColors.primaryColorDark,
                   textColor: AppColors.whiteColor),
-            )
+            ))
           ],
         ),
       ),

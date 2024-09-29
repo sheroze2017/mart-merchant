@@ -68,7 +68,7 @@ class ProductCMData {
     productId = json['product_id'] ?? 0;
     companyId = json['company_id'] ?? 0;
     productName = json['product_name'] ?? '';
-    variant = json['variant'] ?? '';
+    variant = json['varient'] ?? '';
     productDesc = json['product_desc'] ?? '';
     price = json['price'] ?? '';
     status = json['status'].toString() ?? '';

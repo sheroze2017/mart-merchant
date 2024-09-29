@@ -1,8 +1,11 @@
 import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/all_attendance_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/createUser_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
+import 'package:ba_merchandise/modules/company/operation/bloc/company_operation_api.dart';
+import 'package:ba_merchandise/modules/company/operation/model/mart_model.dart';
 import 'package:ba_merchandise/widgets/custom/error_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,76 +14,34 @@ class AdminOperation extends GetxController {
   var newCompanyLoader = false.obs;
   var newBALoader = false.obs;
   var fetchProductCompanyLoader = false.obs;
+  var changeBaStatusLoader = false.obs;
+  var assignBaLoader = false.obs;
+
+  var getAllBaAttendanceLoader = false.obs;
   var isBASelected = false.obs;
   var newMartLoader = false.obs;
   RxList<ProductCMData> productList = RxList();
   RxList<ByUserRoleData> companyNameList = RxList();
+  Rxn<ByUserRoleData> companyIndividual = Rxn();
+  RxList<ByUserRoleData> baNameList = RxList();
+  RxList<IndividualUserAttendance> userAttendance = RxList();
+  RxList<MartData> marts = RxList();
   Rxn<ByUserRoleData> selectedCompanyIndividual = Rxn();
 
+  CompanyOperationService _companyOperationService = CompanyOperationService();
   final AdminOperationService _adminOperationService = AdminOperationService();
 
   var companies = <Company>[].obs; // List of companies
-  var selectedCompany = Rxn<Company>(); // Currently selected company
-  final RxList<Employee> _employees = [
-    Employee(
-      name: 'John Doe',
-      age: 30,
-      phoneNumber: '123-456-7890',
-      address: '123 Main St, Anytown, USA',
-      status: true,
-    ),
-    Employee(
-      name: 'Jane Smith',
-      age: 25,
-      phoneNumber: '098-765-4321',
-      address: '456 Elm St, Othertown, USA',
-      status: false,
-    ),
-    Employee(
-      name: 'Bob Johnson',
-      age: 40,
-      phoneNumber: '555-123-4567',
-      address: '789 Oak St, Thistown, USA',
-      status: true,
-    ),
-    Employee(
-      name: 'Alice Brown',
-      age: 28,
-      phoneNumber: '901-234-5678',
-      address: '321 Pine St, Thatown, USA',
-      status: false,
-    ),
-    Employee(
-      name: 'Mike Davis',
-      age: 35,
-      phoneNumber: '111-222-3333',
-      address: '901 Maple St, Thiscity, USA',
-      status: true,
-    ),
-  ].obs;
-
-  RxList<Employee> get employees => _employees;
+  var selectedCompany = Rxn<ByUserRoleData>(); // Currently selected company
+  var selectedba = Rxn<ByUserRoleData>(); // Currently selected company
+  var selectedMart = Rxn<MartData>(); // Currently selected company
 
   @override
   void onInit() {
     super.onInit();
     getAllCompany();
-    companies.value = [
-      Company(
-        name: 'Company A',
-        products: [
-          Product(name: 'Product 1', quantity: 10, price: 5.0),
-          Product(name: 'Product 2', quantity: 5, price: 3.0),
-        ],
-      ),
-      Company(
-        name: 'Company B',
-        products: [
-          Product(name: 'Product 3', quantity: 8, price: 4.5),
-          Product(name: 'Product 4', quantity: 12, price: 6.0),
-        ],
-      ),
-    ];
+    getAllBa();
+    getAllMart();
   }
 
   Future<void> addNewMart(
@@ -265,11 +226,27 @@ class AdminOperation extends GetxController {
   }
 
   void selectCompanyByName(String companyName) {
-    final company = companies.firstWhere(
+    final company = companyNameList.firstWhere(
       (company) => company.name == companyName,
       orElse: () => throw Exception('Company not found'),
     );
     selectedCompany.value = company;
+  }
+
+  void selectBaByName(String companyName) {
+    final ba = baNameList.firstWhere(
+      (ba) => ba.name == companyName,
+      orElse: () => throw Exception('Company not found'),
+    );
+    selectedba.value = ba;
+  }
+
+  void selectMartbyName(String martName) {
+    final mart = marts.firstWhere(
+      (mart) => mart.martName == martName,
+      orElse: () => throw Exception('Company not found'),
+    );
+    selectedMart.value = mart;
   }
 
   Future<void> getAllProductByCompanyMart(
@@ -290,8 +267,51 @@ class AdminOperation extends GetxController {
     }
   }
 
- 
- 
+  Future<void> changeBAStatus(
+      String userId, String status, BuildContext context) async {
+    productList.clear();
+    try {
+      changeBaStatusLoader.value = true;
+      final response =
+          await _adminOperationService.changeBaStatus(userId, status);
+      if (response['data'] != null && response['code'] == 200) {
+        changeBaStatusLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: 'User status changed to ${status}',
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        getAllBa();
+        Get.back();
+      } else {
+        changeBaStatusLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'],
+          icon: Icons.info,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        Get.back();
+      }
+    } catch (e) {
+      changeBaStatusLoader.value = false;
+      Get.back();
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: 'Error changing user status',
+        icon: Icons.info,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    }
+  }
+
   Future<void> getAllCompany() async {
     companyNameList.clear();
     try {
@@ -301,6 +321,97 @@ class AdminOperation extends GetxController {
         companyNameList.value = response.data ?? [];
       } else {}
     } catch (e) {}
+  }
+
+  Future<void> getAllBa() async {
+    baNameList.clear();
+    try {
+      AllUserByRole response =
+          await _adminOperationService.getAllUserByRole('BA');
+      if (response.data != null && response.code == 200) {
+        baNameList.value = response.data ?? [];
+      } else {}
+    } catch (e) {}
+  }
+
+  Future<void> getAllMart() async {
+    AllMart response = await _companyOperationService.getAllMart();
+    if (response.data != null && response.code == 200) {
+      marts.value = response.data ?? [];
+    }
+  }
+
+  Future<void> getAllBaAttendance(startDate, endDate) async {
+    getAllBaAttendanceLoader.value = true;
+    userAttendance.clear();
+    try {
+      AllUserAttendance response =
+          await _adminOperationService.getAllUserAttendance(startDate, endDate);
+      if (response.data != null && response.code == 200) {
+        getAllBaAttendanceLoader.value = false;
+        userAttendance.value = response.data ?? [];
+        update();
+      } else {
+        getAllBaAttendanceLoader.value = false;
+      }
+    } catch (e) {
+      getAllBaAttendanceLoader.value = false;
+    }
+  }
+
+  Future<void> assignBAToCompanyMart(
+      String userId, BuildContext context) async {
+    if (selectedCompany.value != null || selectedMart.value != null) {
+      assignBaLoader.value = true;
+      try {
+        final response = await _adminOperationService.assignEmployeeToBa(userId,
+            selectedCompany.value!.userId!, selectedMart.value!.martId!);
+        if (response['data'] != null && response['code'] == 200) {
+          assignBaLoader.value = false;
+          Get.back();
+          AnimatedSnackbar.showSnackbar(
+            context: context,
+            message: 'BA assigned to new Employee',
+            icon: Icons.info,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+        } else {
+          assignBaLoader.value = false;
+          AnimatedSnackbar.showSnackbar(
+            context: context,
+            message: 'Error assiging employee',
+            icon: Icons.info,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+        }
+      } catch (e) {
+        assignBaLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: 'Error assiging employee',
+          icon: Icons.info,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      } finally {
+        selectedCompany.value = null;
+        selectedMart.value = null; 
+      }
+    } else {
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: 'Please choose field first',
+        icon: Icons.info,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    }
   }
 }
 

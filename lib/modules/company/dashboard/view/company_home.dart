@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
+import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/view/employee/employee_view.dart';
@@ -98,13 +99,11 @@ class _CompanyHomeState extends State<CompanyHome> {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          Get.to(CompanyLocationScreen(),
-                              transition: Transition.cupertino,
-                              duration: Duration(milliseconds: 500));
+                          Get.toNamed(Routes.COMPANYBAATTENDANCE);
                         },
                         child: const DashboardCard(
-                          asset: 'assets/images/location.png',
-                          title: 'Locations',
+                          asset: 'assets/images/employee.png',
+                          title: 'Attendance',
                         ),
                       ),
                     ),

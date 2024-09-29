@@ -1,6 +1,8 @@
 import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/all_attendance_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/company_operation_api.dart';
 import 'package:ba_merchandise/modules/company/operation/model/company_model.dart';
 import 'package:ba_merchandise/modules/company/operation/model/mart_model.dart';
@@ -15,6 +17,7 @@ class CompanyOperationBloc extends GetxController {
   var addProductLoader = false.obs;
   var addCategoryLoader = false.obs;
   var fetchProductCompanyLoader = false.obs;
+  var getAllBaAttendanceLoader = false.obs;
 
   CompanyOperationService _companyOperationService = CompanyOperationService();
   final AdminOperationService _adminOperationService = AdminOperationService();
@@ -25,6 +28,8 @@ class CompanyOperationBloc extends GetxController {
   RxList<Employee> employees = RxList();
   RxList<CategoryData> categories = RxList();
   RxList<MartData> marts = RxList();
+  RxList<IndividualUserAttendance> userAttendance = RxList();
+  Rxn<ByUserRoleData> companyIndividual = Rxn();
 
   @override
   void onInit() async {
@@ -38,6 +43,28 @@ class CompanyOperationBloc extends GetxController {
         await _companyOperationService.getAllCategories();
     if (response.data != null && response.code == 200) {
       categories.value = response.data ?? [];
+    }
+  }
+
+  Future<void> getAllBaAttendance(startDate, endDate) async {
+    getAllBaAttendanceLoader.value = true;
+    userAttendance.clear();
+    try {
+      var userId = await Utils.getUserId();
+
+      AllUserAttendance response =
+          await _adminOperationService.getAllUserAttendance(startDate, endDate);
+      if (response.data != null && response.code == 200) {
+        getAllBaAttendanceLoader.value = false;
+        userAttendance.value = response.data!
+            .where((company) => company.companyId == userId.toString())
+            .toList();
+        update();
+      } else {
+        getAllBaAttendanceLoader.value = false;
+      }
+    } catch (e) {
+      getAllBaAttendanceLoader.value = false;
     }
   }
 

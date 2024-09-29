@@ -1,4 +1,5 @@
 import 'package:ba_merchandise/constant/endpoints.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/all_attendance_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/createUser_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
@@ -155,11 +156,56 @@ class AdminOperationService extends BaseService {
     }
   }
 
+  Future<AllUserAttendance> getAllUserAttendance(
+      String startDate, String endDate) async {
+    try {
+      Map<String, dynamic> data = {
+        "start_date": startDate,
+        "end_date": endDate
+      };
+
+      final response =
+          await dioClient.post(Endpoints.getAllBaAttendance, data: data);
+      return AllUserAttendance.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<AllUserByRole> getAllUserByRole(String userRole) async {
     try {
       final response =
           await dioClient.get('${Endpoints.getUserByRole}?role=${userRole}');
       return AllUserByRole.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> changeBaStatus(
+      String userId, String status) async {
+    try {
+      Map<String, dynamic> data = {"user_id": userId, "status": status};
+
+      final response = await dioClient.post(Endpoints.grandAccess, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> assignEmployeeToBa(
+      String userId, int companyId, int martId) async {
+    try {
+      Map<String, dynamic> data = {
+        "user_id": userId,
+        "company_id": companyId,
+        "mart_id": martId
+      };
+
+      final response =
+          await dioClient.post(Endpoints.assignBatoCompany, data: data);
+      return response;
     } catch (e) {
       rethrow;
     }

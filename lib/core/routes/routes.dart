@@ -1,10 +1,11 @@
 import 'package:ba_merchandise/modules/admin/dashboard/view/admin_dashboard.dart';
-import 'package:ba_merchandise/modules/admin/operation/view/assign_employee.dart';
-import 'package:ba_merchandise/modules/admin/operation/view/ba_attendance.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/other_operation/all_ba_to_assign.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/other_operation/assign_employee.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/attendance/ba_attendance.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/grant_revoke_access.dart';
-import 'package:ba_merchandise/modules/admin/operation/view/new_company.dart';
-import 'package:ba_merchandise/modules/admin/operation/view/new_employee.dart';
-import 'package:ba_merchandise/modules/admin/operation/view/new_mart.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/create_user/new_company.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/create_user/new_employee.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/create_user/new_mart.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/search_company_product.dart';
 import 'package:ba_merchandise/modules/attendence/view/attendece_view.dart';
 import 'package:ba_merchandise/modules/auth/view/login_view.dart';
@@ -16,6 +17,7 @@ import 'package:ba_merchandise/modules/b.a/record_data/view/record_intercept.dar
 import 'package:ba_merchandise/modules/b.a/record_data/view/record_sales.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/stock_count.dart';
 import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';
+import 'package:ba_merchandise/modules/company/operation/view/attendance/attendance_screen.dart';
 import 'package:ba_merchandise/modules/merchandiser/dasboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/welcome/screen/welcome.dart';
 import 'package:get/get.dart';
@@ -42,6 +44,7 @@ class Routes {
   static const BAADMINATTENDANCE = "/BaAttendance";
   static const GRANTREVOKEACCESS = "/grantRevokeAccess";
   static const WELCOMESCREEN = "/welcomeScreen";
+  static const COMPANYBAATTENDANCE = "/baAttendanceCompany";
 
   static final routes = [
     GetPage(
@@ -100,7 +103,7 @@ class Routes {
         transition: Transition.rightToLeft),
     GetPage(
         name: ASSIGNNEWEMPLOYEE,
-        page: () => AssignNewEmploye(),
+        page: () => AllBaToAssign(),
         transition: Transition.rightToLeft),
     GetPage(
         name: BAADMINATTENDANCE,
@@ -121,6 +124,10 @@ class Routes {
     GetPage(
         name: NEW_MART,
         page: () => NewMartScreen(),
-        transition: Transition.rightToLeft)
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: COMPANYBAATTENDANCE,
+        page: () => BaAttendanceCompanyView(),
+        transition: Transition.rightToLeft),
   ];
 }
