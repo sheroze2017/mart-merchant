@@ -131,7 +131,7 @@ class RestockPage extends StatelessWidget {
                                         'N/a',
                                     style: CustomTextStyles.darkTextStyle()),
                                 subtitle: Text(
-                                    '${toothpaste.productDetails!.variant} \nPrice Available ${toothpaste.productDetails!.price}',
+                                    '${toothpaste.productDetails!.variant} \nPrice ${toothpaste.productDetails!.price}',
                                     style:
                                         CustomTextStyles.lightSmallTextStyle()),
                                 trailing: Column(

@@ -12,8 +12,8 @@ class BaOperationService extends BaseService {
     try {
       Map<String, dynamic> data = {
         "products": products,
-        "user_id": userId,
-        "mart_id": martId
+        "user_id": userId.toString(),
+        "mart_id": martId.toString()
       };
 
       final response = await dioClient.post(Endpoints.recordSales, data: data);

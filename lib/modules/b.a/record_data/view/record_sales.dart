@@ -166,7 +166,9 @@ class _RecordSalesState extends State<RecordSales> {
                   showLoader: salesController.statusRecordLoader.value,
                   text: 'Save',
                   onPressed: () {
-                    salesController.insertSalesRecord(context);
+                    salesController.statusRecordLoader.value
+                        ? null
+                        : salesController.insertSalesRecord(context);
                   },
                   backgroundColor: Colors.black,
                   textColor: Colors.white),

@@ -49,6 +49,8 @@ class InsertSalesRecord extends GetxController {
           fontSize: 14.0,
         );
       } else {
+        statusRecordLoader.value = false;
+
         // Failure message
         AnimatedSnackbar.showSnackbar(
           context: context,
@@ -62,7 +64,6 @@ class InsertSalesRecord extends GetxController {
       }
     } catch (error) {
       statusRecordLoader.value = false;
-
       AnimatedSnackbar.showSnackbar(
         context: context,
         message: 'An error occurred: ${error.toString()}',

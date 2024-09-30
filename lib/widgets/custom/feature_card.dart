@@ -2,7 +2,6 @@ import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class FeatureCard extends StatelessWidget {
   final IconData icon;
   final String title;
