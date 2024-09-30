@@ -5,6 +5,7 @@ import 'package:ba_merchandise/modules/admin/operation/view/grant_revoke_access.
 import 'package:ba_merchandise/modules/admin/operation/view/create_user/new_company.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/create_user/new_employee.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/create_user/new_mart.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/sales/sales_screen.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/search_company_product.dart';
 import 'package:ba_merchandise/modules/attendence/view/attendece_view.dart';
 import 'package:ba_merchandise/modules/auth/view/login_view.dart';
@@ -17,6 +18,7 @@ import 'package:ba_merchandise/modules/b.a/record_data/view/record_sales.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/stock_count.dart';
 import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';
 import 'package:ba_merchandise/modules/company/operation/view/attendance/attendance_screen.dart';
+import 'package:ba_merchandise/modules/company/operation/view/sales/company_sales.dart';
 import 'package:ba_merchandise/modules/merchandiser/dasboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/welcome/screen/welcome.dart';
 import 'package:get/get.dart';
@@ -44,6 +46,8 @@ class Routes {
   static const GRANTREVOKEACCESS = "/grantRevokeAccess";
   static const WELCOMESCREEN = "/welcomeScreen";
   static const COMPANYBAATTENDANCE = "/baAttendanceCompany";
+  static const ADMINSALESROUTE = "/adminSalesRoute";
+  static const COMPANYSALES = "/companySales";
 
   static final routes = [
     GetPage(
@@ -127,6 +131,14 @@ class Routes {
     GetPage(
         name: COMPANYBAATTENDANCE,
         page: () => BaAttendanceCompanyView(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: ADMINSALESROUTE,
+        page: () => SalesScreenMartCompany(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: COMPANYSALES,
+        page: () => CompanySales(),
         transition: Transition.rightToLeft),
   ];
 }

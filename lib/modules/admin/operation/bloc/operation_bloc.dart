@@ -3,6 +3,7 @@ import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/all_attendance_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/createUser_model.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/sales_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/company_operation_api.dart';
 import 'package:ba_merchandise/modules/company/operation/model/mart_model.dart';
@@ -16,6 +17,7 @@ class AdminOperation extends GetxController {
   var fetchProductCompanyLoader = false.obs;
   var changeBaStatusLoader = false.obs;
   var assignBaLoader = false.obs;
+  var salesLoader = false.obs;
 
   var getAllBaAttendanceLoader = false.obs;
   var isBASelected = false.obs;
@@ -25,6 +27,8 @@ class AdminOperation extends GetxController {
   Rxn<ByUserRoleData> companyIndividual = Rxn();
   RxList<ByUserRoleData> baNameList = RxList();
   RxList<IndividualUserAttendance> userAttendance = RxList();
+  RxList<IndividualSalesData> individualSales = RxList();
+
   RxList<MartData> marts = RxList();
   Rxn<ByUserRoleData> selectedCompanyIndividual = Rxn();
 
@@ -400,7 +404,7 @@ class AdminOperation extends GetxController {
         );
       } finally {
         selectedCompany.value = null;
-        selectedMart.value = null; 
+        selectedMart.value = null;
       }
     } else {
       AnimatedSnackbar.showSnackbar(
@@ -413,6 +417,24 @@ class AdminOperation extends GetxController {
       );
     }
   }
+
+  Future<void> getSalesforMartCompany(String companyId, String martId) async {
+    salesLoader.value = true;
+    try {
+      SalesModel response =
+          await _adminOperationService.getSales(companyId, martId);
+      if (response.data != null && response.code == 200) {
+        getAllBaAttendanceLoader.value = false;
+        individualSales.value = response.data ?? [];
+        update();
+      } else {
+        salesLoader.value = false;
+      }
+    } catch (e) {
+      salesLoader.value = false;
+    }
+  }
+
 }
 
 class Product {

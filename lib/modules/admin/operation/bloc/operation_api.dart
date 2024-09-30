@@ -2,6 +2,7 @@ import 'package:ba_merchandise/constant/endpoints.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/all_attendance_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/createUser_model.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/sales_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
 import 'package:ba_merchandise/services/base_service.dart';
 
@@ -205,6 +206,17 @@ class AdminOperationService extends BaseService {
       final response =
           await dioClient.post(Endpoints.assignBatoCompany, data: data);
       return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<SalesModel> getSales(String companyId, String martId) async {
+    try {
+      Map<String, dynamic> data = {"company_id": companyId, "mart_id": martId};
+
+      final response = await dioClient.post(Endpoints.getSales, data: data);
+      return SalesModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

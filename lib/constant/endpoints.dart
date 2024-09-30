@@ -29,4 +29,5 @@ class Endpoints {
   static const String grandAccess = "auth/updateUser";
   static const String getAllBaAttendance = "auth/getAttendence";
   static const String assignBatoCompany = "auth/assignCompanyToBa";
+  static const String getSales="auth/getSales";
 }

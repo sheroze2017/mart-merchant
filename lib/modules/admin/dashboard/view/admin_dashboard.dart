@@ -85,6 +85,13 @@ class AdminHome extends StatelessWidget {
                     Get.toNamed(Routes.NEW_MART);
                   },
                 ),
+                DashboardCard(
+                  asset: 'assets/images/economy.png',
+                  title: 'Get Company Mart Sales',
+                  onTap: () {
+                    Get.toNamed(Routes.ADMINSALESROUTE);
+                  },
+                ),
 
                 DashboardCard(
                   asset: 'assets/images/search.png',

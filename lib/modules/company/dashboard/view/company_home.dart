@@ -135,9 +135,14 @@ class _CompanyHomeState extends State<CompanyHome> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Expanded(
-                      child: DashboardCard(
-                        asset: 'assets/images/economy.png',
-                        title: 'Sales',
+                      child: InkWell(
+                        onTap: () {
+                          Get.toNamed(Routes.COMPANYSALES);
+                        },
+                        child: DashboardCard(
+                          asset: 'assets/images/economy.png',
+                          title: 'Sales',
+                        ),
                       ),
                     ),
                     Expanded(
