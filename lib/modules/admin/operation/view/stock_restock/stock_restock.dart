@@ -3,8 +3,6 @@ import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/restock_bloc.dart';
-import 'package:ba_merchandise/modules/company/operation/bloc/company_short_stock_bloc.dart';
-import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';

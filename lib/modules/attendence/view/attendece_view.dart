@@ -10,9 +10,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart'; // To format date and time
 import 'package:location/location.dart' as locat;
-
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../b.a/dashboard/view/dashboard.dart';
 import '../bloc/attendance_bloc.dart';

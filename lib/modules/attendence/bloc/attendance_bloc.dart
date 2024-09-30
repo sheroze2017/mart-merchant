@@ -2,14 +2,11 @@ import 'package:ba_merchandise/core/local/hive_db/hive.dart';
 import 'package:ba_merchandise/main.dart';
 import 'package:ba_merchandise/modules/attendence/bloc/attendance_api.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
-import 'package:ba_merchandise/modules/sync/model/user_sync_model.dart';
 import 'package:ba_merchandise/widgets/custom/error_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:hive/hive.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart'; // To format date and time
 // ignore: depend_on_referenced_packages

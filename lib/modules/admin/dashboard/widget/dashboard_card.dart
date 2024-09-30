@@ -1,6 +1,5 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class DashboardCard extends StatelessWidget {
   final String asset;

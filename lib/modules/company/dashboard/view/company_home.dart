@@ -19,7 +19,6 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../b.a/dashboard/view/dashboard.dart';
-import '../../operation/view/location/location_view.dart';
 import '../../operation/view/add_product/product_view.dart';
 
 class CompanyHome extends StatefulWidget {

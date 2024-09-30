@@ -5,9 +5,6 @@ import 'package:ba_merchandise/modules/auth/model/auth_model.dart';
 import 'package:ba_merchandise/services/local_storage/auth_storage.dart';
 import 'package:ba_merchandise/widgets/custom/error_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-
 import 'package:get/get.dart';
 
 class AuthenticationController extends GetxController {

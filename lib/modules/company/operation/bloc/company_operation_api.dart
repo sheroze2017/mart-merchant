@@ -1,6 +1,5 @@
 import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/constant/endpoints.dart';
-import 'package:ba_merchandise/modules/auth/model/auth_model.dart';
 import 'package:ba_merchandise/modules/company/operation/model/company_model.dart';
 import 'package:ba_merchandise/modules/company/operation/model/mart_model.dart';
 import 'package:ba_merchandise/services/base_service.dart';

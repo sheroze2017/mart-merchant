@@ -1,5 +1,4 @@
 import 'package:ba_merchandise/common/style/color.dart';
-import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';

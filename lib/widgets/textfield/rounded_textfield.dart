@@ -1,9 +1,9 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+// ignore: must_be_immutable
 class RoundedBorderTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;

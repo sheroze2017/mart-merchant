@@ -1,9 +1,6 @@
 import 'dart:io';
 
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
-import 'package:ba_merchandise/core/routes/routes.dart';
-import 'package:ba_merchandise/modules/b.a/dashboard/widget/feature_box.dart';
-import 'package:ba_merchandise/modules/b.a/dashboard/widget/gradient_card.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/record_intercept.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
@@ -11,8 +8,6 @@ import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
 import 'package:ba_merchandise/widgets/drawer/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../../widgets/custom/feature_card.dart';
 import '../../operation/view/restock_inventory.dart';
 

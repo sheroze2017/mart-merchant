@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/local/hive_db/hive.dart';
@@ -139,7 +137,6 @@ class MerchantOperationBloc extends GetxController {
     records.removeWhere((element) => element.id == da.id);
     restockRecord.add(da);
 
-    print(restockRecord.value);
     final jsonString =
         json.encode(restockRecord.map((tp) => tp.toMap()).toList());
     prefs.setString('RestockStock', jsonString);

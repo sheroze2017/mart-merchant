@@ -13,7 +13,6 @@ import 'package:ba_merchandise/modules/auth/view/role_select_view.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/competitor_data.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/product_priceset.dart';
-import 'package:ba_merchandise/modules/b.a/record_data/view/record_intercept.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/record_sales.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/stock_count.dart';
 import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';

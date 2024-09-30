@@ -1,16 +1,12 @@
-import 'dart:convert';
-
 import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/main.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/ba_operation_api.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/model/record_model.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/model/restock_data_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/local/hive_db/hive.dart';
 import 'package:intl/intl.dart';
@@ -167,8 +163,6 @@ class RecordController extends GetxController {
       );
     }
   }
-
-
 
   Future<void> getallRestockRequest() async {
     var martId = await Utils.getMartId();

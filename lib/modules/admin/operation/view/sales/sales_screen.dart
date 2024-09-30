@@ -4,7 +4,6 @@ import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/sales_bloc.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/sales/sales_detail_screen.dart';
-import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';

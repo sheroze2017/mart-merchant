@@ -1,9 +1,9 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
-import 'package:ba_merchandise/modules/company/operation/view/add_product/product_view.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+// ignore: must_be_immutable
 class RoundedSearchTextField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;

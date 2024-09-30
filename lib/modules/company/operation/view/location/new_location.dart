@@ -1,5 +1,4 @@
 import 'package:ba_merchandise/common/style/color.dart';
-import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
@@ -13,7 +12,6 @@ import 'package:google_places_flutter/model/place_type.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:geocoding/geocoding.dart'; // Import Geocoding package
 
-import '../../utils/utils.dart';
 import 'package:location/location.dart' as locat;
 
 class LocationPickerScreen extends StatefulWidget {

@@ -3,7 +3,6 @@ import 'package:ba_merchandise/modules/admin/dashboard/bloc/dashboard_controller
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

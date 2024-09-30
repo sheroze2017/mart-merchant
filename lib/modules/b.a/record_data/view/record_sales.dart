@@ -1,18 +1,16 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/insert_sales_bloc.dart';
-import 'package:ba_merchandise/modules/merchandiser/dasboard/view/dashboard.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart'; // To format date and time
 
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../common/style/color.dart';
-import '../bloc/record_bloc.dart';
 
 class RecordSales extends StatefulWidget {
   const RecordSales({super.key});
