@@ -33,7 +33,6 @@ class Routes {
   static const SEARCHCOMPANYPRODUCT = '/searchCompanyProduct';
   static const STOCK_COUNT = '/stockCount';
   static const PRODUCT_PRICE = '/productPrice';
-  static const RECORD_INTERCEPT = '/recordIntercept';
   static const SYNC_DATA = '/syncData';
   static const MERCHANTDASHBOARD = '/merchantHome';
   static const COMPANY_HOME = '/companyHome';
@@ -67,10 +66,6 @@ class Routes {
     GetPage(
         name: ATTENDENCE,
         page: () => AttendanceScreen(),
-        transition: Transition.rightToLeft),
-    GetPage(
-        name: RECORD_INTERCEPT,
-        page: () => RecordIntercept(),
         transition: Transition.rightToLeft),
     GetPage(
         name: RECORD_SALES,

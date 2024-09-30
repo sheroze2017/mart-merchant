@@ -129,42 +129,47 @@ class _BaHomeState extends State<MerchantDashboard> {
                       },
                       subtitle: 'Record the inventory restock',
                     ),
-                    FeatureCard(
-                      icon: Icons.co_present_sharp,
-                      title: 'Competitior data',
-                      onTap: () {
-                        Get.toNamed(Routes.COMPETITORDATA);
-                      },
-                      subtitle: 'Record competitor data for product',
-                    ),
-                    FeatureCard(
-                      icon: Icons.co_present_sharp,
-                      title: 'Competitor Price',
-                      onTap: () {
-                        Get.toNamed(Routes.PRODUCT_PRICE);
-                      },
-                      subtitle: 'Set competitor price',
-                    ),
+                    // FeatureCard(
+                    //   icon: Icons.co_present_sharp,
+                    //   title: 'Competitior data',
+                    //   onTap: () {
+                    //     Get.toNamed(Routes.COMPETITORDATA);
+                    //   },
+                    //   subtitle: 'Record competitor data for product',
+                    // ),
+                    // FeatureCard(
+                    //   icon: Icons.co_present_sharp,
+                    //   title: 'Competitor Price',
+                    //   onTap: () {
+                    //     Get.toNamed(Routes.PRODUCT_PRICE);
+                    //   },
+                    //   subtitle: 'Set competitor price',
+                    // ),
                     FeatureCard(
                       isDone: true,
                       icon: Icons.co_present_sharp,
                       title: 'Record Intercepts',
                       onTap: () {
+                        final TextEditingController dialogController =
+                            TextEditingController();
+
                         showDialog(
                           context: context,
-                          builder: (context) => CustomDialog(),
+                          builder: (context) => CustomDialog(
+                            textcontroller: dialogController,
+                          ),
                         );
                       },
                       subtitle: 'Record customer interception',
                     ),
-                    FeatureCard(
-                      icon: Icons.co_present_sharp,
-                      title: 'Sync data',
-                      onTap: () {
-                        Get.toNamed(Routes.SYNC_DATA);
-                      },
-                      subtitle: 'Synchroize data for offline use',
-                    ),
+                    // FeatureCard(
+                    //   icon: Icons.co_present_sharp,
+                    //   title: 'Sync data',
+                    //   onTap: () {
+                    //     Get.toNamed(Routes.SYNC_DATA);
+                    //   },
+                    //   subtitle: 'Synchroize data for offline use',
+                    // ),
                   ],
                 )
               ],

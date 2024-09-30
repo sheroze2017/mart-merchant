@@ -110,6 +110,7 @@ class InsertSalesRecord extends GetxController {
           textColor: Colors.white,
           fontSize: 14.0,
         );
+        getAllProductByCompanyMart();
         Get.back();
       } else {
         updatePriceLoader.value = false;

@@ -157,21 +157,26 @@ class _BaHomeState extends State<BaHome> {
                       icon: Icons.co_present_sharp,
                       title: 'Record Intercepts',
                       onTap: () {
+                        final TextEditingController dialogController =
+                            TextEditingController();
+
                         showDialog(
                           context: context,
-                          builder: (context) => CustomDialog(),
+                          builder: (context) => CustomDialog(
+                            textcontroller: dialogController,
+                          ),
                         );
                       },
                       subtitle: 'Record customer interception',
                     ),
-                    FeatureCard(
-                      icon: Icons.co_present_sharp,
-                      title: 'Sync data',
-                      onTap: () {
-                        Get.toNamed(Routes.SYNC_DATA);
-                      },
-                      subtitle: 'Synchroize data for offline use',
-                    ),
+                    // FeatureCard(
+                    //   icon: Icons.co_present_sharp,
+                    //   title: 'Sync data',
+                    //   onTap: () {
+                    //     Get.toNamed(Routes.SYNC_DATA);
+                    //   },
+                    //   subtitle: 'Synchroize data for offline use',
+                    // ),
                   ],
                 )
               ],
@@ -197,7 +202,9 @@ class darkHeading extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 8.0),
         child: Text(title,
-            style: CustomTextStyles.lightSmallTextStyle(color: color,)));
+            style: CustomTextStyles.lightSmallTextStyle(
+              color: color,
+            )));
   }
 }
 

@@ -35,7 +35,6 @@ class AdminOperation extends GetxController {
   CompanyOperationService _companyOperationService = CompanyOperationService();
   final AdminOperationService _adminOperationService = AdminOperationService();
 
-  var companies = <Company>[].obs; // List of companies
   var selectedCompany = Rxn<ByUserRoleData>(); // Currently selected company
   var selectedba = Rxn<ByUserRoleData>(); // Currently selected company
   var selectedMart = Rxn<MartData>(); // Currently selected company
@@ -221,12 +220,6 @@ class AdminOperation extends GetxController {
     } catch (e) {
       newBALoader.value = false;
     }
-  }
-
-  void changeEmployeeStatus(Employee employee) {
-    employee.status = !employee.status;
-    update();
-    Get.back();
   }
 
   void selectCompanyByName(String companyName) {
@@ -434,36 +427,4 @@ class AdminOperation extends GetxController {
       salesLoader.value = false;
     }
   }
-
-}
-
-class Product {
-  String name;
-  int quantity;
-  double price;
-
-  Product({required this.name, required this.quantity, required this.price});
-}
-
-class Company {
-  String name;
-  List<Product> products;
-
-  Company({required this.name, required this.products});
-}
-
-class Employee {
-  String name;
-  int age;
-  String phoneNumber;
-  String address;
-  bool status;
-
-  Employee({
-    required this.name,
-    required this.age,
-    required this.phoneNumber,
-    required this.address,
-    required this.status,
-  });
 }

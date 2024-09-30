@@ -24,6 +24,13 @@ class _ProductScreenState extends State<ProductScreen> {
   final controller = Get.put(CompanyOperationBloc());
 
   @override
+  void initState() {
+    super.initState();
+    controller.getAllCategory();
+    controller.getAllMart();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,

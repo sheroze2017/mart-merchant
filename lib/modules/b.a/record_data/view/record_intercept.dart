@@ -1,22 +1,17 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/record_bloc.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
+import 'package:ba_merchandise/widgets/custom/error_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-class RecordIntercept extends StatelessWidget {
-  const RecordIntercept({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
 class CustomDialog extends StatelessWidget {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController textcontroller;
   final RecordController controller = Get.find();
+  CustomDialog({required this.textcontroller});
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +36,14 @@ class CustomDialog extends StatelessWidget {
                 'Note: It could be recorded only once at a time make sure to write it correctly',
                 style: CustomTextStyles.lightTextStyle()),
             SizedBox(height: 20),
-            TextField(
-              controller: _controller,
+            TextFormField(
+              validator: Validator.ValidText,
+              controller: textcontroller,
               keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly
+              ], // Allow only numbers
+
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Number of People',
@@ -70,10 +70,19 @@ class CustomDialog extends StatelessWidget {
                       onPressed: () {
                         FocusScope.of(context).unfocus();
                         // Handle submission logic here
-                        final numberOfPeople = _controller.text;
-                        print(numberOfPeople);
-                        print(_controller.text);
-                        controller.recordIntercept(context, _controller.text);
+                        if (textcontroller.text.isEmpty) {
+                          AnimatedSnackbar.showSnackbar(
+                            context: context,
+                            message: 'Please enter count',
+                            icon: Icons.info,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 14.0,
+                          );
+                        } else {
+                          controller.recordIntercept(
+                              context, textcontroller.text);
+                        }
                       },
                       backgroundColor: Colors.blue.shade900,
                       textColor: AppColors.whiteColor),

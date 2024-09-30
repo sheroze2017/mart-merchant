@@ -41,9 +41,16 @@ class ByUserRoleData {
   String? role;
   String? status;
   String? email;
+  String? companyId;
 
   // Main constructor with all parameters
-  ByUserRoleData({this.userId, this.name, this.role, this.status});
+  ByUserRoleData(
+      {this.userId,
+      this.name,
+      this.role,
+      this.status,
+      this.email,
+      this.companyId});
 
   ByUserRoleData.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'] ?? 0;
@@ -51,6 +58,7 @@ class ByUserRoleData {
     role = json['role'] ?? '';
     status = json['status'] ?? 'active';
     email = json['email'] ?? '';
+    companyId = json['company_id'] ?? '';
   }
 
   // Method to convert Data object to JSON

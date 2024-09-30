@@ -37,4 +37,5 @@ class SalesCompanyController extends GetxController {
     super.onInit();
     getSalesforMartCompany('');
   }
+  
 }

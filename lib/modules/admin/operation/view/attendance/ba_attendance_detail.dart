@@ -49,7 +49,9 @@ class BaAttendanceDetail extends StatelessWidget {
                           style: CustomTextStyles.darkHeadingTextStyle(
                               color: data1.status == "absent"
                                   ? Colors.red
-                                  : Colors.green)),
+                                  : data1.status!.toLowerCase() == "late"
+                                      ? Colors.brown
+                                      : Colors.green)),
                       title: Text(
                         'Dated: ' + data1.date.toString(),
                         style: CustomTextStyles.lightTextStyle(),
@@ -57,11 +59,16 @@ class BaAttendanceDetail extends StatelessWidget {
                       subtitle: data1.status == 'absent'
                           ? null
                           : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("checkin Time: " +
-                                    data1.checkinTime.toString()),
-                                Text("checkout Time: " +
-                                    data1.checkoutTime.toString()),
+                                Text(
+                                  "checkin Time: ${data1.checkinTime!.split(' ')[1]}",
+                                  style: CustomTextStyles.lightTextStyle(),
+                                ),
+                                Text(
+                                  "checkout Time: ${data1.checkoutTime!.split(' ')[1]}",
+                                  style: CustomTextStyles.lightTextStyle(),
+                                ),
                               ],
                             ),
                     ),

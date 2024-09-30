@@ -49,13 +49,13 @@ class NewMartScreen extends StatelessWidget {
                 SizedBox(
                   height: 0.5.h,
                 ),
-                headingSmall(title: 'Location Name'),
+                headingSmall(title: 'Mart Name'),
                 RoundedBorderTextField(
                     validator: Validator.ValidText,
                     focusNode: _focusNode2,
                     nextFocusNode: _focusNode3,
                     controller: _locationNameController,
-                    hintText: 'location name',
+                    hintText: 'mart name',
                     icondata: Icons.business_sharp),
                 SizedBox(
                   height: 1.h,

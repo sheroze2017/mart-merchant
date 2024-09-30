@@ -1,6 +1,7 @@
 import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/constant/endpoints.dart';
 import 'package:ba_merchandise/modules/auth/model/auth_model.dart';
+import 'package:ba_merchandise/modules/b.a/record_data/model/restock_data_model.dart';
 import 'package:ba_merchandise/services/base_service.dart';
 
 class BaOperationService extends BaseService {
@@ -64,16 +65,30 @@ class BaOperationService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> removeRestockRequest(String restockId) async {
+  Future<Map<String, dynamic>> removeRestockRequest(
+      String restockId, String status) async {
     try {
       Map<String, dynamic> data = {
         "restock_id": restockId,
-        "status": "completed"
+        "status": status,
       };
 
       final response =
           await dioClient.post(Endpoints.updateRestock, data: data);
       return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<RestockDataModel?> getAllRestockRequest(
+      String companyId, String martId) async {
+    try {
+      Map<String, dynamic> data = {"company_id": companyId, "mart_id": martId};
+
+      final response =
+          await dioClient.post(Endpoints.getAllRestockRequest, data: data);
+      return RestockDataModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

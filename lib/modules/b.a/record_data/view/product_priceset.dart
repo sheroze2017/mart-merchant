@@ -26,178 +26,168 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
     super.initState();
   }
 
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: CustomAppBar(
-          title: 'Update Product Price',
-        ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'Select product to update price',
-                      style: CustomTextStyles.w600TextStyle(),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                Expanded(
-                    child: Obx(() => (salesController
-                            .fetchProductCompanyLoader.value)
-                        ? Center(child: CircularProgressIndicator())
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            physics: AlwaysScrollableScrollPhysics(),
-                            itemCount: salesController.productList.length,
-                            itemBuilder: (context, index) {
-                              final data = salesController.productList[index];
-                              return Card(
-                                color: AppColors.primaryColor,
-                                elevation: 2,
-                                child: ListTile(
-                                    leading: Text('PKR ${data.price}',
-                                        style: CustomTextStyles
-                                            .darkHeadingTextStyle(
-                                                color:
-                                                    AppColors.primaryColorDark,
-                                                size: 14)),
-                                    minVerticalPadding: 10,
-                                    title: Text('Name: ${data.productName!}',
-                                        style:
-                                            CustomTextStyles.darkTextStyle()),
-                                    subtitle: Text(
-                                        '*${data.variant}\n*Stock ${data.qty}',
-                                        style: CustomTextStyles
-                                            .lightSmallTextStyle(size: 13)),
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        backgroundColor: AppColors.whiteColor,
-                                        context: context,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(20)),
-                                        ),
-                                        builder: (context) {
-                                          final TextEditingController
-                                              _textFieldController =
-                                              TextEditingController();
-
-                                          return Padding(
-                                            padding: MediaQuery.of(context)
-                                                .viewInsets, // Adjusts for keyboard
-                                            child: SingleChildScrollView(
-                                              // Enables scrolling if needed
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(16.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      'Update Price',
-                                                      style: CustomTextStyles
-                                                          .darkTextStyle(),
-                                                    ),
-                                                    Text(
-                                                      'Name: ${data.productName}',
-                                                      style: CustomTextStyles
-                                                          .lightSmallTextStyle(),
-                                                    ),
-                                                    SizedBox(height: 16),
-                                                    RoundedBorderTextField(
-                                                      validator:
-                                                          Validator.ValidText,
-                                                      controller:
-                                                          _textFieldController,
-                                                      hintText: 'New Price',
-                                                      icondata:
-                                                          Icons.price_change,
-                                                    ),
-                                                    SizedBox(height: 20),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Obx(
-                                                              () =>
-                                                                  RoundedButton(
-                                                                    showLoader:
-                                                                        salesController
-                                                                            .updatePriceLoader
-                                                                            .value,
-                                                                    text:
-                                                                        'Update Price',
-                                                                    onPressed:
-                                                                        () {
-                                                                      FocusScope.of(
-                                                                              context)
-                                                                          .unfocus();
-                                                                      if (_textFieldController
-                                                                          .text
-                                                                          .isEmpty) {
-                                                                        AnimatedSnackbar
-                                                                            .showSnackbar(
-                                                                          context:
-                                                                              context,
-                                                                          message:
-                                                                              'Price Field Is Required',
-                                                                          icon:
-                                                                              Icons.info,
-                                                                          backgroundColor:
-                                                                              Colors.red,
-                                                                          textColor:
-                                                                              Colors.white,
-                                                                          fontSize:
-                                                                              14.0,
-                                                                        );
-                                                                      } else {
-                                                                        salesController
-                                                                            .updateProductPrice(
-                                                                          context,
-                                                                          _textFieldController
-                                                                              .text,
-                                                                          data.productId
-                                                                              .toString(),
-                                                                        );
-                                                                      }
-                                                                    },
-                                                                    backgroundColor:
-                                                                        AppColors
-                                                                            .primaryColorDark,
-                                                                    textColor:
-                                                                        AppColors
-                                                                            .whiteColor,
-                                                                  )),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar(
+        title: 'Update Product Price',
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Select product to update price',
+                    style: CustomTextStyles.w600TextStyle(),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 2.h,
+              ),
+              Expanded(
+                  child: Obx(() => (salesController
+                          .fetchProductCompanyLoader.value)
+                      ? Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: AlwaysScrollableScrollPhysics(),
+                          itemCount: salesController.productList.length,
+                          itemBuilder: (context, index) {
+                            final data = salesController.productList[index];
+                            return Card(
+                              color: AppColors.primaryColor,
+                              elevation: 2,
+                              child: ListTile(
+                                  leading: Text('PKR ${data.price}',
+                                      style:
+                                          CustomTextStyles.darkHeadingTextStyle(
+                                              color: AppColors.primaryColorDark,
+                                              size: 14)),
+                                  minVerticalPadding: 10,
+                                  title: Text('Name: ${data.productName!}',
+                                      style: CustomTextStyles.darkTextStyle()),
+                                  subtitle: Text(
+                                      '*${data.variant}\n*Stock ${data.qty}',
+                                      style:
+                                          CustomTextStyles.lightSmallTextStyle(
+                                              size: 13)),
+                                  onTap: () {
+                                    final TextEditingController
+                                        _textFieldController =
+                                        TextEditingController();
+                                    showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: AppColors.whiteColor,
+                                      context: context,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(20)),
+                                      ),
+                                      builder: (context) {
+                                        return Padding(
+                                          padding:
+                                              MediaQuery.of(context).viewInsets,
+                                          child: SingleChildScrollView(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Update Price',
+                                                    style: CustomTextStyles
+                                                        .darkTextStyle(),
+                                                  ),
+                                                  Text(
+                                                    'Name: ${data.productName}',
+                                                    style: CustomTextStyles
+                                                        .lightSmallTextStyle(),
+                                                  ),
+                                                  SizedBox(height: 16),
+                                                  RoundedBorderTextField(
+                                                    validator:
+                                                        Validator.ValidText,
+                                                    controller:
+                                                        _textFieldController,
+                                                    hintText: 'New Price',
+                                                    icondata:
+                                                        Icons.price_change,
+                                                  ),
+                                                  SizedBox(height: 20),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Obx(
+                                                            () => RoundedButton(
+                                                                  showLoader:
+                                                                      salesController
+                                                                          .updatePriceLoader
+                                                                          .value,
+                                                                  text:
+                                                                      'Update Price',
+                                                                  onPressed:
+                                                                      () {
+                                                                    FocusScope.of(
+                                                                            context)
+                                                                        .unfocus();
+                                                                    if (_textFieldController
+                                                                        .text
+                                                                        .isEmpty) {
+                                                                      AnimatedSnackbar
+                                                                          .showSnackbar(
+                                                                        context:
+                                                                            context,
+                                                                        message:
+                                                                            'Price Field Is Required',
+                                                                        icon: Icons
+                                                                            .info,
+                                                                        backgroundColor:
+                                                                            Colors.red,
+                                                                        textColor:
+                                                                            Colors.white,
+                                                                        fontSize:
+                                                                            14.0,
+                                                                      );
+                                                                    } else {
+                                                                      salesController
+                                                                          .updateProductPrice(
+                                                                        context,
+                                                                        _textFieldController
+                                                                            .text,
+                                                                        data.productId
+                                                                            .toString(),
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                  backgroundColor:
+                                                                      AppColors
+                                                                          .primaryColorDark,
+                                                                  textColor:
+                                                                      AppColors
+                                                                          .whiteColor,
+                                                                )),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          );
-                                        },
-                                      );
-                                    }),
-                              );
-                            })))
-              ],
-            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }),
+                            );
+                          })))
+            ],
           ),
         ),
       ),

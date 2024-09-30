@@ -24,6 +24,7 @@ class CompanyOperationBloc extends GetxController {
 
   RxList<ProductCMData> productList = RxList();
   List<String> employeeRole = [];
+  RxList<ByUserRoleData> baNameList = RxList();
   RxList<Location> locations = RxList();
   RxList<Employee> employees = RxList();
   RxList<CategoryData> categories = RxList();
@@ -36,6 +37,7 @@ class CompanyOperationBloc extends GetxController {
     super.onInit();
     getAllCategory();
     getAllMart();
+    getAllBa();
   }
 
   Future<void> getAllCategory() async {
@@ -180,6 +182,21 @@ class CompanyOperationBloc extends GetxController {
     } catch (e) {
       fetchProductCompanyLoader.value = false;
     }
+  }
+
+  Future<void> getAllBa() async {
+    baNameList.clear();
+    try {
+      AllUserByRole response =
+          await _adminOperationService.getAllUserByRole('BA');
+      if (response.data != null && response.code == 200) {
+        var userId = await Utils.getUserId();
+        baNameList.value = response.data
+                ?.where((ba) => ba.companyId.toString() == userId.toString())
+                .toList() ??
+            [];
+      } else {}
+    } catch (e) {}
   }
 }
 
