@@ -30,29 +30,32 @@ class SearchCompanyProduct extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const heading(title: 'Select location to find company products'),
-              Obx(() => CustomDropdown(
-                    decoration: CustomDropdownDecoration(
-                      prefixIcon: Icon(Icons.location_on_sharp),
-                      expandedFillColor: AppColors.primaryColor,
-                      closedFillColor: AppColors.primaryColor,
+              Obx(() => Card(
+                    elevation: 2,
+                    child: CustomDropdown(
+                      decoration: CustomDropdownDecoration(
+                        prefixIcon: Icon(Icons.location_on_sharp),
+                        expandedFillColor: AppColors.primaryColor,
+                        closedFillColor: AppColors.primaryColor,
+                      ),
+                      hintText: 'Select Company',
+                      items: companyController.companyNameList
+                          .map((company) => company.name)
+                          .toList(),
+                      onChanged: (selected) async {
+                        if (selected != null) {
+                          companyController.selectedCompanyIndividual.value =
+                              await companyController.companyNameList
+                                  .firstWhere((c) => c.name == selected);
+                          companyController.getAllProductByCompanyMart(
+                              companyController
+                                  .selectedCompanyIndividual.value!.userId!
+                                  .toInt(),
+                              null,
+                              context);
+                        }
+                      },
                     ),
-                    hintText: 'Select Company',
-                    items: companyController.companyNameList
-                        .map((company) => company.name)
-                        .toList(),
-                    onChanged: (selected) async {
-                      if (selected != null) {
-                        companyController.selectedCompanyIndividual.value =
-                            await companyController.companyNameList
-                                .firstWhere((c) => c.name == selected);
-                        companyController.getAllProductByCompanyMart(
-                            companyController
-                                .selectedCompanyIndividual.value!.userId!
-                                .toInt(),
-                            null,
-                            context);
-                      }
-                    },
                   )),
               SizedBox(
                 height: 1.h,

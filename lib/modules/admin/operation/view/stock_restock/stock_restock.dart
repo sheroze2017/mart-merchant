@@ -26,42 +26,48 @@ class ShortStockScreenAdmin extends StatelessWidget {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: CustomDropdown.search(
-                  hintText: 'Select Company',
-                  items: controllerCompany.companyNameList
-                      .map((company) => company.name)
-                      .toList(),
-                  onChanged: (value) {
-                    int exactIndex = controllerCompany.companyNameList
-                        .indexWhere((m) => m.name == value);
-                    if (exactIndex != -1) {
-                      companyId.text = controllerCompany
-                          .companyNameList[exactIndex].userId
-                          .toString();
-                      // Fetch the sales data based on selected company and mart ID
-                      controller.getallRestockRequest(
-                          companyId.text, martId.text);
-                    }
-                  },
+                padding: const EdgeInsets.only(top: 8.0, left: 12, right: 12),
+                child: Card(
+                  elevation: 2,
+                  child: CustomDropdown.search(
+                    hintText: 'Select Company',
+                    items: controllerCompany.companyNameList
+                        .map((company) => company.name)
+                        .toList(),
+                    onChanged: (value) {
+                      int exactIndex = controllerCompany.companyNameList
+                          .indexWhere((m) => m.name == value);
+                      if (exactIndex != -1) {
+                        companyId.text = controllerCompany
+                            .companyNameList[exactIndex].userId
+                            .toString();
+                        // Fetch the sales data based on selected company and mart ID
+                        controller.getallRestockRequest(
+                            companyId.text, martId.text);
+                      }
+                    },
+                  ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: CustomDropdown.search(
-                  hintText: 'Select Mart',
-                  items:
-                      controllerCompany.marts.map((m) => m.martName).toList(),
-                  onChanged: (value) {
-                    int exactIndex = controllerCompany.marts
-                        .indexWhere((m) => m.martName == value);
-                    if (exactIndex != -1) {
-                      martId.text =
-                          controllerCompany.marts[exactIndex].martId.toString();
-                      controller.getallRestockRequest(
-                          companyId.text, martId.text);
-                    }
-                  },
+                padding: const EdgeInsets.only(top: 8.0, left: 12, right: 12),
+                child: Card(
+                  elevation: 2,
+                  child: CustomDropdown.search(
+                    hintText: 'Select Mart',
+                    items:
+                        controllerCompany.marts.map((m) => m.martName).toList(),
+                    onChanged: (value) {
+                      int exactIndex = controllerCompany.marts
+                          .indexWhere((m) => m.martName == value);
+                      if (exactIndex != -1) {
+                        martId.text = controllerCompany.marts[exactIndex].martId
+                            .toString();
+                        controller.getallRestockRequest(
+                            companyId.text, martId.text);
+                      }
+                    },
+                  ),
                 ),
               ),
               Expanded(
