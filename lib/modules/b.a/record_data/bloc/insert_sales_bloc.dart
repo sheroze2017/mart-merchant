@@ -39,6 +39,7 @@ class InsertSalesRecord extends GetxController {
           response['code'] == 200) {
         statusRecordLoader.value = false;
         // Success message
+        Get.back();
         AnimatedSnackbar.showSnackbar(
           context: context,
           message: response['message'] ??

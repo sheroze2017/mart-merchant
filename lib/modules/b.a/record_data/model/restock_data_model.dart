@@ -35,6 +35,7 @@ class RestockDataModel {
 class IndividualRestockData {
   int? restockId;
   String? createdAt;
+  String? status;
   BADetails? bADetails;
   MartDetails? martDetails;
   ProductDetails? productDetails;
@@ -42,6 +43,7 @@ class IndividualRestockData {
   IndividualRestockData({
     this.restockId,
     this.createdAt,
+    this.status,
     this.bADetails,
     this.martDetails,
     this.productDetails,
@@ -59,6 +61,7 @@ class IndividualRestockData {
     productDetails = json['product_details'] != null
         ? ProductDetails.fromJson(json['product_details'])
         : ProductDetails(); // Use empty ProductDetails if null
+    status = json['status'] ?? '';
   }
 
   Map<String, dynamic> toJson() {

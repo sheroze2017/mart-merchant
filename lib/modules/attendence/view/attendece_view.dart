@@ -1,5 +1,6 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/attendence/widget/status_container.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/dailog/mark_absent_dailog.dart';
@@ -83,7 +84,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final String todayDate = DateFormat('yyyy MMM dd').format(DateTime.now());
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: CustomAppBar(
@@ -272,8 +273,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           ),
                           Obx(
                             () => Text(
-                              attendanceController.attenToday.value.checkInTime
-                                  .toString(),
+                              Utils.formatDate(attendanceController
+                                      .attenToday.value.checkInTime
+                                      .toString()) +
+                                  ' ' +
+                                  Utils.formatTime(attendanceController
+                                      .attenToday.value.checkInTime
+                                      .toString()),
                               style: CustomTextStyles.lightTextStyle(),
                             ),
                           )
@@ -290,9 +296,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                               color: Colors.red),
                         ),
                         Text(
-                          attendanceController.attenToday.value.checkOutTime
-                              .toString()
-                              .toString(),
+                          Utils.formatDate(attendanceController
+                                  .attenToday.value.checkOutTime
+                                  .toString()) +
+                              ' ' +
+                              Utils.formatTime(attendanceController
+                                  .attenToday.value.checkOutTime
+                                  .toString()),
                           style: CustomTextStyles.lightTextStyle(),
                         ),
                       ],

@@ -18,7 +18,8 @@ class ShortStockControllerAdmin extends GetxController {
 
       if (response!.data != null && response.code == 200) {
         allRestockLoader.value = false;
-        restockRecordCompany.value = response.data ?? [];
+        restockRecordCompany.value =
+            response.data!.where((e) => e.status == 'pending').toList() ?? [];
         update();
       } else {
         allRestockLoader.value = false;
@@ -39,7 +40,9 @@ class ShortStockControllerAdmin extends GetxController {
       if (response != null &&
           response['data'] != null &&
           response['code'] == 200) {
+        getallRestockRequest('', '');
         Get.back();
+
         AnimatedSnackbar.showSnackbar(
           context: context,
           message: 'Restock status updated', // Fallback message

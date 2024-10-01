@@ -1,4 +1,5 @@
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/insert_sales_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
@@ -80,7 +81,7 @@ class _RecordSalesState extends State<RecordSales> {
                       title: 'Record Sales for Dated:',
                       color: Colors.black,
                     ),
-                    headingSmall(title: todayDate),
+                    headingSmall(title: Utils.formatDate(todayDate)),
                   ],
                 ),
                 Obx(

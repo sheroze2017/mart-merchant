@@ -1,5 +1,6 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/all_attendance_model.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class BaAttendanceDetail extends StatelessWidget {
                                       ? Colors.brown
                                       : Colors.green)),
                       title: Text(
-                        'Dated: ' + data1.date.toString(),
+                        'Dated: ' + Utils.formatDate(data1.date.toString()),
                         style: CustomTextStyles.lightTextStyle(),
                       ),
                       subtitle: data1.status == 'absent'
@@ -56,11 +57,11 @@ class BaAttendanceDetail extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "checkin Time: ${data1.checkinTime!.split(' ')[1]}",
+                                  "checkin Time: ${Utils.formatTime(data1.checkinTime!.split(' ')[1])}",
                                   style: CustomTextStyles.lightTextStyle(),
                                 ),
                                 Text(
-                                  "checkout Time: ${data1.checkoutTime!.split(' ')[1]}",
+                                  "checkout Time: ${Utils.formatTime(data1.checkoutTime!.split(' ')[1])}",
                                   style: CustomTextStyles.lightTextStyle(),
                                 ),
                               ],

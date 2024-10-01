@@ -82,6 +82,7 @@ class RecordController extends GetxController {
           response['data'] != null &&
           response['code'] == 200) {
         stockRequest.value = false;
+        getallRestockRequest();
         AnimatedSnackbar.showSnackbar(
           context: context,
           message: 'Product restock request sended', // Fallback message
@@ -129,6 +130,7 @@ class RecordController extends GetxController {
           response['code'] == 200) {
         stockRequest.value = false;
         Get.back();
+        getallRestockRequest();
         AnimatedSnackbar.showSnackbar(
           context: context,
           message: 'Restock status updated', // Fallback message
@@ -174,7 +176,10 @@ class RecordController extends GetxController {
 
       if (response!.data != null && response.code == 200) {
         allRestockLoader.value = false;
-        restockRecord.value = response.data ?? [];
+        restockRecord.value = response.data!
+                .where((e) => e.status!.toLowerCase() == 'pending')
+                .toList() ??
+            [];
         update(); // Notify listeners to rebuild UI
       } else {
         allRestockLoader.value = false;

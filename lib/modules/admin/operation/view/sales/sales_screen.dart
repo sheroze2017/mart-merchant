@@ -1,6 +1,7 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/sales_bloc.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/sales/sales_detail_screen.dart';
@@ -91,7 +92,7 @@ class SalesScreenMartCompany extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Reported Date: ${saleData.createdAt}',
+                                        'Reported Date: ${Utils.formatDate(saleData.createdAt.toString()) + ' ' + Utils.formatTime(saleData.createdAt.toString())}',
                                         style: CustomTextStyles.lightTextStyle(
                                             size: 13),
                                       ),
