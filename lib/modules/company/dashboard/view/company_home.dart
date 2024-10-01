@@ -260,7 +260,7 @@ class DashboardCard extends StatelessWidget {
     return Container(
       width: 120,
       child: Card(
-        color: AppColors.whiteColor,
+        color: AppColors.primaryColor,
         elevation: 4,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -269,7 +269,7 @@ class DashboardCard extends StatelessWidget {
               Image(
                 width: 80,
                 height: 40,
-                color: Colors.black,
+                color: AppColors.primaryColorDark,
                 image: AssetImage(
                   asset,
                 ),

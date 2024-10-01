@@ -20,10 +20,8 @@ class ShortStockController extends GetxController {
 
       if (response!.data != null && response.code == 200) {
         allRestockLoader.value = false;
-        restockRecordCompany.value = response.data!
-                .map((e) => e.status!.toLowerCase() == 'pending')
-                .toList() ??
-            [];
+        restockRecordCompany.value =
+            response.data!.where((e) => e.status == 'pending').toList() ?? [];
         update(); // Notify listeners to rebuild UI
       } else {
         allRestockLoader.value = false;

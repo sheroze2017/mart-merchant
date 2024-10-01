@@ -47,14 +47,10 @@ class _BaAttendanceCompanyViewState extends State<BaAttendanceCompanyView> {
                   child: CustomDateTimeField(
                     format: DateFormat("yyyy-MM-dd"),
                     hintText: 'Start Date',
-                    customValidator: (DateTime? value) {
-                      if (value != null) {
-                        startDate.text = value.toString().split(" ")[0];
-                        print(startDate.text);
-                        return null;
-                      } else {
-                        return 'please enter start date';
-                      }
+                    onChanged: (p0) {
+                      startDate.text = p0.toString().split(" ")[0];
+                      controller.getAllBaAttendance(
+                          startDate.text, endDate.text);
                     },
                   ),
                 ),
@@ -65,37 +61,13 @@ class _BaAttendanceCompanyViewState extends State<BaAttendanceCompanyView> {
                   child: CustomDateTimeField(
                     format: DateFormat("yyyy-MM-dd"),
                     hintText: 'End Date',
-                    customValidator: (DateTime? value) {
-                      if (value != null) {
-                        endDate.text = value.toString().split(" ")[0];
-                        print(endDate.text);
-
-                        return null;
-                      } else {
-                        return 'Required';
-                      }
+                    onChanged: (p0) {
+                      endDate.text = p0.toString().split(" ")[0];
+                      controller.getAllBaAttendance(
+                          startDate.text, endDate.text);
                     },
                   ),
                 ),
-                const SizedBox(
-                  width: 5,
-                ),
-                InkWell(
-                  onTap: () {
-                    if (startDate.text.isNotEmpty && endDate.text.isNotEmpty) {
-                      controller.getAllBaAttendance(
-                          startDate.text, endDate.text);
-                    }
-                  },
-                  child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(Icons.search),
-                      )),
-                )
               ],
             ),
             SizedBox(
@@ -192,6 +164,9 @@ class _BaAttendanceCompanyViewState extends State<BaAttendanceCompanyView> {
                                     style: CustomTextStyles.lightTextStyle(
                                         size: 13),
                                   ),
+                                ),
+                                SizedBox(
+                                  height: 2.h,
                                 ),
                                 Row(
                                   children: [

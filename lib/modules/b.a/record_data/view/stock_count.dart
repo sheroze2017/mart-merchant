@@ -5,6 +5,8 @@ import 'package:ba_merchandise/modules/b.a/record_data/bloc/record_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/model/restock_data_model.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+
 import 'package:get/get.dart';
 
 class StockCount extends StatefulWidget {
@@ -54,7 +56,6 @@ class _StockCountState extends State<StockCount> with TickerProviderStateMixin {
   }
 }
 
-// Page to view stock
 class StockPage extends StatelessWidget {
   final RecordController controller = Get.find();
   final InsertSalesRecord salesController = Get.put(InsertSalesRecord());
@@ -62,35 +63,50 @@ class StockPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return ListView.builder(
-        itemCount: salesController.productList.length,
-        itemBuilder: (context, index) {
-          final toothpaste = salesController.productList[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
-            child: Card(
-              color: AppColors.primaryColor,
-              elevation: 2,
-              child: ListTile(
-                minVerticalPadding: 20,
-                title: Text(toothpaste.productName.toString(),
-                    style: CustomTextStyles.darkTextStyle()),
-                subtitle: Text(
-                    '${toothpaste.variant} \nQty Available ${toothpaste.qty}',
-                    style: CustomTextStyles.lightSmallTextStyle()),
-                trailing: RoundedButtonSmall(
-                  onPressed: () {
-                    controller.restockRequest(
-                        toothpaste.productId.toString(), context);
-                  },
-                  text: 'Restock',
-                  textColor: AppColors.whiteColor,
-                  backgroundColor: Colors.blue,
+      return AnimationLimiter(
+        child: ListView.builder(
+          itemCount: salesController.productList.length,
+          itemBuilder: (context, index) {
+            final toothpaste = salesController.productList[index];
+
+            // Use AnimationConfiguration to animate each list item.
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 375),
+              child: SlideAnimation(
+                verticalOffset:
+                    50.0, // Change the offset to control where the animation starts.
+                child: FadeInAnimation(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 4),
+                    child: Card(
+                      color: AppColors.primaryColor,
+                      elevation: 2,
+                      child: ListTile(
+                        minVerticalPadding: 20,
+                        title: Text(toothpaste.productName.toString(),
+                            style: CustomTextStyles.darkTextStyle()),
+                        subtitle: Text(
+                            '${toothpaste.variant} \nQty Available ${toothpaste.qty}',
+                            style: CustomTextStyles.lightSmallTextStyle()),
+                        trailing: RoundedButtonSmall(
+                          onPressed: () {
+                            controller.restockRequest(
+                                toothpaste.productId.toString(), context);
+                          },
+                          text: 'Restock',
+                          textColor: AppColors.whiteColor,
+                          backgroundColor: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       );
     });
   }
@@ -162,30 +178,6 @@ class RestockPage extends StatelessWidget {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  const SizedBox(height: 10),
-                                                  Text(
-                                                    'If you ask for restock by mistaken then cancel your request from below',
-                                                    style: CustomTextStyles
-                                                        .lightTextStyle(),
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  Align(
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: RoundedButton(
-                                                          text: 'Cancelled',
-                                                          onPressed: () {
-                                                            controller.removeRestockRequest(
-                                                                toothpaste
-                                                                    .restockId
-                                                                    .toString(),
-                                                                'Cancelled by BA',
-                                                                context);
-                                                          },
-                                                          backgroundColor:
-                                                              Colors.red,
-                                                          textColor:
-                                                              Colors.white)),
                                                   SizedBox(height: 10),
                                                   Text(
                                                     'If restock is done then change status to completed',
@@ -203,7 +195,7 @@ class RestockPage extends StatelessWidget {
                                                                 toothpaste
                                                                     .restockId
                                                                     .toString(),
-                                                                'Completed',
+                                                                'stock',
                                                                 context);
                                                           },
                                                           backgroundColor: AppColors
@@ -220,7 +212,7 @@ class RestockPage extends StatelessWidget {
                                         //d from the controller to remove the item
                                         ///controller.removeRestockRecord(toothpaste);
                                       },
-                                      text: 'Change',
+                                      text: 'Restock',
                                       textColor: AppColors.whiteColor,
                                       backgroundColor:
                                           AppColors.primaryColorDark,

@@ -29,10 +29,11 @@ class RecordController extends GetxController {
     getallRestockRequest();
   }
 
-  Future<void> recordIntercept(BuildContext context, String count) async {
+  Future<void> recordIntercept(
+      BuildContext context, String count, String sold) async {
     statusRecordLoader.value = true;
     try {
-      final response = await baOperationService.insertInterceptRecord(count);
+      final response = await baOperationService.insertInterceptRecord(count,sold);
       if (response != null &&
           response['data'] != null &&
           response['code'] == 200) {

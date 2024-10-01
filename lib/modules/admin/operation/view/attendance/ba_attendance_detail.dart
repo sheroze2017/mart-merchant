@@ -57,11 +57,11 @@ class BaAttendanceDetail extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "checkin Time: ${Utils.formatTime(data1.checkinTime!.split(' ')[1])}",
+                                  "checkin Time: ${Utils.formatTime(data1.checkinTime!)}",
                                   style: CustomTextStyles.lightTextStyle(),
                                 ),
                                 Text(
-                                  "checkout Time: ${Utils.formatTime(data1.checkoutTime!.split(' ')[1])}",
+                                  "checkout Time: ${Utils.formatTime(data1.checkoutTime!)}",
                                   style: CustomTextStyles.lightTextStyle(),
                                 ),
                               ],

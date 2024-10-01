@@ -38,58 +38,58 @@ class _RecordSalesState extends State<RecordSales> {
       appBar: CustomAppBar(
         title: 'Record Sales',
       ),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    darkHeading(
-                      title: 'Record your product sales ',
-                      color: Colors.black,
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.error_outline_rounded),
-                      onPressed: () {
-                        setState(() {
-                          _isDetailVisible = !_isDetailVisible;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                Visibility(
-                  visible: _isDetailVisible,
-                  child: Container(
-                    width: 100.w,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 0.5),
-                        color: Colors.white,
-                        borderRadius: BorderRadiusDirectional.circular(8)),
-                    padding: EdgeInsets.all(3.0),
-                    child: Text(
-                      'Mark your individual product sales of each product in quantity',
-                      style: TextStyle(fontSize: 12),
-                    ),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  darkHeading(
+                    title: 'Record your product sales ',
+                    color: Colors.black,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.error_outline_rounded),
+                    onPressed: () {
+                      setState(() {
+                        _isDetailVisible = !_isDetailVisible;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Visibility(
+                visible: _isDetailVisible,
+                child: Container(
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 0.5),
+                      color: Colors.white,
+                      borderRadius: BorderRadiusDirectional.circular(8)),
+                  padding: EdgeInsets.all(3.0),
+                  child: Text(
+                    'Mark your individual product sales of each product in quantity',
+                    style: TextStyle(fontSize: 12),
                   ),
                 ),
-                Row(
-                  children: [
-                    darkHeading(
-                      title: 'Record Sales for Dated:',
-                      color: Colors.black,
-                    ),
-                    headingSmall(title: Utils.formatDate(todayDate)),
-                  ],
-                ),
-                Obx(
+              ),
+              Row(
+                children: [
+                  darkHeading(
+                    title: 'Record Sales for Dated:',
+                    color: Colors.black,
+                  ),
+                  headingSmall(title: Utils.formatDate(todayDate)),
+                ],
+              ),
+              Expanded(
+                child: Obx(
                   () => (salesController.fetchProductCompanyLoader.value)
                       ? Center(child: CircularProgressIndicator())
                       : ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: AlwaysScrollableScrollPhysics(),
                           itemCount: salesController.productList.length,
                           itemBuilder: (context, index) {
                             final data = salesController.productList[index];
@@ -153,8 +153,8 @@ class _RecordSalesState extends State<RecordSales> {
                             );
                           }),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

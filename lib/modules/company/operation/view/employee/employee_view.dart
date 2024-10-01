@@ -1,3 +1,4 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
@@ -16,6 +17,9 @@ class EmployeeListScreen extends StatefulWidget {
 
 class _EmployeeListScreenState extends State<EmployeeListScreen> {
   final CompanyOperationBloc operationBloc = Get.find();
+  final RxInt selectedMartId =
+      RxInt(0); // Selected Mart ID as a reactive variable
+
   @override
   void initState() {
     super.initState();
@@ -37,9 +41,6 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 2.h,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -49,97 +50,155 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                 ],
               ),
               SizedBox(
-                height: 2.h,
+                height: 1.h,
               ),
-              Obx(
-                () => operationBloc.baNameList.value.isEmpty
-                    ? Center(
-                        child: Text('No Employee to show yet'),
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: AlwaysScrollableScrollPhysics(),
-                        itemCount: operationBloc.baNameList.length,
-                        itemBuilder: (context, index) {
-                          final data = operationBloc.baNameList[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: AppColors.primaryColor,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: AppColors.primaryColor,
-                                  )),
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 0, right: 0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Card(
+                        elevation: 2,
+                        child: CustomDropdown.search(
+                          hintText: 'Select Mart',
+                          items: operationBloc.marts
+                              .map((m) => m.martName)
+                              .toList(),
+                          onChanged: (value) {
+                            // Find the index of the selected mart
+                            int exactIndex = operationBloc.marts
+                                .indexWhere((m) => m.martName == value);
+                            if (exactIndex != -1) {
+                              // Update the selectedMartId with the martId of the selected mart
+                              selectedMartId.value =
+                                  operationBloc.marts[exactIndex].martId ?? 0;
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        selectedMartId.value = 0;
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.cancel),
+                          )),
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Obx(
+                  () {
+                    final filteredBaNameList =
+                        operationBloc.baNameList.where((data) {
+                      // Show all employees when selectedMartId is 0, otherwise filter by martId
+                      return selectedMartId.value == 0 ||
+                          data.martId == selectedMartId.value.toString();
+                    }).toList();
+
+                    return filteredBaNameList.isEmpty
+                        ? Center(
+                            child:
+                                Text('No Employee to show for selected Mart'),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: AlwaysScrollableScrollPhysics(),
+                            itemCount: operationBloc.baNameList.length,
+                            itemBuilder: (context, index) {
+                              final data = operationBloc.baNameList[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 2.0),
+                                child: Card(
+                                  elevation: 2,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: AppColors.primaryColor,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: AppColors.primaryColor,
+                                        )),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
                                       child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(40),
-                                            child: Image.asset(
-                                              'assets/images/person.png',
-                                              fit: BoxFit.contain,
-                                              width: 80,
-                                              height: 80,
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
+                                                  child: Image.asset(
+                                                    'assets/images/person.png',
+                                                    fit: BoxFit.contain,
+                                                    width: 80,
+                                                    height: 80,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 2.w,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      data.name ?? 'N/a',
+                                                      style: CustomTextStyles
+                                                          .w600TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              size: 19),
+                                                    ),
+                                                    Text(
+                                                      'Role: ${data.role}',
+                                                      style: CustomTextStyles
+                                                          .lightTextStyle(
+                                                              color: AppColors
+                                                                  .primaryColorDark,
+                                                              size: 14),
+                                                    ),
+                                                    Text(
+                                                      'Email: ${data.email}',
+                                                      style: CustomTextStyles
+                                                          .lightTextStyle(
+                                                              color: AppColors
+                                                                  .primaryColorDark,
+                                                              size: 14),
+                                                    ),
+                                                    Text(
+                                                      'Status: ${data.status}',
+                                                      style: CustomTextStyles
+                                                          .lightTextStyle(
+                                                              color: AppColors
+                                                                  .primaryColorDark,
+                                                              size: 14),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 2.w,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                data.name ?? 'N/a',
-                                                style: CustomTextStyles
-                                                    .w600TextStyle(
-                                                        color: Colors.black,
-                                                        size: 19),
-                                              ),
-                                              Text(
-                                                'Role: ${data.role}',
-                                                style: CustomTextStyles
-                                                    .lightTextStyle(
-                                                        color: AppColors
-                                                            .primaryColorDark,
-                                                        size: 14),
-                                              ),
-                                              Text(
-                                                'Email: ${data.email}',
-                                                style: CustomTextStyles
-                                                    .lightTextStyle(
-                                                        color: AppColors
-                                                            .primaryColorDark,
-                                                        size: 14),
-                                              ),
-                                              Text(
-                                                'Status: ${data.status}',
-                                                style: CustomTextStyles
-                                                    .lightTextStyle(
-                                                        color: AppColors
-                                                            .primaryColorDark,
-                                                        size: 14),
-                                              )
-                                            ],
-                                          )
                                         ],
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        }),
+                              );
+                            });
+                  },
+                ),
               )
             ],
           ),

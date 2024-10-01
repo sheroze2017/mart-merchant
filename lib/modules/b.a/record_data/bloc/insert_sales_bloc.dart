@@ -24,55 +24,72 @@ class InsertSalesRecord extends GetxController {
 
   Future<void> insertSalesRecord(BuildContext context) async {
     statusRecordLoader.value = true;
-    final List<Map<String, String>> salesRecords = await List.generate(
+    final List<Map<String, String>> salesRecords = List.generate(
       productList.length,
       (index) => {
         "product_id": productList[index].productId.toString(),
         "qty": textControllers[index].text.toString(),
       },
-    );
-    try {
-      final response = await baOperationService.insertSalesRecord(salesRecords);
-
-      if (response != null &&
-          response['data'] != null &&
-          response['code'] == 200) {
-        statusRecordLoader.value = false;
-        // Success message
-        Get.back();
-        AnimatedSnackbar.showSnackbar(
-          context: context,
-          message: response['message'] ??
-              'Sales record inserted successfully', // Fallback message
-          icon: Icons.info,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
-      } else {
-        statusRecordLoader.value = false;
-
-        // Failure message
-        AnimatedSnackbar.showSnackbar(
-          context: context,
-          message: response['message']?.toString() ??
-              'Failed to insert sales record', // Fallback error message
-          icon: Icons.error,
-          backgroundColor: const Color.fromARGB(255, 241, 235, 235),
-          textColor: Colors.black,
-          fontSize: 14.0,
-        );
-      }
-    } catch (error) {
+    ).where((record) {
+      final qty = record["qty"];
+      // Exclude records where qty is empty, null, or "0"
+      return qty != null && qty.isNotEmpty && qty != "0";
+    }).toList();
+    if (salesRecords.isEmpty) {
       statusRecordLoader.value = false;
       AnimatedSnackbar.showSnackbar(
         context: context,
-        message: 'An error occurred: ${error.toString()}',
-        icon: Icons.error,
+        message: 'Please record sales for any item', // Fallback message
+        icon: Icons.info,
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 14.0,
       );
+    } else {
+      try {
+        final response =
+            await baOperationService.insertSalesRecord(salesRecords);
+
+        if (response != null &&
+            response['data'] != null &&
+            response['code'] == 200) {
+          statusRecordLoader.value = false;
+          // Success message
+          Get.back();
+          AnimatedSnackbar.showSnackbar(
+            context: context,
+            message: response['message'] ??
+                'Sales record inserted successfully', // Fallback message
+            icon: Icons.info,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+        } else {
+          statusRecordLoader.value = false;
+
+          // Failure message
+          AnimatedSnackbar.showSnackbar(
+            context: context,
+            message: response['message']?.toString() ??
+                'Failed to insert sales record', // Fallback error message
+            icon: Icons.error,
+            backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+            textColor: Colors.black,
+            fontSize: 14.0,
+          );
+        }
+      } catch (error) {
+        statusRecordLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: 'An error occurred: ${error.toString()}',
+          icon: Icons.error,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      }
     }
   }
 
@@ -89,7 +106,7 @@ class InsertSalesRecord extends GetxController {
         fetchProductCompanyLoader.value = false;
         productList.value = response.data ?? [];
         textControllers.value = List.generate(
-            response.data!.length, (index) => TextEditingController(text: '0'));
+            response.data!.length, (index) => TextEditingController(text: ''));
       } else {
         fetchProductCompanyLoader.value = false;
       }

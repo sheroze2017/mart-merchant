@@ -19,7 +19,7 @@ class ShortStockControllerAdmin extends GetxController {
       if (response!.data != null && response.code == 200) {
         allRestockLoader.value = false;
         restockRecordCompany.value =
-            response.data!.where((e) => e.status == 'pending').toList() ?? [];
+            response.data!.where((e) => e.status == 'stock').toList() ?? [];
         update();
       } else {
         allRestockLoader.value = false;

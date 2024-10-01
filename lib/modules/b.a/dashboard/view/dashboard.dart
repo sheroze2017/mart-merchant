@@ -158,11 +158,13 @@ class _BaHomeState extends State<BaHome> {
                       onTap: () {
                         final TextEditingController dialogController =
                             TextEditingController();
-
+                        final TextEditingController soldController =
+                            TextEditingController();
                         showDialog(
                           context: context,
                           builder: (context) => CustomDialog(
                             textcontroller: dialogController,
+                            productSold: soldController,
                           ),
                         );
                       },

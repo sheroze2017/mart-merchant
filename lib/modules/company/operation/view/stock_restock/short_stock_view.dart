@@ -24,20 +24,44 @@ class ShortStockScreen extends StatelessWidget {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: CustomDropdown.search(
-                  hintText: 'Select Mart',
-                  items:
-                      controllerCompany.marts.map((m) => m.martName).toList(),
-                  onChanged: (value) {
-                    int exactIndex = controllerCompany.marts
-                        .indexWhere((m) => m.martName == value);
-                    if (exactIndex != -1) {
-                      martId.text =
-                          controllerCompany.marts[exactIndex].martId.toString();
-                      controller.getallRestockRequest(martId.text);
-                    }
-                  },
+                padding: const EdgeInsets.only(top: 8.0, left: 8, right: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Card(
+                        elevation: 2,
+                        child: CustomDropdown.search(
+                          hintText: 'Select Mart',
+                          items: controllerCompany.marts
+                              .map((m) => m.martName)
+                              .toList(),
+                          onChanged: (value) {
+                            int exactIndex = controllerCompany.marts
+                                .indexWhere((m) => m.martName == value);
+                            if (exactIndex != -1) {
+                              martId.text = controllerCompany
+                                  .marts[exactIndex].martId
+                                  .toString();
+                              controller.getallRestockRequest(martId.text);
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        controller.getallRestockRequest('');
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.cancel),
+                          )),
+                    )
+                  ],
                 ),
               ),
               Expanded(
@@ -104,37 +128,38 @@ class ShortStockScreen extends StatelessWidget {
                                                                 FontWeight.bold,
                                                           ),
                                                         ),
-                                                        const SizedBox(
-                                                            height: 10),
-                                                        Text(
-                                                          'If you ask for restock by mistaken then cancel your request from below',
-                                                          style: CustomTextStyles
-                                                              .lightTextStyle(),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 10),
-                                                        Align(
-                                                            alignment: Alignment
-                                                                .centerRight,
-                                                            child:
-                                                                RoundedButton(
-                                                                    text:
-                                                                        'Cancelled',
-                                                                    onPressed:
-                                                                        () {
-                                                                      controller.removeRestockRequest(
-                                                                          toothpaste
-                                                                              .restockId
-                                                                              .toString(),
-                                                                          'Cancelled by Admin',
-                                                                          context);
-                                                                    },
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .red,
-                                                                    textColor:
-                                                                        Colors
-                                                                            .white)),
+                                                        // const SizedBox(
+                                                        //     height: 10),
+                                                        // Text(
+                                                        //   'If you ask for restock by mistaken then cancel your request from below',
+                                                        //   style: CustomTextStyles
+                                                        //       .lightTextStyle(),
+                                                        // ),
+                                                        // const SizedBox(
+                                                        //     height: 10),
+                                                        // Align(
+                                                        //     alignment: Alignment
+                                                        //         .centerRight,
+                                                        //     child:
+                                                        //         RoundedButton(
+                                                        //             text:
+                                                        //                 'Cancelled',
+                                                        //             onPressed:
+                                                        //                 () {
+                                                        //               controller.removeRestockRequest(
+                                                        //                   toothpaste
+                                                        //                       .restockId
+                                                        //                       .toString(),
+                                                        //                   'Cancelled by Admin',
+                                                        //                   context);
+                                                        //             },
+                                                        //             backgroundColor:
+                                                        //                 Colors
+                                                        //                     .red,
+                                                        //             textColor:
+                                                        //                 Colors
+                                                        //                     .white)),
+
                                                         SizedBox(height: 10),
                                                         Text(
                                                           'If restock is done then change status to completed',
@@ -156,8 +181,11 @@ class ShortStockScreen extends StatelessWidget {
                                                                           toothpaste
                                                                               .restockId
                                                                               .toString(),
-                                                                          'Completed',
+                                                                          'stock',
                                                                           context);
+                                                                      controller
+                                                                          .getallRestockRequest(
+                                                                              '');
                                                                     },
                                                                     backgroundColor:
                                                                         AppColors
@@ -175,7 +203,7 @@ class ShortStockScreen extends StatelessWidget {
                                               //d from the controller to remove the item
                                               ///controller.removeRestockRecord(toothpaste);
                                             },
-                                            text: 'Change',
+                                            text: 'Restock',
                                             textColor: AppColors.whiteColor,
                                             backgroundColor:
                                                 AppColors.primaryColorDark,

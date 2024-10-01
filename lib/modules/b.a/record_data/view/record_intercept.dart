@@ -10,8 +10,10 @@ import 'package:get/get.dart';
 
 class CustomDialog extends StatelessWidget {
   final TextEditingController textcontroller;
+  final TextEditingController productSold;
+
   final RecordController controller = Get.find();
-  CustomDialog({required this.textcontroller});
+  CustomDialog({required this.textcontroller, required this.productSold});
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,22 @@ class CustomDialog extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
+            TextFormField(
+              validator: Validator.ValidText,
+              controller: productSold,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly
+              ], // Allow only numbers
+
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Product sold qty',
+                labelStyle: CustomTextStyles.lightTextStyle(),
+                hintText: 'Enter Item count sold',
+              ),
+            ),
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -70,7 +88,8 @@ class CustomDialog extends StatelessWidget {
                       onPressed: () {
                         FocusScope.of(context).unfocus();
                         // Handle submission logic here
-                        if (textcontroller.text.isEmpty) {
+                        if (textcontroller.text.isEmpty ||
+                            productSold.text.isEmpty) {
                           AnimatedSnackbar.showSnackbar(
                             context: context,
                             message: 'Please enter count',
@@ -81,7 +100,7 @@ class CustomDialog extends StatelessWidget {
                           );
                         } else {
                           controller.recordIntercept(
-                              context, textcontroller.text);
+                              context, textcontroller.text, productSold.text);
                         }
                       },
                       backgroundColor: Colors.blue.shade900,

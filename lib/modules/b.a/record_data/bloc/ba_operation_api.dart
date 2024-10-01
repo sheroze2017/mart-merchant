@@ -24,7 +24,7 @@ class BaOperationService extends BaseService {
   }
 
   Future<Map<String, dynamic>> insertInterceptRecord(
-      String interceptCount) async {
+      String interceptCount, String sold) async {
     var userId = await Utils.getUserId();
     var martId = await Utils.getMartId();
     var companyId = await Utils.getCompanyId();
@@ -35,6 +35,7 @@ class BaOperationService extends BaseService {
         "mart_id": martId,
         "company_id": companyId,
         "intercepts": interceptCount,
+        "sold": sold
       };
 
       final response = await dioClient.post(Endpoints.baIntercept, data: data);

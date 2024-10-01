@@ -27,20 +27,44 @@ class CompanySales extends StatelessWidget {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: CustomDropdown.search(
-                  hintText: 'Select Mart',
-                  items:
-                      controllerCompany.marts.map((m) => m.martName).toList(),
-                  onChanged: (value) {
-                    int exactIndex = controllerCompany.marts
-                        .indexWhere((m) => m.martName == value);
-                    if (exactIndex != -1) {
-                      martId.text =
-                          controllerCompany.marts[exactIndex].martId.toString();
-                      controller.getSalesforMartCompany(martId.text);
-                    }
-                  },
+                padding: const EdgeInsets.only(top: 8.0, left: 8, right: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Card(
+                        elevation: 2,
+                        child: CustomDropdown.search(
+                          hintText: 'Select Mart',
+                          items: controllerCompany.marts
+                              .map((m) => m.martName)
+                              .toList(),
+                          onChanged: (value) {
+                            int exactIndex = controllerCompany.marts
+                                .indexWhere((m) => m.martName == value);
+                            if (exactIndex != -1) {
+                              martId.text = controllerCompany
+                                  .marts[exactIndex].martId
+                                  .toString();
+                              controller.getSalesforMartCompany(martId.text);
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        controller.getSalesforMartCompany('');
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.cancel),
+                          )),
+                    )
+                  ],
                 ),
               ),
               Expanded(

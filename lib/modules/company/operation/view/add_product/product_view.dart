@@ -27,6 +27,7 @@ class _ProductScreenState extends State<ProductScreen> {
     super.initState();
     controller.getAllCategory();
     controller.getAllMart();
+    controller.getAllProductByCompanyMart(null, null, context);
   }
 
   @override
@@ -70,24 +71,43 @@ class _ProductScreenState extends State<ProductScreen> {
               SizedBox(
                 height: 1.h,
               ),
-              CustomDropdown(
-                hintText: 'Select Mart',
-                items: controller.marts.map((m) => m.martName).toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    int exactIndex =
-                        controller.marts.indexWhere((m) => m.martName == value);
-                    if (exactIndex != -1) {
-                      controller.getAllProductByCompanyMart(
-                          null, controller.marts[exactIndex].martId, context);
+              Card(
+                elevation: 2,
+                child: CustomDropdown(
+                  hintText: 'Select Mart',
+                  items: controller.marts.map((m) => m.martName).toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      int exactIndex = controller.marts
+                          .indexWhere((m) => m.martName == value);
+                      if (exactIndex != -1) {
+                        controller.getAllProductByCompanyMart(
+                            null, controller.marts[exactIndex].martId, context);
+                      }
                     }
-                  }
-                },
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  'All Products',
+                  style: CustomTextStyles.w600TextStyle(),
+                ),
+              ),
+              SizedBox(
+                height: 1.h,
               ),
               Obx(() {
                 if (controller.productList.isEmpty) {
                   return const Center(
-                    child: headingSmall(title: 'No Products to show'),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 30.0),
+                      child: headingSmall(title: 'No Products to show'),
+                    ),
                   );
                 } else if (controller.fetchProductCompanyLoader.value) {
                   return Padding(
