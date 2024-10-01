@@ -367,12 +367,13 @@ class AdminOperation extends GetxController {
           Get.back();
           AnimatedSnackbar.showSnackbar(
             context: context,
-            message: 'BA assigned to new Employee',
+            message: 'B.A assign to new Company successfully',
             icon: Icons.info,
             backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 14.0,
           );
+          getAllBa();
         } else {
           assignBaLoader.value = false;
           AnimatedSnackbar.showSnackbar(

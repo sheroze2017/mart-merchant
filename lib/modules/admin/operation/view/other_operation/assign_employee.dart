@@ -28,6 +28,7 @@ class AssignNewEmploye extends StatelessWidget {
             children: [
               const heading(title: 'BA Detail'),
               Card(
+                color: AppColors.redLight,
                 child: ListTile(
                   title: Text('Name: ' + user.name.toString(),
                       style: CustomTextStyles.darkTextStyle()),
@@ -35,42 +36,51 @@ class AssignNewEmploye extends StatelessWidget {
                       style: CustomTextStyles.lightTextStyle()),
                 ),
               ),
+              SizedBox(
+                height: 1.h,
+              ),
               const heading(title: 'Select Compnay'),
-              CustomDropdown.search(
-                decoration: CustomDropdownDecoration(
-                  prefixIcon: Icon(Icons.location_on_sharp),
-                  expandedFillColor: AppColors.primaryColor,
-                  closedFillColor: AppColors.primaryColor,
+              Card(
+                elevation: 2,
+                child: CustomDropdown.search(
+                  decoration: CustomDropdownDecoration(
+                    prefixIcon: Icon(Icons.location_on_sharp),
+                    expandedFillColor: AppColors.primaryColor,
+                    closedFillColor: AppColors.primaryColor,
+                  ),
+                  hintText: 'Select Company',
+                  items: companyController.companyNameList
+                      .map((company) => company.name)
+                      .toList(),
+                  onChanged: (selected) {
+                    if (selected != null) {
+                      companyController.selectCompanyByName(selected);
+                      companyController.getAllMart();
+                    }
+                  },
                 ),
-                hintText: 'Select Company',
-                items: companyController.companyNameList
-                    .map((company) => company.name)
-                    .toList(),
-                onChanged: (selected) {
-                  if (selected != null) {
-                    companyController.selectCompanyByName(selected);
-                    companyController.getAllMart();
-                  }
-                },
               ),
               SizedBox(
                 height: 2.h,
               ),
               const heading(title: 'Select Mart'),
-              CustomDropdown.search(
-                decoration: CustomDropdownDecoration(
-                  prefixIcon: Icon(Icons.location_on_sharp),
-                  expandedFillColor: AppColors.primaryColor,
-                  closedFillColor: AppColors.primaryColor,
+              Card(
+                elevation: 2,
+                child: CustomDropdown.search(
+                  decoration: CustomDropdownDecoration(
+                    prefixIcon: Icon(Icons.location_on_sharp),
+                    expandedFillColor: AppColors.primaryColor,
+                    closedFillColor: AppColors.primaryColor,
+                  ),
+                  hintText: 'Select Mart',
+                  items:
+                      companyController.marts.map((ba) => ba.martName).toList(),
+                  onChanged: (selected) {
+                    if (selected != null) {
+                      companyController.selectMartbyName(selected);
+                    }
+                  },
                 ),
-                hintText: 'Select Mart',
-                items:
-                    companyController.marts.map((ba) => ba.martName).toList(),
-                onChanged: (selected) {
-                  if (selected != null) {
-                    companyController.selectMartbyName(selected);
-                  }
-                },
               ),
             ],
           ),
@@ -87,7 +97,6 @@ class AssignNewEmploye extends StatelessWidget {
                   onPressed: () async {
                     await companyController.assignBAToCompanyMart(
                         user.userId.toString(), context);
-                  
                   },
                   backgroundColor: AppColors.primaryColorDark,
                   textColor: AppColors.whiteColor),

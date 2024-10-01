@@ -1,5 +1,6 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/other_operation/assign_employee.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
@@ -49,7 +50,7 @@ class _AllBaToAssignState extends State<AllBaToAssign> {
                     itemBuilder: (context, index) {
                       final data = controller.baNameList[index];
                       return Card(
-                        color: AppColors.primaryColor,
+                        color: AppColors.redLight,
                         elevation: 2,
                         child: ListTile(
                           onTap: () {
@@ -78,6 +79,14 @@ class _AllBaToAssignState extends State<AllBaToAssign> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'UserId: ${data.userId}',
+                                  style:
+                                      CustomTextStyles.lightTextStyle(size: 13),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Current Company : ${Utils.getCompanyNameByUserId(controller.companyNameList, data.companyId.toString())}',
                                   style:
                                       CustomTextStyles.lightTextStyle(size: 13),
                                 ),

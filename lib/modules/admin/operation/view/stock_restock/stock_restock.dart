@@ -85,7 +85,6 @@ class ShortStockScreenAdmin extends StatelessWidget {
                                     color: AppColors.primaryColor,
                                     elevation: 2,
                                     child: ExpansionTile(
-                                      
                                       title: Text(
                                         toothpaste
                                                 .productDetails?.productName ??
@@ -149,131 +148,131 @@ class ShortStockScreenAdmin extends StatelessWidget {
                                                     .lightSmallTextStyle(
                                                         size: 12),
                                               ),
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: RoundedButton(
-                                                      onPressed: () {
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return AlertDialog(
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12.0),
-                                                              ),
-                                                              contentPadding:
-                                                                  EdgeInsets
-                                                                      .all(
-                                                                          16.0),
-                                                              content: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .min, // Keep the dialog size to its content size
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  const Text(
-                                                                    'Change Status',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          18,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                      height:
-                                                                          10),
-                                                                  Text(
-                                                                    'If you asked for a restock by mistake, you can cancel your request below.',
-                                                                    style: CustomTextStyles
-                                                                        .lightTextStyle(),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                      height:
-                                                                          10),
-                                                                  Align(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerRight,
-                                                                    child:
-                                                                        RoundedButton(
-                                                                      text:
-                                                                          'Cancelled',
-                                                                      onPressed:
-                                                                          () {
-                                                                        controller.removeRestockRequest(
-                                                                            toothpaste.restockId.toString(),
-                                                                            'Cancelled by Admin',
-                                                                            context);
-                                                                        Get.back(); // Close the dialog after action
-                                                                      },
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .red,
-                                                                      textColor:
-                                                                          Colors
-                                                                              .white,
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                      height:
-                                                                          10),
-                                                                  Text(
-                                                                    'If the restock is done, change the status to completed.',
-                                                                    style: CustomTextStyles
-                                                                        .lightTextStyle(),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                      height:
-                                                                          10),
-                                                                  Align(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerRight,
-                                                                    child:
-                                                                        RoundedButton(
-                                                                      text:
-                                                                          'Completed',
-                                                                      onPressed:
-                                                                          () {
-                                                                        controller.removeRestockRequest(
-                                                                            toothpaste.restockId.toString(),
-                                                                            'Completed',
-                                                                            context);
-                                                                        Get.back(); // Close the dialog after action
-                                                                      },
-                                                                      backgroundColor:
-                                                                          AppColors
-                                                                              .primaryColorDark,
-                                                                      textColor:
-                                                                          AppColors
-                                                                              .whiteColor,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            );
-                                                          },
-                                                        );
-                                                      },
-                                                      text: 'Change',
-                                                      textColor:
-                                                          AppColors.whiteColor,
-                                                      backgroundColor: AppColors
-                                                          .primaryColorDark,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                              // Row(
+                                              //   children: [
+                                              //     Expanded(
+                                              //       child: RoundedButton(
+                                              //         onPressed: () {
+                                              //           showDialog(
+                                              //             context: context,
+                                              //             builder: (BuildContext
+                                              //                 context) {
+                                              //               return AlertDialog(
+                                              //                 shape:
+                                              //                     RoundedRectangleBorder(
+                                              //                   borderRadius:
+                                              //                       BorderRadius
+                                              //                           .circular(
+                                              //                               12.0),
+                                              //                 ),
+                                              //                 contentPadding:
+                                              //                     EdgeInsets
+                                              //                         .all(
+                                              //                             16.0),
+                                              //                 content: Column(
+                                              //                   mainAxisSize:
+                                              //                       MainAxisSize
+                                              //                           .min, // Keep the dialog size to its content size
+                                              //                   crossAxisAlignment:
+                                              //                       CrossAxisAlignment
+                                              //                           .start,
+                                              //                   children: [
+                                              //                     const Text(
+                                              //                       'Change Status',
+                                              //                       style:
+                                              //                           TextStyle(
+                                              //                         fontSize:
+                                              //                             18,
+                                              //                         fontWeight:
+                                              //                             FontWeight
+                                              //                                 .bold,
+                                              //                       ),
+                                              //                     ),
+                                              //                     const SizedBox(
+                                              //                         height:
+                                              //                             10),
+                                              //                     Text(
+                                              //                       'If you asked for a restock by mistake, you can cancel your request below.',
+                                              //                       style: CustomTextStyles
+                                              //                           .lightTextStyle(),
+                                              //                     ),
+                                              //                     const SizedBox(
+                                              //                         height:
+                                              //                             10),
+                                              //                     Align(
+                                              //                       alignment:
+                                              //                           Alignment
+                                              //                               .centerRight,
+                                              //                       child:
+                                              //                           RoundedButton(
+                                              //                         text:
+                                              //                             'Cancelled',
+                                              //                         onPressed:
+                                              //                             () {
+                                              //                           controller.removeRestockRequest(
+                                              //                               toothpaste.restockId.toString(),
+                                              //                               'Cancelled by Admin',
+                                              //                               context);
+                                              //                           Get.back(); // Close the dialog after action
+                                              //                         },
+                                              //                         backgroundColor:
+                                              //                             Colors
+                                              //                                 .red,
+                                              //                         textColor:
+                                              //                             Colors
+                                              //                                 .white,
+                                              //                       ),
+                                              //                     ),
+                                              //                     const SizedBox(
+                                              //                         height:
+                                              //                             10),
+                                              //                     Text(
+                                              //                       'If the restock is done, change the status to completed.',
+                                              //                       style: CustomTextStyles
+                                              //                           .lightTextStyle(),
+                                              //                     ),
+                                              //                     const SizedBox(
+                                              //                         height:
+                                              //                             10),
+                                              //                     Align(
+                                              //                       alignment:
+                                              //                           Alignment
+                                              //                               .centerRight,
+                                              //                       child:
+                                              //                           RoundedButton(
+                                              //                         text:
+                                              //                             'Completed',
+                                              //                         onPressed:
+                                              //                             () {
+                                              //                           controller.removeRestockRequest(
+                                              //                               toothpaste.restockId.toString(),
+                                              //                               'Completed',
+                                              //                               context);
+                                              //                           Get.back(); // Close the dialog after action
+                                              //                         },
+                                              //                         backgroundColor:
+                                              //                             AppColors
+                                              //                                 .primaryColorDark,
+                                              //                         textColor:
+                                              //                             AppColors
+                                              //                                 .whiteColor,
+                                              //                       ),
+                                              //                     ),
+                                              //                   ],
+                                              //                 ),
+                                              //               );
+                                              //             },
+                                              //           );
+                                              //         },
+                                              //         text: 'Change',
+                                              //         textColor:
+                                              //             AppColors.whiteColor,
+                                              //         backgroundColor: AppColors
+                                              //             .primaryColorDark,
+                                              //       ),
+                                              //     ),
+                                              //   ],
+                                              // ),
                                             ],
                                           ),
                                         ),

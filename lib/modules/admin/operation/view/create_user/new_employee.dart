@@ -105,17 +105,18 @@ class _NewEmployeeState extends State<NewEmployee> {
               SizedBox(
                 height: 1.h,
               ),
-              const headingSmall(title: 'Location'),
-              RoundedBorderTextField(
-                  focusNode: _focusNode5,
-                  nextFocusNode: _focusNode6,
-                  controller: _locationController,
-                  hintText: 'City',
-                  validator: Validator.validateCity,
-                  icondata: Icons.location_city_sharp),
-              SizedBox(
-                height: 1.h,
-              ),
+              // const headingSmall(title: 'Location'),
+              // RoundedBorderTextField(
+              //     focusNode: _focusNode5,
+              //     nextFocusNode: _focusNode6,
+              //     controller: _locationController,
+              //     hintText: 'City',
+              //     validator: Validator.validateCity,
+              //     icondata: Icons.location_city_sharp),
+              // SizedBox(
+              //   height: 1.h,
+              // ),
+
               const headingSmall(title: 'Phone No'),
               RoundedBorderTextField(
                   validator: Validator.validatePhoneNumber,

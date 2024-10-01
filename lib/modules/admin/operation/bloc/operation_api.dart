@@ -160,8 +160,8 @@ class AdminOperationService extends BaseService {
       String startDate, String endDate) async {
     try {
       Map<String, dynamic> data = {
-        "start_date": startDate,
-        "end_date": endDate
+        "start_date": startDate == "null" ? "" : startDate,
+        "end_date": endDate == "null" ? "" : endDate
       };
 
       final response =

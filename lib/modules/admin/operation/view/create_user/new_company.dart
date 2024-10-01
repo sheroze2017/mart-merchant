@@ -103,22 +103,22 @@ class _NewCompanyState extends State<NewCompany> {
                 SizedBox(
                   height: 1.h,
                 ),
-                headingSmall(title: 'Location'),
-                RoundedBorderTextField(
-                    focusNode: _focusNode5,
-                    nextFocusNode: _focusNode6,
-                    controller: _locationController,
-                    hintText: 'City',
-                    validator: Validator.validateCity,
-                    icondata: Icons.location_city_sharp),
-                SizedBox(
-                  height: 1.h,
-                ),
+                // headingSmall(title: 'Location'),
+                // RoundedBorderTextField(
+                //     focusNode: _focusNode5,
+                //     nextFocusNode: _focusNode6,
+                //     controller: _locationController,
+                //     hintText: 'City',
+                //     validator: Validator.validateCity,
+                //     icondata: Icons.location_city_sharp),
+                // SizedBox(
+                //   height: 1.h,
+                // ),
                 headingSmall(title: 'Phone No'),
                 RoundedBorderTextField(
                     validator: Validator.validatePhoneNumber,
-                    focusNode: _focusNode6,
-                    nextFocusNode: _focusNode7,
+                    focusNode: _focusNode5,
+                    nextFocusNode: _focusNode6,
                     controller: _phoneNoController,
                     hintText: 'Phone No',
                     icondata: Icons.phone_sharp),

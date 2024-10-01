@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
 import 'package:ba_merchandise/modules/auth/model/auth_model.dart';
 import 'package:ba_merchandise/services/local_storage/auth_storage.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,18 @@ class Utils {
     final AuthStorage authStorage = Get.find<AuthStorage>();
     AuthResponse? authResponse = await authStorage.get();
     return authResponse!.data?.userId;
+  }
+
+  static String? getCompanyNameByUserId(
+      RxList<ByUserRoleData> companyNameList, String userId) {
+    // Find the ByUserRoleData instance with the matching userId
+    final ByUserRoleData? userRoleData = companyNameList.firstWhere(
+      (data) => data.userId.toString() == userId,
+      orElse: () => ByUserRoleData(name: 'N/A'),
+    );
+
+    // Return the company name if found, otherwise return null
+    return userRoleData?.name;
   }
 
   static Future<String?> getMartId() async {
