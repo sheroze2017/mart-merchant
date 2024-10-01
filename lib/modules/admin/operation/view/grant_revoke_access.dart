@@ -3,6 +3,7 @@ import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../b.a/dashboard/view/dashboard.dart';
@@ -31,7 +32,11 @@ class _GrantRevokeAccessState extends State<GrantRevokeAccess> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Text('Employee Access'),
+          centerTitle: true,
+          title: Text(
+            'Employee Access',
+            style: CustomTextStyles.w600TextStyle(),
+          ),
           bottom: TabBar(
             tabs: [
               Tab(text: 'Active'),
@@ -80,57 +85,72 @@ class _GrantRevokeAccessState extends State<GrantRevokeAccess> {
                       itemCount: filteredList.length,
                       itemBuilder: (context, index) {
                         final data = filteredList[index];
-                        return Card(
-                          color: AppColors.primaryColor,
-                          elevation: 2,
-                          child: ListTile(
-                            leading: Container(
-                              height: 2.h,
-                              width: 2.h,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: data.status == 'active'
-                                      ? Colors.green
-                                      : Colors.red),
-                            ),
-                            minVerticalPadding: 5,
-                            title: Text(data.name.toString(),
-                                style: CustomTextStyles.darkTextStyle()),
-                            subtitle: Text(
-                                '*Email ${data.email} \n*Role ${data.role} \n*UserId ${data.userId}',
-                                style: CustomTextStyles.lightSmallTextStyle(
-                                    size: 13)),
-                            trailing: data.status == 'active'
-                                ? Text('Revoke Access',
-                                    style: CustomTextStyles.w600TextStyle(
-                                        size: 10, color: Colors.red))
-                                : Text('Grant Access',
-                                    style: CustomTextStyles.w600TextStyle(
-                                        size: 10, color: Colors.green)),
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => CustomDialogMessage(
-                                  dialogText:
-                                      'Are you sure you want to change status for ${data.name}?',
-                                  buttonText1: 'No',
-                                  buttonText2: 'Yes',
-                                  onButton1Pressed: () {
-                                    Get.back();
-                                  },
-                                  onButton2Pressed: () {
-                                    controller.changeBAStatus(
-                                        data.userId.toString(),
-                                        data.status == 'active'
-                                            ? 'inactive'
-                                            : 'active',
-                                        context);
-                                  },
+                        return AnimationConfiguration.staggeredList(
+                            position: index,
+                            duration: const Duration(milliseconds: 375),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: FadeInAnimation(
+                                child: Card(
+                                  color: AppColors.primaryColor,
+                                  elevation: 2,
+                                  child: ListTile(
+                                    leading: Container(
+                                      height: 2.h,
+                                      width: 2.h,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          color: data.status == 'active'
+                                              ? Colors.green
+                                              : Colors.red),
+                                    ),
+                                    minVerticalPadding: 5,
+                                    title: Text(data.name.toString(),
+                                        style:
+                                            CustomTextStyles.darkTextStyle()),
+                                    subtitle: Text(
+                                        '*Email ${data.email} \n*Role ${data.role} \n*UserId ${data.userId}',
+                                        style: CustomTextStyles
+                                            .lightSmallTextStyle(size: 13)),
+                                    trailing: data.status == 'active'
+                                        ? Text('Revoke Access',
+                                            style:
+                                                CustomTextStyles.w600TextStyle(
+                                                    size: 10,
+                                                    color: Colors.red))
+                                        : Text('Grant Access',
+                                            style:
+                                                CustomTextStyles.w600TextStyle(
+                                                    size: 10,
+                                                    color: Colors.green)),
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            CustomDialogMessage(
+                                          dialogText:
+                                              'Are you sure you want to change status for ${data.name}?',
+                                          buttonText1: 'No',
+                                          buttonText2: 'Yes',
+                                          onButton1Pressed: () {
+                                            Get.back();
+                                          },
+                                          onButton2Pressed: () {
+                                            controller.changeBAStatus(
+                                                data.userId.toString(),
+                                                data.status == 'active'
+                                                    ? 'inactive'
+                                                    : 'active',
+                                                context);
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
-                        );
+                              ),
+                            ));
                       },
                     ),
             ],

@@ -8,6 +8,7 @@ import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:ba_merchandise/widgets/textfield/date_selector_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -139,117 +140,138 @@ class _BaAttendanceState extends State<BaAttendance> {
                       itemBuilder: (context, index) {
                         final data = controller.userAttendance[index];
                         if (controller.companyIndividual.value == null) {
-                          return Card(
-                            color: AppColors.primaryColor,
-                            elevation: 2,
-                            child: ExpansionTile(
-                              title: Text(
-                                data.name.toString(),
-                                style: CustomTextStyles.darkTextStyle(),
-                              ),
-                              trailing: const Icon(Icons.expand_more_rounded),
-                              childrenPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 0.0),
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Email: ${data.email}',
-                                    style: CustomTextStyles.lightTextStyle(
-                                        size: 13),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'UserId: ${data.userId}',
-                                    style: CustomTextStyles.lightTextStyle(
-                                        size: 13),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Currently assign: ${Utils.getCompanyNameByUserId(controller.companyNameList, data.companyId.toString())}',
-                                    style: CustomTextStyles.lightTextStyle(
-                                        size: 13),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: RoundedButton(
-                                          text: 'Details',
-                                          onPressed: () {
-                                            print('d');
-                                            Get.to(BaAttendanceDetail(
-                                              data: data,
-                                            ));
-                                          },
-                                          backgroundColor:
-                                              AppColors.primaryColorDark,
-                                          textColor: AppColors.whiteColor),
+                          return AnimationConfiguration.staggeredList(
+                            position: index,
+                            duration: const Duration(milliseconds: 375),
+                            child: SlideAnimation(
+                                verticalOffset: 50.0,
+                                child: FadeInAnimation(
+                                    child: Card(
+                                  color: AppColors.primaryColor,
+                                  elevation: 2,
+                                  child: ExpansionTile(
+                                    title: Text(
+                                      data.name.toString(),
+                                      style: CustomTextStyles.darkTextStyle(),
                                     ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                              ],
-                            ),
+                                    trailing:
+                                        const Icon(Icons.expand_more_rounded),
+                                    childrenPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 0.0),
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Email: ${data.email}',
+                                          style:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 13),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'UserId: ${data.userId}',
+                                          style:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 13),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Currently assign: ${Utils.getCompanyNameByUserId(controller.companyNameList, data.companyId.toString())}',
+                                          style:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 13),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 1.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: RoundedButton(
+                                                text: 'Details',
+                                                onPressed: () {
+                                                  print('d');
+                                                  Get.to(BaAttendanceDetail(
+                                                    data: data,
+                                                  ));
+                                                },
+                                                backgroundColor:
+                                                    AppColors.primaryColorDark,
+                                                textColor:
+                                                    AppColors.whiteColor),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 1.h,
+                                      ),
+                                    ],
+                                  ),
+                                ))),
                           );
                         } else if (controller.companyIndividual.value!.userId
                                 .toString() ==
                             data.companyId) {
-                          return Card(
-                            color: AppColors.primaryColor,
-                            elevation: 2,
-                            child: ExpansionTile(
-                              title: Text(
-                                data.name.toString(),
-                                style: CustomTextStyles.darkTextStyle(),
-                              ),
-                              trailing: const Icon(Icons.expand_more_rounded),
-                              childrenPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8.0),
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Email: ${data.email}',
-                                    style: CustomTextStyles.lightTextStyle(
-                                        size: 13),
+                          return AnimationConfiguration.staggeredList(
+                            position: index,
+                            duration: const Duration(milliseconds: 375),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: FadeInAnimation(
+                                  child: Card(
+                                color: AppColors.primaryColor,
+                                elevation: 2,
+                                child: ExpansionTile(
+                                  title: Text(
+                                    data.name.toString(),
+                                    style: CustomTextStyles.darkTextStyle(),
                                   ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'UserId: ${data.userId}',
-                                    style: CustomTextStyles.lightTextStyle(
-                                        size: 13),
-                                  ),
-                                ),
-                                Row(
+                                  trailing:
+                                      const Icon(Icons.expand_more_rounded),
+                                  childrenPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
                                   children: [
-                                    Expanded(
-                                      child: RoundedButton(
-                                          text: 'Details',
-                                          onPressed: () {
-                                            print('d');
-                                            Get.to(BaAttendanceDetail(
-                                              data: data,
-                                            ));
-                                          },
-                                          backgroundColor:
-                                              AppColors.primaryColorDark,
-                                          textColor: AppColors.whiteColor),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Email: ${data.email}',
+                                        style: CustomTextStyles.lightTextStyle(
+                                            size: 13),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'UserId: ${data.userId}',
+                                        style: CustomTextStyles.lightTextStyle(
+                                            size: 13),
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: RoundedButton(
+                                              text: 'Details',
+                                              onPressed: () {
+                                                print('d');
+                                                Get.to(BaAttendanceDetail(
+                                                  data: data,
+                                                ));
+                                              },
+                                              backgroundColor:
+                                                  AppColors.primaryColorDark,
+                                              textColor: AppColors.whiteColor),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              )),
                             ),
                           );
                         } else {

@@ -6,7 +6,6 @@ import 'package:ba_merchandise/modules/b.a/record_data/model/restock_data_model.
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
 import 'package:get/get.dart';
 
 class StockCount extends StatefulWidget {
@@ -56,6 +55,7 @@ class _StockCountState extends State<StockCount> with TickerProviderStateMixin {
   }
 }
 
+// Page to view stock
 class StockPage extends StatelessWidget {
   final RecordController controller = Get.find();
   final InsertSalesRecord salesController = Get.put(InsertSalesRecord());
@@ -63,23 +63,19 @@ class StockPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return AnimationLimiter(
-        child: ListView.builder(
-          itemCount: salesController.productList.length,
-          itemBuilder: (context, index) {
-            final toothpaste = salesController.productList[index];
-
-            // Use AnimationConfiguration to animate each list item.
-            return AnimationConfiguration.staggeredList(
-              position: index,
-              duration: const Duration(milliseconds: 375),
-              child: SlideAnimation(
-                verticalOffset:
-                    50.0, // Change the offset to control where the animation starts.
-                child: FadeInAnimation(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 4),
+      return ListView.builder(
+        itemCount: salesController.productList.length,
+        itemBuilder: (context, index) {
+          final toothpaste = salesController.productList[index];
+          return Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
+              child: AnimationConfiguration.staggeredList(
+                position: index,
+                duration: const Duration(milliseconds: 375),
+                child: SlideAnimation(
+                  verticalOffset: 50.0,
+                  child: FadeInAnimation(
                     child: Card(
                       color: AppColors.primaryColor,
                       elevation: 2,
@@ -103,10 +99,8 @@ class StockPage extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-            );
-          },
-        ),
+              ));
+        },
       );
     });
   }
@@ -135,92 +129,111 @@ class RestockPage extends StatelessWidget {
                         IndividualRestockData toothpaste =
                             controller.restockRecord[index];
                         return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 4),
-                          child: Card(
-                            color: AppColors.primaryColor,
-                            elevation: 2,
-                            child: ListTile(
-                                minVerticalPadding: 20,
-                                title: Text(
-                                    toothpaste.productDetails!.productName ??
-                                        'N/a',
-                                    style: CustomTextStyles.darkTextStyle()),
-                                subtitle: Text(
-                                    '${toothpaste.productDetails!.variant} \nPrice ${toothpaste.productDetails!.price}',
-                                    style:
-                                        CustomTextStyles.lightSmallTextStyle()),
-                                trailing: Column(
-                                  children: [
-                                    RoundedButtonSmall(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                              ),
-                                              contentPadding:
-                                                  EdgeInsets.all(16.0),
-                                              content: Column(
-                                                mainAxisSize: MainAxisSize
-                                                    .min, // Keep the dialog size to its content size
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text(
-                                                    'Change Status',
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: 10),
-                                                  Text(
-                                                    'If restock is done then change status to completed',
-                                                    style: CustomTextStyles
-                                                        .lightTextStyle(),
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  Align(
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: RoundedButton(
-                                                          text: 'Completed',
-                                                          onPressed: () {
-                                                            controller.removeRestockRequest(
-                                                                toothpaste
-                                                                    .restockId
-                                                                    .toString(),
-                                                                'stock',
-                                                                context);
-                                                          },
-                                                          backgroundColor: AppColors
-                                                              .primaryColorDark,
-                                                          textColor: AppColors
-                                                              .whiteColor)),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 4),
+                            child: AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(milliseconds: 375),
+                              child: SlideAnimation(
+                                verticalOffset: 50.0,
+                                child: FadeInAnimation(
+                                  child: Card(
+                                    color: AppColors.primaryColor,
+                                    elevation: 2,
+                                    child: ListTile(
+                                        minVerticalPadding: 20,
+                                        title: Text(
+                                            toothpaste.productDetails!
+                                                    .productName ??
+                                                'N/a',
+                                            style: CustomTextStyles
+                                                .darkTextStyle()),
+                                        subtitle: Text(
+                                            '${toothpaste.productDetails!.variant} \nPrice ${toothpaste.productDetails!.price}',
+                                            style: CustomTextStyles
+                                                .lightSmallTextStyle()),
+                                        trailing: Column(
+                                          children: [
+                                            RoundedButtonSmall(
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12.0),
+                                                      ),
+                                                      contentPadding:
+                                                          EdgeInsets.all(16.0),
+                                                      content: Column(
+                                                        mainAxisSize: MainAxisSize
+                                                            .min, // Keep the dialog size to its content size
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          const Text(
+                                                            'Change Status',
+                                                            style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          SizedBox(height: 10),
+                                                          Text(
+                                                            'If restock is done then change status to completed',
+                                                            style: CustomTextStyles
+                                                                .lightTextStyle(),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          Align(
+                                                              alignment: Alignment
+                                                                  .centerRight,
+                                                              child:
+                                                                  RoundedButton(
+                                                                      text:
+                                                                          'Completed',
+                                                                      onPressed:
+                                                                          () {
+                                                                        controller.removeRestockRequest(
+                                                                            toothpaste.restockId.toString(),
+                                                                            'stock',
+                                                                            context);
+                                                                      },
+                                                                      backgroundColor:
+                                                                          AppColors
+                                                                              .primaryColorDark,
+                                                                      textColor:
+                                                                          AppColors
+                                                                              .whiteColor)),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                );
 
-                                        // Call a metho
-                                        //d from the controller to remove the item
-                                        ///controller.removeRestockRecord(toothpaste);
-                                      },
-                                      text: 'Restock',
-                                      textColor: AppColors.whiteColor,
-                                      backgroundColor:
-                                          AppColors.primaryColorDark,
-                                    ),
-                                  ],
-                                )),
-                          ),
-                        );
+                                                // Call a metho
+                                                //d from the controller to remove the item
+                                                ///controller.removeRestockRecord(toothpaste);
+                                              },
+                                              text: 'Restock',
+                                              textColor: AppColors.whiteColor,
+                                              backgroundColor:
+                                                  AppColors.primaryColorDark,
+                                            ),
+                                          ],
+                                        )),
+                                  ),
+                                ),
+                              ),
+                            ));
                       },
                     );
         },
