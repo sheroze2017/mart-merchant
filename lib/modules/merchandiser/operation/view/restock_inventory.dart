@@ -2,6 +2,7 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/merchandiser/operation/bloc/operation_bloc.dart';
+import 'package:ba_merchandise/modules/merchandiser/operation/view/upload_image.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +97,9 @@ class RestockInventory extends StatelessWidget {
                     Expanded(
                       child: RoundedButtonSmall(
                           text: 'Save',
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(CameraScreen());
+                          },
                           backgroundColor: Colors.black,
                           textColor: Colors.white),
                     ),

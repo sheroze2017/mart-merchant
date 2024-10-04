@@ -22,13 +22,17 @@ class FeatureCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
+          shadowColor: AppColors.primaryColor,
           elevation: 4,
           color: isDone ? Colors.green.shade50 : AppColors.whiteColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(color: AppColors.primaryColor)),
           child: ListTile(
-            leading: Icon(icon),
+            leading: Icon(
+              icon,
+              color: AppColors.primaryColorDark,
+            ),
             title: Text(
               title,
               style: CustomTextStyles.darkTextStyle(),
@@ -48,13 +52,16 @@ class FeatureCard extends StatelessWidget {
                     ))
                 : Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
+                        border: Border.all(
+                          color: AppColors.primaryColorDark,
+                        ),
                         borderRadius: BorderRadius.circular(20)),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.all(3.0),
                       child: Icon(
                         Icons.arrow_forward_ios,
                         size: 15,
+                        color: AppColors.primaryColorDark,
                       ),
                     )),
             subtitle: Text(

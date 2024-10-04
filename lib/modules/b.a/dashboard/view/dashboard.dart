@@ -121,7 +121,7 @@ class _BaHomeState extends State<BaHome> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     FeatureCard(
-                      icon: Icons.co_present_sharp,
+                      icon: Icons.record_voice_over_sharp,
                       title: 'Record sales',
                       onTap: () {
                         Get.toNamed(Routes.RECORD_SALES);
@@ -137,7 +137,7 @@ class _BaHomeState extends State<BaHome> {
                     //   subtitle: 'Record competitor data for product',
                     // ),
                     FeatureCard(
-                      icon: Icons.co_present_sharp,
+                      icon: Icons.hourglass_empty,
                       title: 'Short Stock/Restock',
                       onTap: () {
                         Get.toNamed(Routes.STOCK_COUNT);
@@ -145,7 +145,7 @@ class _BaHomeState extends State<BaHome> {
                       subtitle: 'Report low/short stock',
                     ),
                     FeatureCard(
-                      icon: Icons.co_present_sharp,
+                      icon: Icons.price_change,
                       title: 'Product Price',
                       onTap: () {
                         Get.toNamed(Routes.PRODUCT_PRICE);
@@ -153,7 +153,7 @@ class _BaHomeState extends State<BaHome> {
                       subtitle: 'Set product price',
                     ),
                     FeatureCard(
-                      icon: Icons.co_present_sharp,
+                      icon: Icons.meeting_room,
                       title: 'Record Intercepts',
                       onTap: () {
                         final TextEditingController dialogController =

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 class ProfileSection extends StatelessWidget {
   bool showAddress;
   ProfileSection({
@@ -25,7 +26,7 @@ class ProfileSection extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               AppColors.primaryColor,
-              Colors.blue.shade100,
+              AppColors.redLight,
               AppColors.primaryColor,
             ],
             begin: Alignment.topLeft,
@@ -49,7 +50,7 @@ class ProfileSection extends StatelessWidget {
                         Obx(() => Text(
                               controller.userData.value!.phone.toString(),
                               style: CustomTextStyles.lightSmallTextStyle(
-                                  size: 14, color: Colors.green),
+                                  size: 14, color: AppColors.primaryColorDark),
                             ))
                       ],
                     ),
@@ -81,7 +82,8 @@ class ProfileSection extends StatelessWidget {
                           ? Obx(() => Text(
                                 controller.userData.value!.location.toString(),
                                 style: CustomTextStyles.lightSmallTextStyle(
-                                    size: 12, color: Colors.green),
+                                    size: 12,
+                                    color: AppColors.primaryColorDark),
                               ))
                           : Container()
                     ],

@@ -67,39 +67,95 @@ class StockPage extends StatelessWidget {
         itemCount: salesController.productList.length,
         itemBuilder: (context, index) {
           final toothpaste = salesController.productList[index];
-          return Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
-              child: AnimationConfiguration.staggeredList(
-                position: index,
-                duration: const Duration(milliseconds: 375),
-                child: SlideAnimation(
-                  verticalOffset: 50.0,
-                  child: FadeInAnimation(
-                    child: Card(
-                      color: AppColors.primaryColor,
-                      elevation: 2,
-                      child: ListTile(
-                        minVerticalPadding: 20,
-                        title: Text(toothpaste.productName.toString(),
-                            style: CustomTextStyles.darkTextStyle()),
-                        subtitle: Text(
-                            '${toothpaste.variant} \nQty Available ${toothpaste.qty}',
-                            style: CustomTextStyles.lightSmallTextStyle()),
-                        trailing: RoundedButtonSmall(
-                          onPressed: () {
-                            controller.restockRequest(
-                                toothpaste.productId.toString(), context);
-                          },
-                          text: 'Restock',
-                          textColor: AppColors.whiteColor,
-                          backgroundColor: Colors.blue,
+
+          return toothpaste.status == 'restock'
+              ? Container()
+              : Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
+                  child: AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 375),
+                    child: SlideAnimation(
+                      verticalOffset: 50.0,
+                      child: FadeInAnimation(
+                        child: Card(
+                          color: AppColors.primaryColor,
+                          elevation: 2,
+                          child: ListTile(
+                            minVerticalPadding: 20,
+                            title: Text(toothpaste.productName.toString(),
+                                style: CustomTextStyles.darkTextStyle()),
+                            subtitle: Text(
+                                '${toothpaste.variant} \nQty Available ${toothpaste.qty}',
+                                style: CustomTextStyles.lightSmallTextStyle()),
+                            trailing: RoundedButtonSmall(
+                              onPressed: () async {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
+                                      contentPadding: EdgeInsets.all(16.0),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize
+                                            .min, // Keep the dialog size to its content size
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            'Change Status',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            'Send request for restock',
+                                            style: CustomTextStyles
+                                                .lightTextStyle(),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Align(
+                                              alignment: Alignment.centerRight,
+                                              child: RoundedButton(
+                                                  text: 'Send Request',
+                                                  onPressed: () async {
+                                                    await controller
+                                                        .restockRequest(
+                                                            toothpaste.productId
+                                                                .toString(),
+                                                            context);
+                                                    salesController
+                                                        .getAllProductByCompanyMart();
+                                                  },
+                                                  backgroundColor: AppColors
+                                                      .primaryColorDark,
+                                                  textColor:
+                                                      AppColors.whiteColor)),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+
+                                // Call a metho
+                                //d from the controller to remove the item
+                                ///controller.removeRestockRecord(toothpaste);
+                              },
+                              text: 'Restock',
+                              textColor: AppColors.whiteColor,
+                              backgroundColor: Colors.blue,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ));
+                  ));
         },
       );
     });
@@ -109,6 +165,8 @@ class StockPage extends StatelessWidget {
 // Page to restock items
 class RestockPage extends StatelessWidget {
   final c = Get.put(RecordController());
+  final InsertSalesRecord salesController = Get.find<InsertSalesRecord>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,11 +259,13 @@ class RestockPage extends StatelessWidget {
                                                                       text:
                                                                           'Completed',
                                                                       onPressed:
-                                                                          () {
-                                                                        controller.removeRestockRequest(
+                                                                          () async {
+                                                                        await controller.removeRestockRequest(
                                                                             toothpaste.restockId.toString(),
                                                                             'stock',
                                                                             context);
+                                                                        salesController
+                                                                            .getAllProductByCompanyMart();
                                                                       },
                                                                       backgroundColor:
                                                                           AppColors

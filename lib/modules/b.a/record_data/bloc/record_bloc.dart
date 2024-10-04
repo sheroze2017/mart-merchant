@@ -33,7 +33,8 @@ class RecordController extends GetxController {
       BuildContext context, String count, String sold) async {
     statusRecordLoader.value = true;
     try {
-      final response = await baOperationService.insertInterceptRecord(count,sold);
+      final response =
+          await baOperationService.insertInterceptRecord(count, sold);
       if (response != null &&
           response['data'] != null &&
           response['code'] == 200) {
@@ -84,6 +85,7 @@ class RecordController extends GetxController {
           response['code'] == 200) {
         stockRequest.value = false;
         getallRestockRequest();
+        Get.back();
         AnimatedSnackbar.showSnackbar(
           context: context,
           message: 'Product restock request sended', // Fallback message
