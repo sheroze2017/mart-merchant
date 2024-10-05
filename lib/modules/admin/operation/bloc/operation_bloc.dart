@@ -25,12 +25,13 @@ class AdminOperation extends GetxController {
   RxList<ByUserRoleData> companyNameList = RxList();
   Rxn<ByUserRoleData> companyIndividual = Rxn();
   RxList<ByUserRoleData> baNameList = RxList();
+  RxList<ByUserRoleData> MerchantNameList = RxList();
+
   RxList<IndividualUserAttendance> userAttendance = RxList();
   RxList<IndividualSalesData> individualSales = RxList();
 
-  RxList<MartData> marts = RxList();
   Rxn<ByUserRoleData> selectedCompanyIndividual = Rxn();
-
+  RxList<MartData> marts = RxList();
   CompanyOperationService _companyOperationService = CompanyOperationService();
   final AdminOperationService _adminOperationService = AdminOperationService();
 
@@ -44,6 +45,7 @@ class AdminOperation extends GetxController {
     getAllCompany();
     getAllBa();
     getAllMart();
+    getAllMerchant();
   }
 
   Future<void> addNewMart(
@@ -330,6 +332,17 @@ class AdminOperation extends GetxController {
     } catch (e) {}
   }
 
+  Future<void> getAllMerchant() async {
+    MerchantNameList.clear();
+    try {
+      AllUserByRole response =
+          await _adminOperationService.getAllUserByRole('MERCHANT');
+      if (response.data != null && response.code == 200) {
+        MerchantNameList.value = response.data ?? [];
+      } else {}
+    } catch (e) {}
+  }
+
   Future<void> getAllMart() async {
     AllMart response = await _companyOperationService.getAllMart();
     if (response.data != null && response.code == 200) {
@@ -356,23 +369,30 @@ class AdminOperation extends GetxController {
   }
 
   Future<void> assignBAToCompanyMart(
-      String userId, BuildContext context) async {
-    if (selectedCompany.value != null || selectedMart.value != null) {
+      String userId, BuildContext context, bool isMerchant) async {
+    if (selectedCompany.value != null || isMerchant
+        ? true
+        : selectedMart.value != null) {
       assignBaLoader.value = true;
       try {
-        final response = await _adminOperationService.assignEmployeeToBa(userId,
-            selectedCompany.value!.userId!, selectedMart.value!.martId!);
+        final response = await _adminOperationService.assignEmployeeToBa(
+            userId,
+            selectedCompany.value!.userId!,
+            !isMerchant ? selectedMart.value!.martId! : 2);
         if (response['data'] != null && response['code'] == 200) {
           assignBaLoader.value = false;
           Get.back();
           AnimatedSnackbar.showSnackbar(
             context: context,
-            message: 'B.A assign to new Company successfully',
+            message: isMerchant
+                ? 'Merchant assign to new Company successfully'
+                : 'B.A assign to new Company successfully',
             icon: Icons.info,
             backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 14.0,
           );
+          getAllMerchant();
           getAllBa();
         } else {
           assignBaLoader.value = false;

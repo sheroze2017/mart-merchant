@@ -161,24 +161,35 @@ class _NewEmployeeState extends State<NewEmployee> {
                         children: [
                           const headingSmall(
                               title: 'Allocate Mart'), // HeadingSmall corrected
-                          CustomDropdown(
-                            validator: Validator.ValidText,
-                            decoration: CustomDropdownDecoration(
-                              errorStyle: CustomTextStyles.lightSmallTextStyle(
-                                  size: 11,
-                                  color:
-                                      const Color.fromARGB(255, 173, 46, 37)),
-                              prefixIcon: const Icon(Icons.shop),
-                              expandedFillColor: AppColors.primaryColor,
-                              closedFillColor: AppColors.primaryColor,
+                          Padding(
+                            padding: const EdgeInsets.all(0),
+                            child: Card(
+                              child: CustomDropdown.search(
+                                decoration: CustomDropdownDecoration(
+                                  errorStyle:
+                                      CustomTextStyles.lightSmallTextStyle(
+                                          size: 11,
+                                          color: const Color.fromARGB(
+                                              255, 173, 46, 37)),
+                                  prefixIcon: const Icon(Icons.factory),
+                                  expandedFillColor: AppColors.primaryColor,
+                                  closedFillColor: AppColors.primaryColor,
+                                ),
+                                hintText: 'Select Mart',
+                                items: adminOperation.marts
+                                    .map((m) => m.martName)
+                                    .toList(),
+                                onChanged: (value) {
+                                  int exactIndex = adminOperation.marts
+                                      .indexWhere((m) => m.martName == value);
+                                  if (exactIndex != -1) {
+                                    _martIdController.text = adminOperation
+                                        .marts[exactIndex].martId
+                                        .toString();
+                                  }
+                                },
+                              ),
                             ),
-                            hintText: 'Select Mart',
-                            items: ['1', '3', '4', '5'],
-                            onChanged: (selected) {
-                              if (selected != null) {
-                                _martIdController.text = selected;
-                              }
-                            },
                           ),
                           SizedBox(
                             height: 1.h,
@@ -186,24 +197,33 @@ class _NewEmployeeState extends State<NewEmployee> {
                           const headingSmall(
                               title:
                                   'Allocate Company'), // HeadingSmall corrected
-                          CustomDropdown(
-                            validator: Validator.ValidText,
-                            decoration: CustomDropdownDecoration(
-                              errorStyle: CustomTextStyles.lightSmallTextStyle(
-                                  size: 11,
-                                  color:
-                                      const Color.fromARGB(255, 173, 46, 37)),
-                              prefixIcon: const Icon(Icons.factory),
-                              expandedFillColor: AppColors.primaryColor,
-                              closedFillColor: AppColors.primaryColor,
+                          Card(
+                            elevation: 2,
+                            child: CustomDropdown.search(
+                              decoration: CustomDropdownDecoration(
+                                errorStyle:
+                                    CustomTextStyles.lightSmallTextStyle(
+                                        size: 11,
+                                        color: const Color.fromARGB(
+                                            255, 173, 46, 37)),
+                                prefixIcon: const Icon(Icons.factory),
+                                expandedFillColor: AppColors.primaryColor,
+                                closedFillColor: AppColors.primaryColor,
+                              ),
+                              hintText: 'Select Company',
+                              items: adminOperation.companyNameList
+                                  .map((company) => company.name)
+                                  .toList(),
+                              onChanged: (value) {
+                                int exactIndex = adminOperation.companyNameList
+                                    .indexWhere((m) => m.name == value);
+                                if (exactIndex != -1) {
+                                  _companyIdController.text = adminOperation
+                                      .companyNameList[exactIndex].userId
+                                      .toString();
+                                }
+                              },
                             ),
-                            hintText: 'Select Company',
-                            items: ['1', '3', '4', '5'],
-                            onChanged: (selected) {
-                              if (selected != null) {
-                                _companyIdController.text = selected;
-                              }
-                            },
                           ),
                           SizedBox(
                             height: 3.h,

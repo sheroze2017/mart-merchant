@@ -13,6 +13,7 @@ class Endpoints {
   static const String attendance = "auth/attendance";
   static const String recordSales = "auth/insertSales";
   static const String createUser = "auth/createUser";
+  static const String restockRecord = "auth/LogMerchantStock";
   static const String createMart = "auth/createMart";
   static const String createProduct = "auth/createProduct";
   static const String createCategory = "auth/createCategory";

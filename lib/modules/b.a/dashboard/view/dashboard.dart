@@ -128,14 +128,7 @@ class _BaHomeState extends State<BaHome> {
                       },
                       subtitle: 'Record your product sales',
                     ),
-                    // FeatureCard(
-                    //   icon: Icons.co_present_sharp,
-                    //   title: 'Competitior data',
-                    //   onTap: () {
-                    //     Get.toNamed(Routes.COMPETITORDATA);
-                    //   },
-                    //   subtitle: 'Record competitor data for product',
-                    // ),
+
                     FeatureCard(
                       icon: Icons.hourglass_empty,
                       title: 'Short Stock/Restock',
@@ -169,6 +162,14 @@ class _BaHomeState extends State<BaHome> {
                         );
                       },
                       subtitle: 'Record customer interception',
+                    ),
+                    FeatureCard(
+                      icon: Icons.co_present_sharp,
+                      title: 'Competitior data',
+                      onTap: () {
+                        Get.toNamed(Routes.COMPETITORDATA);
+                      },
+                      subtitle: 'Record competitor data for product',
                     ),
                     // FeatureCard(
                     //   icon: Icons.co_present_sharp,

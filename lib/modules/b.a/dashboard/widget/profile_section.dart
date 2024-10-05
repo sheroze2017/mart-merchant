@@ -25,9 +25,9 @@ class ProfileSection extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              AppColors.primaryColor,
-              AppColors.redLight,
-              AppColors.primaryColor,
+              AppColors.primaryColorDarklIGHT,
+              AppColors.primaryColorDarklIGHT,
+              AppColors.primaryColorDark,
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -50,7 +50,7 @@ class ProfileSection extends StatelessWidget {
                         Obx(() => Text(
                               controller.userData.value!.phone.toString(),
                               style: CustomTextStyles.lightSmallTextStyle(
-                                  size: 14, color: AppColors.primaryColorDark),
+                                  size: 14, color: AppColors.whiteColor),
                             ))
                       ],
                     ),
@@ -71,8 +71,8 @@ class ProfileSection extends StatelessWidget {
                       Obx(
                         () => Text(
                           controller.userData.value!.name.toString(),
-                          style:
-                              CustomTextStyles.darkHeadingTextStyle(size: 22),
+                          style: CustomTextStyles.darkHeadingTextStyle(
+                              size: 22, color: AppColors.whiteColor),
                         ),
                       ),
                       SizedBox(
@@ -82,8 +82,7 @@ class ProfileSection extends StatelessWidget {
                           ? Obx(() => Text(
                                 controller.userData.value!.location.toString(),
                                 style: CustomTextStyles.lightSmallTextStyle(
-                                    size: 12,
-                                    color: AppColors.primaryColorDark),
+                                    size: 12, color: AppColors.whiteColor),
                               ))
                           : Container()
                     ],

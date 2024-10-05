@@ -1,6 +1,7 @@
 import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/ba_operation_api.dart';
 import 'package:ba_merchandise/widgets/custom/error_toast.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ class InsertSalesRecord extends GetxController {
   var fetchProductCompanyLoader = false.obs;
   var statusRecordLoader = false.obs;
   var updatePriceLoader = false.obs;
+  RxList<ByUserRoleData> companyNameList = RxList();
+  Rxn<ByUserRoleData> selectedCompanyIndividual = Rxn();
 
   BaOperationService baOperationService = BaOperationService();
   final AdminOperationService _adminOperationService = AdminOperationService();
@@ -20,6 +23,7 @@ class InsertSalesRecord extends GetxController {
   void onInit() {
     super.onInit();
     getAllProductByCompanyMart();
+    getAllCompany();
   }
 
   Future<void> insertSalesRecord(BuildContext context) async {
@@ -100,8 +104,12 @@ class InsertSalesRecord extends GetxController {
     var martId = await Utils.getMartId();
     try {
       fetchProductCompanyLoader.value = true;
-      AllCompanyProductData response = await _adminOperationService
-          .getAllProducts(int.parse(companyId!), int.parse(martId!));
+      AllCompanyProductData response =
+          await _adminOperationService.getAllProducts(
+              selectedCompanyIndividual.value == null
+                  ? int.parse(companyId!)
+                  : int.parse(selectedCompanyIndividual.value!.companyId!),
+              int.parse(martId!));
       if (response.data != null && response.code == 200) {
         fetchProductCompanyLoader.value = false;
         productList.value = response.data ?? [];
@@ -154,5 +162,16 @@ class InsertSalesRecord extends GetxController {
       );
       updatePriceLoader.value = false;
     }
+  }
+
+  Future<void> getAllCompany() async {
+    companyNameList.clear();
+    try {
+      AllUserByRole response =
+          await _adminOperationService.getAllUserByRole('COMPANY');
+      if (response.data != null && response.code == 200) {
+        companyNameList.value = response.data ?? [];
+      } else {}
+    } catch (e) {}
   }
 }

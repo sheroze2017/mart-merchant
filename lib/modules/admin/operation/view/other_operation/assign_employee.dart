@@ -13,7 +13,8 @@ import '../../../../b.a/dashboard/view/dashboard.dart';
 
 class AssignNewEmploye extends StatelessWidget {
   final ByUserRoleData user;
-  AssignNewEmploye({super.key, required this.user});
+  bool isMerchant;
+  AssignNewEmploye({super.key, required this.user, required this.isMerchant});
   final AdminOperation companyController = Get.find<AdminOperation>();
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class AssignNewEmploye extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const heading(title: 'BA Detail'),
+              heading(title: isMerchant ? 'Merchant Detail' : 'BA Detail'),
               Card(
                 color: AppColors.redLight,
                 child: ListTile(
@@ -63,25 +64,28 @@ class AssignNewEmploye extends StatelessWidget {
               SizedBox(
                 height: 2.h,
               ),
-              const heading(title: 'Select Mart'),
-              Card(
-                elevation: 2,
-                child: CustomDropdown.search(
-                  decoration: CustomDropdownDecoration(
-                    prefixIcon: Icon(Icons.location_on_sharp),
-                    expandedFillColor: AppColors.primaryColor,
-                    closedFillColor: AppColors.primaryColor,
-                  ),
-                  hintText: 'Select Mart',
-                  items:
-                      companyController.marts.map((ba) => ba.martName).toList(),
-                  onChanged: (selected) {
-                    if (selected != null) {
-                      companyController.selectMartbyName(selected);
-                    }
-                  },
-                ),
-              ),
+              isMerchant ? Container() : const heading(title: 'Select Mart'),
+              isMerchant
+                  ? Container()
+                  : Card(
+                      elevation: 2,
+                      child: CustomDropdown.search(
+                        decoration: CustomDropdownDecoration(
+                          prefixIcon: Icon(Icons.location_on_sharp),
+                          expandedFillColor: AppColors.primaryColor,
+                          closedFillColor: AppColors.primaryColor,
+                        ),
+                        hintText: 'Select Mart',
+                        items: companyController.marts
+                            .map((ba) => ba.martName)
+                            .toList(),
+                        onChanged: (selected) {
+                          if (selected != null) {
+                            companyController.selectMartbyName(selected);
+                          }
+                        },
+                      ),
+                    ),
             ],
           ),
         ),
@@ -96,7 +100,7 @@ class AssignNewEmploye extends StatelessWidget {
                   text: 'Save',
                   onPressed: () async {
                     await companyController.assignBAToCompanyMart(
-                        user.userId.toString(), context);
+                        user.userId.toString(), context, isMerchant);
                   },
                   backgroundColor: AppColors.primaryColorDark,
                   textColor: AppColors.whiteColor),

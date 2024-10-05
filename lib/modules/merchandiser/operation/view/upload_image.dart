@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:ba_merchandise/common/style/color.dart';
+import 'package:ba_merchandise/modules/merchandiser/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -21,23 +23,25 @@ class _CameraScreenState extends State<CameraScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
+        controller.uploadPhoto(pickedFile.path, context);
       } else {
         _image = null;
       }
     });
   }
-
   Future<void> _selectImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
+        controller.uploadPhoto(pickedFile.path, context);
       } else {
         _image = null;
       }
     });
   }
 
+  final MerchantOperationBloc controller = Get.put(MerchantOperationBloc());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,15 +51,20 @@ class _CameraScreenState extends State<CameraScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 0.0),
           child: Column(
             children: <Widget>[
-              _image != null
+              Obx(() => controller.imgUrl.value.isNotEmpty &&
+                      !controller.imgUploaded.value
                   ? SizedBox(
                       width: MediaQuery.of(context).size.width * 1,
                       height: MediaQuery.of(context).size.height * 0.5,
-                      child: Image.file(
-                        _image!,
+                      child: Image.network(
+                        controller.imgUrl.value,
                       ),
                     )
-                  : const Text('Please select an Image'),
+                  : controller.imgUploaded.value
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : const Text('Please select an Image')),
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),

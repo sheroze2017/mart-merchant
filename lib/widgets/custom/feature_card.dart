@@ -24,7 +24,7 @@ class FeatureCard extends StatelessWidget {
       child: Card(
           shadowColor: AppColors.primaryColor,
           elevation: 4,
-          color: isDone ? Colors.green.shade50 : AppColors.whiteColor,
+          color: AppColors.redLight,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
               side: BorderSide(color: AppColors.primaryColor)),
