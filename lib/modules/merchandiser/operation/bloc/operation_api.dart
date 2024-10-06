@@ -28,13 +28,13 @@ class MerchantOperationService extends BaseService {
       double lat,
       double lng) async {
     Map<String, dynamic> data = {
-      'user_id': userId,
-      'desc': desc,
-      'company_id': companyId,
-      'mart_id': martId,
-      'image': imgUrl,
-      'lat': lat,
-      'lng': lng
+      "user_id": userId,
+      "company_id": companyId,
+      "mart_id": martId,
+      "image": imgUrl,
+      "remarks": desc,
+      "lat": lat.toString(),
+      "lng": lng.toString()
     };
     try {
       final response =
@@ -43,5 +43,18 @@ class MerchantOperationService extends BaseService {
     } catch (e) {
       throw e;
     } finally {}
+  }
+
+  Future<Map<String, dynamic>> updateProductQuantity(
+      String qty, String productId) async {
+    try {
+      Map<String, dynamic> data = {"product_id": productId, "qty": qty};
+
+      final response = await dioClient
+          .post(Endpoints.updateProductQuantityMerchant, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

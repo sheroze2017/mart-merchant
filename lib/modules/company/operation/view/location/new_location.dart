@@ -344,7 +344,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                                           backgroundColor: Colors.red);
                                     }
                                   },
-                                  backgroundColor: Colors.black,
+                                  backgroundColor: AppColors.primaryColorDark,
                                   textColor: AppColors.whiteColor),
                             ),
                           ],

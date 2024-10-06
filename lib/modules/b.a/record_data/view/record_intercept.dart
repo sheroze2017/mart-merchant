@@ -78,8 +78,8 @@ class CustomDialog extends StatelessWidget {
                     onPressed: () {
                       Get.back();
                     },
-                    backgroundColor: AppColors.whiteColor,
-                    textColor: Colors.black),
+                    backgroundColor: AppColors.redLight,
+                    textColor: Colors.white),
                 SizedBox(width: 10),
                 Obx(
                   () => RoundedButtonSmall(
@@ -103,7 +103,7 @@ class CustomDialog extends StatelessWidget {
                               context, textcontroller.text, productSold.text);
                         }
                       },
-                      backgroundColor: Colors.blue.shade900,
+                      backgroundColor: AppColors.primaryColorDark,
                       textColor: AppColors.whiteColor),
                 )
               ],

@@ -2,6 +2,7 @@ import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/constant/endpoints.dart';
 import 'package:ba_merchandise/modules/company/operation/model/company_model.dart';
 import 'package:ba_merchandise/modules/company/operation/model/mart_model.dart';
+import 'package:ba_merchandise/modules/company/operation/model/merchant_restock_model.dart';
 import 'package:ba_merchandise/services/base_service.dart';
 
 class CompanyOperationService extends BaseService {
@@ -68,6 +69,35 @@ class CompanyOperationService extends BaseService {
     try {
       final response = await dioClient.get(Endpoints.getAllMart);
       return AllMart.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<MerchantRestockDetailModel> getAllMerchantRestockRequest(
+      String MartId) async {
+    var userId = await Utils.getUserId();
+
+    Map<String, dynamic> data = {
+      "company_id": userId.toString(),
+      "mart_id": MartId
+    };
+    try {
+      final response = await dioClient
+          .post(Endpoints.getAllMerchantRestockDetail, data: data);
+      return MerchantRestockDetailModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<MerchantRestockDetailModel> getAllMerchantRestockRequestAdmin(
+      String CompanyId, String MartId) async {
+    Map<String, dynamic> data = {"company_id": CompanyId, "mart_id": MartId};
+    try {
+      final response = await dioClient
+          .post(Endpoints.getAllMerchantRestockDetail, data: data);
+      return MerchantRestockDetailModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

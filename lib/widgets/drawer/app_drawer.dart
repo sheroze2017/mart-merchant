@@ -18,6 +18,7 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: AppColors.redLight,
       child: Column(
         children: [
           Column(
@@ -32,24 +33,26 @@ class CustomDrawer extends StatelessWidget {
           ),
           Text(
             'Name',
-            style:
-                CustomTextStyles.w600TextStyle(size: 20, color: Colors.black),
+            style: CustomTextStyles.w600TextStyle(
+                size: 20, color: AppColors.primaryColorDark),
           ),
           Obx(() => Text(
                 controller.userData.value!.name.toString(),
-                style: CustomTextStyles.lightTextStyle(size: 16),
+                style: CustomTextStyles.lightTextStyle(
+                    size: 16, color: AppColors.blackColor),
               )),
           SizedBox(
             height: 2.h,
           ),
           Text(
             'User Role',
-            style:
-                CustomTextStyles.w600TextStyle(size: 20, color: Colors.black),
+            style: CustomTextStyles.w600TextStyle(
+                size: 20, color: AppColors.primaryColorDark),
           ),
           Obx(() => Text(
                 controller.userData.value!.role.toString(),
-                style: CustomTextStyles.lightTextStyle(size: 16),
+                style: CustomTextStyles.lightTextStyle(
+                    size: 16, color: AppColors.blackColor),
               )),
           const SizedBox(height: 20),
           Padding(

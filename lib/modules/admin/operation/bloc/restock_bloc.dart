@@ -8,6 +8,31 @@ class ShortStockControllerAdmin extends GetxController {
   BaOperationService baOperationService = BaOperationService();
   var allRestockLoader = false.obs;
   RxList restockRecordCompany = <IndividualRestockData>[].obs;
+  RxList merchantRestockDetail = <IndividualRestockData>[].obs;
+
+  Future<void> getAllMerchantRestockRequest(
+      String companyId, String martId) async {
+    allRestockLoader.value = true;
+    try {
+      RestockDataModel? response = await baOperationService
+          .getAllRestockRequest(companyId.toString(), martId.toString());
+
+      if (response!.data != null && response.code == 200) {
+        allRestockLoader.value = false;
+        restockRecordCompany.value = response.data!
+                .where((e) => e.status!.toLowerCase() == 'pending')
+                .toList() ??
+            [];
+        update();
+      } else {
+        allRestockLoader.value = false;
+        update();
+      }
+    } catch (e) {
+      allRestockLoader.value = false;
+      update();
+    }
+  }
 
   Future<void> getallRestockRequest(String companyId, String martId) async {
     allRestockLoader.value = true;

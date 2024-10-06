@@ -54,13 +54,14 @@ class Utils {
 
   /// Converts a [dateTimeString] in the format "yyyy-MM-dd HH:mm:ss" to "dd MMM yyyy"
   static String formatDate(String dateTimeString) {
+    try {
+      DateTime dateTime = DateTime.parse(dateTimeString);
+      String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
+      return formattedDate;
+    } catch (e) {
+      return 'Invalid Date';
+    }
     // Parse the provided date string to DateTime
-    DateTime dateTime = DateTime.parse(dateTimeString);
-
-    // Format the DateTime object to the desired format
-    String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
-
-    return formattedDate;
   }
 
   static String formatDay(String dateTimeString) {

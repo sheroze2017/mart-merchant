@@ -19,7 +19,7 @@ class AttendanceController extends GetxController {
   final double _radius = 50.0;
   final SyncController syncController = Get.find();
   late Rx<Attendance> attenToday = Attendance().obs;
-  String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  String today = DateFormat('yyyy-MMM-dd').format(DateTime.now());
 
   @override
   void onInit() async {

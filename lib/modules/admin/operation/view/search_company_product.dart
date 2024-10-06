@@ -14,7 +14,7 @@ import '../../../b.a/dashboard/view/dashboard.dart';
 class SearchCompanyProduct extends StatelessWidget {
   SearchCompanyProduct({super.key});
   final TextEditingController locationController = TextEditingController();
-  String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  String today = DateFormat('yyyy-MMM-dd').format(DateTime.now());
   final AdminOperation companyController = Get.put(AdminOperation());
 
   List<int> restockCount = [];

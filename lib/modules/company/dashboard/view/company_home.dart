@@ -4,6 +4,8 @@ import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/merchant_restock_detail.dart';
+import 'package:ba_merchandise/modules/company/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/company/operation/view/stock_restock/short_stock_view.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
@@ -69,6 +71,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                 // Profile Section
                 ProfileSection(
                   showAddress: true,
+                  isCompany: true,
                 ),
                 SizedBox(
                   height: 2.h,
@@ -175,6 +178,25 @@ class _CompanyHomeState extends State<CompanyHome> {
                 SizedBox(
                   height: 0.5.h,
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(MerchantRestockDetailCompany(),
+                              transition: Transition.cupertino,
+                              duration: Duration(milliseconds: 500));
+                        },
+                        child: const DashboardCard(
+                          asset: 'assets/images/product.png',
+                          title: 'Merchant Restock Detail',
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
                 const Divider(
                   color: Colors.grey,
                   thickness: 0.3,
@@ -231,7 +253,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                                     controller.addNewCategory(
                                         nameController.text, context);
                                   },
-                                  backgroundColor: Colors.black,
+                                  backgroundColor: AppColors.primaryColorDark,
                                   textColor: AppColors.whiteColor)),
                             ),
                           ],

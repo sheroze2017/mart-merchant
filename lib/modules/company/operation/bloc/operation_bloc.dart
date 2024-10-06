@@ -184,7 +184,7 @@ class CompanyOperationBloc extends GetxController {
     }
   }
 
- 
+
  
   Future<void> getAllBa() async {
     baNameList.clear();

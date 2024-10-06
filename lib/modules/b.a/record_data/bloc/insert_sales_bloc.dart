@@ -108,7 +108,8 @@ class InsertSalesRecord extends GetxController {
           await _adminOperationService.getAllProducts(
               selectedCompanyIndividual.value == null
                   ? int.parse(companyId!)
-                  : int.parse(selectedCompanyIndividual.value!.companyId!),
+                  : int.parse(
+                      selectedCompanyIndividual.value!.userId.toString()),
               int.parse(martId!));
       if (response.data != null && response.code == 200) {
         fetchProductCompanyLoader.value = false;

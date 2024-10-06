@@ -149,7 +149,7 @@ class StockPage extends StatelessWidget {
                               },
                               text: 'Restock',
                               textColor: AppColors.whiteColor,
-                              backgroundColor: Colors.blue,
+                              backgroundColor: AppColors.redLight,
                             ),
                           ),
                         ),

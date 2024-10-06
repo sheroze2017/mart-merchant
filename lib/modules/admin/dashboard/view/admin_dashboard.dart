@@ -3,6 +3,7 @@ import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/admin/dashboard/widget/dashboard_card.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/stock_restock.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
@@ -54,17 +55,17 @@ class AdminHome extends StatelessWidget {
               children: [
                 // Profile Section
                 ProfileSection(
+                  isCompany: false,
                   showAddress: true,
                 ),
                 SizedBox(
                   height: 2.h,
                 ),
+
                 const heading(
-                  title: 'Quick Actions',
+                  title: 'Add Options',
                 ),
-                SizedBox(
-                  height: 0.5.h,
-                ),
+
                 DashboardCard(
                   asset: 'assets/images/product.png',
                   title: 'Add New Company',
@@ -86,6 +87,14 @@ class AdminHome extends StatelessWidget {
                     Get.toNamed(Routes.NEW_MART);
                   },
                 ),
+                SizedBox(
+                  height: 1.h,
+                ),
+
+                const heading(
+                  title: 'Employee Options',
+                ),
+
                 DashboardCard(
                   asset: 'assets/images/employee.png',
                   title: 'Assign Employee To Company',
@@ -101,10 +110,31 @@ class AdminHome extends StatelessWidget {
                   },
                 ),
                 DashboardCard(
+                  asset: 'assets/images/grant.png',
+                  title: 'Grant And Revoke Access',
+                  onTap: () {
+                    Get.toNamed(Routes.GRANTREVOKEACCESS);
+                  },
+                ),
+                SizedBox(
+                  height: 1.h,
+                ),
+                const heading(
+                  title: 'Stock Operation and Detail',
+                ),
+                DashboardCard(
                   asset: 'assets/images/product.png',
                   title: 'Short-Stock Detail',
                   onTap: () {
                     Get.to(ShortStockScreenAdmin(),
+                        transition: Transition.rightToLeft);
+                  },
+                ),
+                DashboardCard(
+                  asset: 'assets/images/product.png',
+                  title: 'Merchant Restock Detail',
+                  onTap: () {
+                    Get.to(MerchantRestockDetail(),
                         transition: Transition.rightToLeft);
                   },
                 ),
@@ -115,20 +145,11 @@ class AdminHome extends StatelessWidget {
                     Get.toNamed(Routes.ADMINSALESROUTE);
                   },
                 ),
-
                 DashboardCard(
                   asset: 'assets/images/search.png',
                   title: 'Search Company Products',
                   onTap: () {
                     Get.toNamed(Routes.SEARCHCOMPANYPRODUCT);
-                  },
-                ),
-
-                DashboardCard(
-                  asset: 'assets/images/grant.png',
-                  title: 'Grant And Revoke Access',
-                  onTap: () {
-                    Get.toNamed(Routes.GRANTREVOKEACCESS);
                   },
                 ),
               ],

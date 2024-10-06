@@ -61,7 +61,7 @@ class _BaHomeState extends State<BaHome> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Profile Section
-                ProfileSection(),
+                ProfileSection(isCompany: false),
                 SizedBox(
                   height: 1.h,
                 ),

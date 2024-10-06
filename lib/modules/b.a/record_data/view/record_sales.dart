@@ -188,7 +188,7 @@ class _RecordSalesState extends State<RecordSales> {
                         ? null
                         : salesController.insertSalesRecord(context);
                   },
-                  backgroundColor: Colors.black,
+                  backgroundColor: AppColors.primaryColorDark,
                   textColor: Colors.white),
             )),
           ],

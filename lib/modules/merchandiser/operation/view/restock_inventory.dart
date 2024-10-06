@@ -171,6 +171,12 @@ class _RestockInventoryState extends State<RestockInventory> {
                   ),
                 ),
                 const SizedBox(height: 20),
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: heading(
+                    title: 'Description',
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: TextFormField(
@@ -261,10 +267,12 @@ class _RestockInventoryState extends State<RestockInventory> {
                       onPressed: () {
                         if (!_formKey.currentState!.validate()) {
                         } else {
-                          controller.uploadRestockRecord(
-                              _descriptionController.text,
-                              _martIdController.text,
-                              context);
+                          controller.restockLoader.value
+                              ? null
+                              : controller.uploadRestockRecord(
+                                  _descriptionController.text,
+                                  _martIdController.text,
+                                  context);
                         }
                       },
                       backgroundColor: AppColors.primaryColorDark,
@@ -274,4 +282,6 @@ class _RestockInventoryState extends State<RestockInventory> {
       ),
     );
   }
+
+
 }

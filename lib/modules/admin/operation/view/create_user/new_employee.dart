@@ -283,7 +283,7 @@ class _NewEmployeeState extends State<NewEmployee> {
                               }
                           };
                   },
-                  backgroundColor: Colors.black,
+                  backgroundColor: AppColors.primaryColorDark,
                   textColor: AppColors.whiteColor),
             ))
           ],

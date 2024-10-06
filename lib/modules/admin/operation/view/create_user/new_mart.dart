@@ -134,7 +134,7 @@ class NewMartScreen extends StatelessWidget {
                                 }
                               }
                             },
-                            backgroundColor: Colors.black,
+                            backgroundColor: AppColors.primaryColorDark,
                             textColor: AppColors.whiteColor))),
                   ],
                 )

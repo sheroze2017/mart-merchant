@@ -13,18 +13,21 @@ class Endpoints {
   static const String attendance = "auth/attendance";
   static const String recordSales = "auth/insertSales";
   static const String createUser = "auth/createUser";
-  static const String restockRecord = "auth/LogMerchantStock";
+  static const String restockRecord = "auth/shelfRestocked";
   static const String createMart = "auth/createMart";
   static const String createProduct = "auth/createProduct";
   static const String createCategory = "auth/createCategory";
-  static const String baIntercept = "/auth/intercepts";
-  static const String updateProductPrice = "/auth/updateProductPrice";
-  static const String restockApi = "/auth/createRestock";
+  static const String baIntercept = "auth/intercepts";
+  static const String updateProductPrice = "auth/updateProductPrice";
+  static const String updateProductQuantityMerchant = "auth/updateProductsQty";
+  static const String restockApi = "auth/createRestock";
   static const String getAllCompanyMartProduct =
       "auth/getCompanyAndMartProducts";
   static const String getUserByRole = "auth/getUsersByRole";
-  static const String updateRestock = "/auth/updateRestock";
+  static const String updateRestock = "auth/updateRestock";
   static const String getAllCategories = "auth/getAllCategories";
+  static const String getAllMerchantRestockDetail =
+      "auth/getAllRestocksByMerchant";
   static const String getAllMart = "auth/getAllMarts";
   static const String updateToken = "auth/updateDeviceToken";
   static const String grandAccess = "auth/updateUser";

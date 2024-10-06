@@ -123,7 +123,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   itemBuilder: (context, index) {
                     final product = controller.productList[index];
                     return Card(
-                      color: AppColors.whiteColor,
+                      color: AppColors.primaryColor,
                       elevation: 2,
                       child: ListTile(
                           minVerticalPadding: 10,

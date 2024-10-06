@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/record_intercept.dart';
+import 'package:ba_merchandise/modules/merchandiser/operation/view/update_product_quantity.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
 import 'package:ba_merchandise/widgets/drawer/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../widgets/custom/feature_card.dart';
 import '../../operation/view/restock_inventory.dart';
 
@@ -57,6 +59,7 @@ class _BaHomeState extends State<MerchantDashboard> {
                 // Profile Section
                 ProfileSection(
                   showAddress: false,
+                  isCompany: false,
                 ),
                 // SizedBox(
                 //   height: 1.h,
@@ -106,9 +109,9 @@ class _BaHomeState extends State<MerchantDashboard> {
                 //     ),
                 //   ],
                 // ),
-                // SizedBox(
-                //   height: 1.h,
-                // ),
+                SizedBox(
+                  height: 1.h,
+                ),
                 const heading(
                   title: 'Daily Tasks',
                 ),
@@ -116,7 +119,7 @@ class _BaHomeState extends State<MerchantDashboard> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     FeatureCard(
-                      icon: Icons.co_present_sharp,
+                      icon: Icons.inventory,
                       title: 'Restock Invertory',
                       onTap: () {
                         Get.to(RestockInventory(),
@@ -141,7 +144,7 @@ class _BaHomeState extends State<MerchantDashboard> {
                     //   subtitle: 'Set competitor price',
                     // ),
                     FeatureCard(
-                      icon: Icons.co_present_sharp,
+                      icon: Icons.person,
                       title: 'Record Intercepts',
                       onTap: () {
                         final TextEditingController dialogController =
@@ -158,6 +161,17 @@ class _BaHomeState extends State<MerchantDashboard> {
                       },
                       subtitle: 'Record customer interception',
                     ),
+
+                    FeatureCard(
+                      icon: Icons.production_quantity_limits_outlined,
+                      title: 'Set Product Quantity',
+                      onTap: () {
+                        Get.to(UpdateProductQuantity(),
+                            transition: Transition.rightToLeft);
+                      },
+                      subtitle: 'Update Product Quantity',
+                    ),
+
                     // FeatureCard(
                     //   icon: Icons.co_present_sharp,
                     //   title: 'Sync data',

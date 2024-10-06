@@ -22,17 +22,19 @@ import 'package:intl/intl.dart'; // To format date and time
 class MerchantOperationBloc extends GetxController {
   RxList records = <RecordModelData>[].obs;
   RxList<ProductCMData> productList = RxList();
-
-  RxList restockRecord = <RecordModelData>[].obs;
   RxList<MartData> marts = RxList();
+  RxList restockRecord = <RecordModelData>[].obs;
+
   CompanyOperationService _companyOperationService = CompanyOperationService();
   final AdminOperationService _adminOperationService = AdminOperationService();
-  var restockLoader = false.obs;
 
+  var restockLoader = false.obs;
   var fetchProductCompanyLoader = false.obs;
+  var updateQuantityLoader = false.obs;
+  var imgUploaded = false.obs;
+
   String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
   RxList<RecordModel> recordData = <RecordModel>[].obs;
-  var imgUploaded = false.obs;
   var imgUrl = ''.obs;
   double _latitude = 0.00;
   double _longitude = 0.00;
@@ -162,11 +164,11 @@ class MerchantOperationBloc extends GetxController {
         fontSize: 14.0,
       );
     } else {
+      restockLoader.value = true;
       var userId = await Utils.getUserId();
       var companyId = await Utils.getCompanyId();
       try {
         final resp = await getCurrentLocation();
-
         restockLoader.value = true;
         final response = await merchantservice.uploadRestockRecord(
             desc,
@@ -208,6 +210,46 @@ class MerchantOperationBloc extends GetxController {
         );
         restockLoader.value = false;
       }
+    }
+  }
+
+  Future<void> updateQuantiy(context, String qty, String id) async {
+    try {
+      updateQuantityLoader.value = true;
+      final response = await merchantservice.updateProductQuantity(qty, id);
+      if (response['data'] != null && response['code'] == 200) {
+        updateQuantityLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: 'Product Quantity Updated Successfully',
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        Get.back();
+      } else {
+        updateQuantityLoader.value = false;
+        // Failure message
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'],
+          icon: Icons.error,
+          backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: 'An error occured ${e}',
+        icon: Icons.error,
+        backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+        textColor: Colors.black,
+        fontSize: 14.0,
+      );
+      updateQuantityLoader.value = false;
     }
   }
 

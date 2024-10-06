@@ -151,7 +151,7 @@ class _NewCompanyState extends State<NewCompany> {
                                       }
                                   };
                           },
-                          backgroundColor: Colors.black,
+                          backgroundColor: AppColors.primaryColorDark,
                           textColor: AppColors.whiteColor)),
                     )
                   ],
