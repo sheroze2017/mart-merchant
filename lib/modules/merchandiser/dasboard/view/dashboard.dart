@@ -143,24 +143,24 @@ class _BaHomeState extends State<MerchantDashboard> {
                     //   },
                     //   subtitle: 'Set competitor price',
                     // ),
-                    FeatureCard(
-                      icon: Icons.person,
-                      title: 'Record Intercepts',
-                      onTap: () {
-                        final TextEditingController dialogController =
-                            TextEditingController();
-                        final TextEditingController soldController =
-                            TextEditingController();
-                        showDialog(
-                          context: context,
-                          builder: (context) => CustomDialog(
-                            textcontroller: dialogController,
-                            productSold: soldController,
-                          ),
-                        );
-                      },
-                      subtitle: 'Record customer interception',
-                    ),
+                    // FeatureCard(
+                    //   icon: Icons.person,
+                    //   title: 'Record Intercepts',
+                    //   onTap: () {
+                    //     final TextEditingController dialogController =
+                    //         TextEditingController();
+                    //     final TextEditingController soldController =
+                    //         TextEditingController();
+                    //     showDialog(
+                    //       context: context,
+                    //       builder: (context) => CustomDialog(
+                    //         textcontroller: dialogController,
+                    //         productSold: soldController,
+                    //       ),
+                    //     );
+                    //   },
+                    //   subtitle: 'Record customer interception',
+                    // ),
 
                     FeatureCard(
                       icon: Icons.production_quantity_limits_outlined,

@@ -40,13 +40,21 @@ class MerchantOperationBloc extends GetxController {
   double _longitude = 0.00;
   final locat.Location _location = locat.Location();
 
-  getCurrentLocation() async {
+  getCurrentLocation(context) async {
     bool serviceEnabled;
     locat.PermissionStatus permissionGranted;
     serviceEnabled = await _location.serviceEnabled();
     if (!serviceEnabled) {
       serviceEnabled = await _location.requestService();
       if (!serviceEnabled) {
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: 'Please enable location',
+          icon: Icons.info,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
         return;
       }
     }
@@ -140,7 +148,7 @@ class MerchantOperationBloc extends GetxController {
     try {
       fetchProductCompanyLoader.value = true;
       AllCompanyProductData response = await _adminOperationService
-          .getAllProducts(int.parse(companyId.toString()), martId);
+          .getAllProducts(int.parse(companyId.toString()));
       if (response.data != null && response.code == 200) {
         fetchProductCompanyLoader.value = false;
         productList.value = response.data ?? [];
@@ -168,36 +176,46 @@ class MerchantOperationBloc extends GetxController {
       var userId = await Utils.getUserId();
       var companyId = await Utils.getCompanyId();
       try {
-        final resp = await getCurrentLocation();
-        restockLoader.value = true;
-        final response = await merchantservice.uploadRestockRecord(
-            desc,
-            imgUrl.value,
-            martId,
-            companyId.toString(),
-            userId.toString(),
-            _latitude,
-            _longitude);
-        if (response['code'] == 200 && response['sucess'] == true) {
-          AnimatedSnackbar.showSnackbar(
-            context: context,
-            message: 'Restock Done Successfully',
-            icon: Icons.info,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 14.0,
-          );
-          Get.back();
+        final resp = await getCurrentLocation(context);
+        if (resp == true) {
+          final response = await merchantservice.uploadRestockRecord(
+              desc,
+              imgUrl.value,
+              martId,
+              companyId.toString(),
+              userId.toString(),
+              _latitude,
+              _longitude);
+          if (response['code'] == 200 && response['sucess'] == true) {
+            AnimatedSnackbar.showSnackbar(
+              context: context,
+              message: 'Restock Done Successfully',
+              icon: Icons.info,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 14.0,
+            );
+            Get.back();
+          } else {
+            AnimatedSnackbar.showSnackbar(
+              context: context,
+              message: response['message'],
+              icon: Icons.info,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 14.0,
+            );
+          }
         } else {
-          restockLoader.value = false;
           AnimatedSnackbar.showSnackbar(
             context: context,
             message: 'Error uploading data',
             icon: Icons.info,
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 14.0,
           );
+          restockLoader.value = false;
         }
       } catch (e) {
         AnimatedSnackbar.showSnackbar(
@@ -208,6 +226,8 @@ class MerchantOperationBloc extends GetxController {
           textColor: Colors.white,
           fontSize: 14.0,
         );
+        restockLoader.value = false;
+      } finally {
         restockLoader.value = false;
       }
     }

@@ -78,16 +78,17 @@ class CompanyOperationBloc extends GetxController {
   }
 
   Future<void> addNewProduct(
-      categoryId, name, desc, price, qty, varient, martId, context) async {
+      categoryId, name, desc, price, qty, varient,size, context) async {
     addProductLoader.value = true;
     final response = await _companyOperationService.createNewProduct(
-        categoryId: categoryId,
-        name: name,
-        desc: desc,
-        price: price,
-        qty: qty,
-        varient: varient,
-        martId: martId);
+      categoryId: categoryId,
+      name: name,
+      desc: desc,
+      price: price,
+      qty: qty,
+      varient: varient,
+      size:size
+    );
     if (response['data'] != null && response['code'] == 200) {
       addProductLoader.value = false;
       AnimatedSnackbar.showSnackbar(
@@ -165,14 +166,14 @@ class CompanyOperationBloc extends GetxController {
   }
 
   Future<void> getAllProductByCompanyMart(
-      int? companyId, int? martId, BuildContext context) async {
+      int? companyId, BuildContext context) async {
     productList.clear();
     var userId = await Utils.getUserId();
 
     try {
       fetchProductCompanyLoader.value = true;
       AllCompanyProductData response = await _adminOperationService
-          .getAllProducts(companyId ?? userId!.toInt(), martId);
+          .getAllProducts(companyId ?? userId!.toInt());
       if (response.data != null && response.code == 200) {
         fetchProductCompanyLoader.value = false;
         productList.value = response.data ?? [];
@@ -184,8 +185,6 @@ class CompanyOperationBloc extends GetxController {
     }
   }
 
-
- 
   Future<void> getAllBa() async {
     baNameList.clear();
     try {

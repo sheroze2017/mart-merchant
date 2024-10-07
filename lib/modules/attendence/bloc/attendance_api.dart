@@ -10,8 +10,8 @@ class AttendanceService extends BaseService {
 
     try {
       Map<String, dynamic> data = {
-        "lat": "24.831404548254817",
-        "lng": "67.08077914632807",
+        "lat": lat,
+        "lng": lng,
         "user_id": userId.toString(),
         "mart_id": martId.toString()
       };

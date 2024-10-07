@@ -27,7 +27,7 @@ class _ProductScreenState extends State<ProductScreen> {
     super.initState();
     controller.getAllCategory();
     controller.getAllMart();
-    controller.getAllProductByCompanyMart(null, null, context);
+    controller.getAllProductByCompanyMart(null, context);
   }
 
   @override
@@ -37,87 +37,90 @@ class _ProductScreenState extends State<ProductScreen> {
       appBar: CustomAppBar(
         title: 'Product',
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        _addProduct();
-                      },
-                      child: DashboardCard(
-                        asset: 'assets/images/product.png',
-                        title: 'New Product',
-                      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      _addProduct();
+                    },
+                    child: DashboardCard(
+                      asset: 'assets/images/product.png',
+                      title: 'New Product',
                     ),
                   ),
-                  // InkWell(
-                  //   onTap: () {
-                  //     _addBrand();
-                  //   },
-                  //   child: DashboardCard(
-                  //     asset: 'assets/images/product.png',
-                  //     title: 'New Brand',
-                  //   ),
-                  // )
-                ],
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              Card(
-                elevation: 2,
-                child: CustomDropdown(
-                  hintText: 'Select Mart',
-                  items: controller.marts.map((m) => m.martName).toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      int exactIndex = controller.marts
-                          .indexWhere((m) => m.martName == value);
-                      if (exactIndex != -1) {
-                        controller.getAllProductByCompanyMart(
-                            null, controller.marts[exactIndex].martId, context);
-                      }
-                    }
-                  },
                 ),
+                // InkWell(
+                //   onTap: () {
+                //     _addBrand();
+                //   },
+                //   child: DashboardCard(
+                //     asset: 'assets/images/product.png',
+                //     title: 'New Brand',
+                //   ),
+                // )
+              ],
+            ),
+            SizedBox(
+              height: 2.h,
+            ),
+            // Card(
+            //   elevation: 2,
+            //   child: CustomDropdown(
+            //     hintText: 'Select Mart',
+            //     items: controller.marts.map((m) => m.martName).toList(),
+            //     onChanged: (value) {
+            //       if (value != null) {
+            //         int exactIndex =
+            //             controller.marts.indexWhere((m) => m.martName == value);
+            //         if (exactIndex != -1) {
+            //           controller.getAllProductByCompanyMart(
+            //               null, controller.marts[exactIndex].martId, context);
+            //         }
+            //       }
+            //     },
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 1.h,
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: Text(
+                'All Products',
+                style: CustomTextStyles.w600TextStyle(),
               ),
-              SizedBox(
-                height: 1.h,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 12.0),
-                child: Text(
-                  'All Products',
-                  style: CustomTextStyles.w600TextStyle(),
-                ),
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              Obx(() {
-                if (controller.productList.isEmpty) {
-                  return const Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 30.0),
-                      child: headingSmall(title: 'No Products to show'),
-                    ),
-                  );
-                } else if (controller.fetchProductCompanyLoader.value) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
-                return ListView.builder(
+            ),
+            SizedBox(
+              height: 1.h,
+            ),
+            Obx(() {
+              if (controller.fetchProductCompanyLoader.value) {
+                return Center(child: CircularProgressIndicator());
+              } else if (controller.productList.isEmpty) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 30.0),
+                    child: headingSmall(title: 'No Products to show'),
+                  ),
+                );
+              } else if (controller.fetchProductCompanyLoader.value) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              return Expanded(
+                child: ListView.builder(
+                  physics: AlwaysScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: controller.productList.length,
                   itemBuilder: (context, index) {
@@ -127,17 +130,21 @@ class _ProductScreenState extends State<ProductScreen> {
                       elevation: 2,
                       child: ListTile(
                           minVerticalPadding: 10,
-                          title: Text(product.productName.toString(),
-                              style: CustomTextStyles.darkTextStyle()),
+                          title: Text(
+                              '${product.productName} (${product.variant})',
+                              style: CustomTextStyles.darkHeadingTextStyle(
+                                  size: 20)),
                           subtitle: Text(
-                              '${product.variant} - PKR ${product.price}',
-                              style: CustomTextStyles.lightSmallTextStyle())),
+                              'Description: ${product.productDesc}\nPrice: ${product.price}\nsize: ${product.sizes}\nQuantity Available: ${product.qty}',
+                              style: CustomTextStyles.lightSmallTextStyle(
+                                  color: AppColors.primaryColorDark,
+                                  size: 16))),
                     );
                   },
-                );
-              }),
-            ],
-          ),
+                ),
+              );
+            }),
+          ],
         ),
       ),
     );
@@ -149,6 +156,7 @@ class _ProductScreenState extends State<ProductScreen> {
     TextEditingController desc = TextEditingController();
     TextEditingController varient = TextEditingController();
     TextEditingController qty = TextEditingController();
+    TextEditingController sizes = TextEditingController();
     TextEditingController martId = TextEditingController();
     TextEditingController categoryId = TextEditingController();
 
@@ -189,21 +197,22 @@ class _ProductScreenState extends State<ProductScreen> {
                         },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: CustomDropdown(
-                        hintText: 'Select Mart',
-                        items: controller.marts.map((m) => m.martName).toList(),
-                        onChanged: (value) {
-                          int exactIndex = controller.marts
-                              .indexWhere((m) => m.martName == value);
-                          if (exactIndex != -1) {
-                            martId.text =
-                                controller.marts[exactIndex].martId.toString();
-                          }
-                        },
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(top: 8.0),
+                    //   child: CustomDropdown(
+                    //     hintText: 'Select Mart',
+                    //     items: controller.marts.map((m) => m.martName).toList(),
+                    //     onChanged: (value) {
+                    //       int exactIndex = controller.marts
+                    //           .indexWhere((m) => m.martName == value);
+                    //       if (exactIndex != -1) {
+                    //         martId.text =
+                    //             controller.marts[exactIndex].martId.toString();
+                    //       }
+                    //     },
+                    //   ),
+                    // ),
+
                     Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: RoundedBorderTextField(
@@ -241,13 +250,24 @@ class _ProductScreenState extends State<ProductScreen> {
                         icon: '',
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: RoundedBorderTextField(
+                        controller: qty,
+                        validator: Validator.ValidText,
+                        textInputType: TextInputType.number,
+                        hintText: 'Quantity',
+                        icon: '',
+                      ),
+                    ),
                     RoundedBorderTextField(
-                      controller: qty,
+                      controller: sizes,
                       validator: Validator.ValidText,
-                      textInputType: TextInputType.number,
-                      hintText: 'Quantity',
+                      textInputType: TextInputType.emailAddress,
+                      hintText: 'Size',
                       icon: '',
                     ),
+
                     Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Row(
@@ -264,10 +284,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                         priceController.text,
                                         qty.text,
                                         varient.text,
-                                        martId.text,
+                                        sizes.text,
                                         context);
                                   },
-                                  backgroundColor: Colors.black,
+                                  backgroundColor: AppColors.primaryColorDark,
                                   textColor: AppColors.whiteColor)),
                             ),
                           ],

@@ -1,18 +1,34 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/modules/b.a/record_data/model/restock_data_model.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/company_short_stock_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
+import 'package:ba_merchandise/modules/sync/model/user_sync_model.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-class ShortStockScreen extends StatelessWidget {
+class ShortStockScreen extends StatefulWidget {
   ShortStockScreen({super.key});
+
+  @override
+  State<ShortStockScreen> createState() => _ShortStockScreenState();
+}
+
+class _ShortStockScreenState extends State<ShortStockScreen> {
   final controllerCompany = Get.find<CompanyOperationBloc>();
+
   final TextEditingController martId = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    if (controllerCompany.marts.isEmpty) {
+      controllerCompany.getAllMart();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,21 +46,23 @@ class ShortStockScreen extends StatelessWidget {
                     Expanded(
                       child: Card(
                         elevation: 2,
-                        child: CustomDropdown.search(
-                          hintText: 'Select Mart',
-                          items: controllerCompany.marts
-                              .map((m) => m.martName)
-                              .toList(),
-                          onChanged: (value) {
-                            int exactIndex = controllerCompany.marts
-                                .indexWhere((m) => m.martName == value);
-                            if (exactIndex != -1) {
-                              martId.text = controllerCompany
-                                  .marts[exactIndex].martId
-                                  .toString();
-                              controller.getallRestockRequest(martId.text);
-                            }
-                          },
+                        child: Obx(
+                          () => CustomDropdown.search(
+                            hintText: 'Select Mart',
+                            items: controllerCompany.marts
+                                .map((m) => m.martName)
+                                .toList(),
+                            onChanged: (value) {
+                              int exactIndex = controllerCompany.marts
+                                  .indexWhere((m) => m.martName == value);
+                              if (exactIndex != -1) {
+                                martId.text = controllerCompany
+                                    .marts[exactIndex].martId
+                                    .toString();
+                                controller.getallRestockRequest(martId.text);
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -76,7 +94,7 @@ class ShortStockScreen extends StatelessWidget {
                         : ListView.builder(
                             itemCount: controller.restockRecordCompany.length,
                             itemBuilder: (context, index) {
-                              var toothpaste =
+                              IndividualRestockData toothpaste =
                                   controller.restockRecordCompany[index];
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -90,12 +108,15 @@ class ShortStockScreen extends StatelessWidget {
                                           toothpaste.productDetails!
                                                   .productName ??
                                               'N/a',
-                                          style:
-                                              CustomTextStyles.darkTextStyle()),
-                                      subtitle: Text(
-                                          '${toothpaste.productDetails!.variant} \nPrice ${toothpaste.productDetails!.price}',
                                           style: CustomTextStyles
-                                              .lightSmallTextStyle()),
+                                              .darkHeadingTextStyle(size: 22)),
+                                      subtitle: Text(
+                                          '\nVarient: ${toothpaste.productDetails!.variant}\nPrice: ${toothpaste.productDetails!.price}',
+                                          style: CustomTextStyles
+                                              .lightSmallTextStyle(
+                                                  size: 16,
+                                                  color: AppColors
+                                                      .primaryColorDark)),
                                       trailing: Column(
                                         children: [
                                           RoundedButtonSmall(

@@ -99,7 +99,7 @@ class MerchantRestockDetail extends StatelessWidget {
                                       elevation: 2,
                                       child: ExpansionTile(
                                         title: Text(
-                                          data.merchantDetails!.name.toString(),
+                                          '${data.merchantDetails!.name} - ${data.companyName}',
                                           style:
                                               CustomTextStyles.darkTextStyle(),
                                         ),

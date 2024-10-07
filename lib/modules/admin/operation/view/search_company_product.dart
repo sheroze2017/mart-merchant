@@ -23,99 +23,103 @@ class SearchCompanyProduct extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(title: 'Company Products'),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const heading(title: 'Select location to find company products'),
-              Obx(() => Card(
-                    elevation: 2,
-                    child: CustomDropdown(
-                      decoration: CustomDropdownDecoration(
-                        prefixIcon: Icon(Icons.location_on_sharp),
-                        expandedFillColor: AppColors.primaryColor,
-                        closedFillColor: AppColors.primaryColor,
-                      ),
-                      hintText: 'Select Company',
-                      items: companyController.companyNameList
-                          .map((company) => company.name)
-                          .toList(),
-                      onChanged: (selected) async {
-                        if (selected != null) {
-                          companyController.selectedCompanyIndividual.value =
-                              await companyController.companyNameList
-                                  .firstWhere((c) => c.name == selected);
-                          companyController.getAllProductByCompanyMart(
-                              companyController
-                                  .selectedCompanyIndividual.value!.userId!
-                                  .toInt(),
-                              null,
-                              context);
-                        }
-                      },
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const heading(title: 'Select location to find company products'),
+            Obx(() => Card(
+                  elevation: 2,
+                  child: CustomDropdown(
+                    decoration: CustomDropdownDecoration(
+                      prefixIcon: Icon(Icons.location_on_sharp),
+                      expandedFillColor: AppColors.primaryColor,
+                      closedFillColor: AppColors.primaryColor,
                     ),
-                  )),
-              SizedBox(
-                height: 1.h,
-              ),
-              headingSmall(
-                title: 'Product List ${locationController.text}',
-              ),
-              Obx(() {
-                if (companyController.productList.value.isEmpty) {
-                  return const Center(
-                    child: headingSmall(title: 'No Products to show'),
-                  );
-                } else if (companyController.fetchProductCompanyLoader.value) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
-                return ListView.builder(
+                    hintText: 'Select Company',
+                    items: companyController.companyNameList
+                        .map((company) => company.name)
+                        .toList(),
+                    onChanged: (selected) async {
+                      if (selected != null) {
+                        companyController.selectedCompanyIndividual.value =
+                            await companyController.companyNameList
+                                .firstWhere((c) => c.name == selected);
+                        companyController.getAllProductByCompanyMart(
+                            companyController
+                                .selectedCompanyIndividual.value!.userId!
+                                .toInt(),
+                            null,
+                            context);
+                      }
+                    },
+                  ),
+                )),
+            SizedBox(
+              height: 1.h,
+            ),
+            headingSmall(
+              title: 'Product List ${locationController.text}',
+            ),
+            Obx(() {
+              if (companyController.productList.value.isEmpty) {
+                return const Center(
+                  child: headingSmall(title: 'No Products to show'),
+                );
+              } else if (companyController.fetchProductCompanyLoader.value) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              return Expanded(
+                child: ListView.builder(
                   shrinkWrap: true,
+                  physics: AlwaysScrollableScrollPhysics(),
                   itemCount: companyController.productList.length,
                   itemBuilder: (context, index) {
                     final product = companyController.productList[index];
                     return Card(
-                      color: AppColors.whiteColor,
+                      color: AppColors.redLight,
                       elevation: 2,
                       child: ListTile(
                           minVerticalPadding: 10,
-                          title: Text(product.productName.toString(),
+                          title: Text(
+                              '${product.productName} - ${product.companyName} (${product.variant})',
                               style: CustomTextStyles.darkTextStyle()),
                           subtitle: Text(
-                              '${product.variant} gm - PKR ${product.price}',
-                              style: CustomTextStyles.lightSmallTextStyle())),
+                              'Description: ${product.productDesc}\nPrice: ${product.price}\nQuantity: ${product.qty}',
+                              style: CustomTextStyles.lightSmallTextStyle(
+                                  color: AppColors.primaryColorDark,
+                                  size: 15))),
                     );
                   },
-                );
-              }),
-              // Obx(
-              //   () => ListView.builder(
-              //       shrinkWrap: true,
-              //       physics: NeverScrollableScrollPhysics(),
-              //       itemCount: controller.records.length,
-              //       itemBuilder: (context, index) {
-              //         return Card(
-              //             color: AppColors.whiteColor,
-              //             elevation: 2,
-              //             child: ListTile(
-              //               minVerticalPadding: 10,
-              //               title: Text(controller.records[index].name,
-              //                   style: CustomTextStyles.darkTextStyle()),
-              //               subtitle: Obx(() => Text(
-              //                   '${controller.records[index].quantityGm} gm - PKR ${controller.records[index].pricePkr}',
-              //                   style: CustomTextStyles.lightSmallTextStyle())),
-              //             ));
-              //       }),
-              // ),
-            ],
-          ),
+                ),
+              );
+            }),
+            // Obx(
+            //   () => ListView.builder(
+            //       shrinkWrap: true,
+            //       physics: NeverScrollableScrollPhysics(),
+            //       itemCount: controller.records.length,
+            //       itemBuilder: (context, index) {
+            //         return Card(
+            //             color: AppColors.whiteColor,
+            //             elevation: 2,
+            //             child: ListTile(
+            //               minVerticalPadding: 10,
+            //               title: Text(controller.records[index].name,
+            //                   style: CustomTextStyles.darkTextStyle()),
+            //               subtitle: Obx(() => Text(
+            //                   '${controller.records[index].quantityGm} gm - PKR ${controller.records[index].pricePkr}',
+            //                   style: CustomTextStyles.lightSmallTextStyle())),
+            //             ));
+            //       }),
+            // ),
+          ],
         ),
       ),
     );

@@ -144,9 +144,10 @@ class AdminOperationService extends BaseService {
   }
 
   Future<AllCompanyProductData> getAllProducts(
-      int companyId, int? martI) async {
+    int companyId,
+  ) async {
     try {
-      Map<String, dynamic> data = {"company_id": companyId, "mart_id": martI};
+      Map<String, dynamic> data = {"company_id": companyId};
 
       final response =
           await dioClient.post(Endpoints.getAllCompanyMartProduct, data: data);

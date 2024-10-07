@@ -84,7 +84,8 @@ class StockPage extends StatelessWidget {
                           elevation: 2,
                           child: ListTile(
                             minVerticalPadding: 20,
-                            title: Text(toothpaste.productName.toString(),
+                            title: Text(
+                                '${toothpaste.productName} - ${toothpaste.companyName} (${toothpaste.variant})',
                                 style: CustomTextStyles.darkTextStyle()),
                             subtitle: Text(
                                 '${toothpaste.variant} \nQty Available ${toothpaste.qty}',
@@ -201,9 +202,7 @@ class RestockPage extends StatelessWidget {
                                     child: ListTile(
                                         minVerticalPadding: 20,
                                         title: Text(
-                                            toothpaste.productDetails!
-                                                    .productName ??
-                                                'N/a',
+                                            '${toothpaste.productDetails!.productName} (${toothpaste.productDetails!.variant.toString()})',
                                             style: CustomTextStyles
                                                 .darkTextStyle()),
                                         subtitle: Text(

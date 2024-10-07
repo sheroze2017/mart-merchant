@@ -48,21 +48,22 @@ class ProductCMData {
   int? martId;
   int? categoryId;
   String? sizes;
+  String? companyName;
 
-  ProductCMData({
-    this.productId,
-    this.companyId,
-    this.productName,
-    this.variant,
-    this.productDesc,
-    this.price,
-    this.status,
-    this.createdAt,
-    this.qty,
-    this.martId,
-    this.categoryId,
-    this.sizes,
-  });
+  ProductCMData(
+      {this.productId,
+      this.companyId,
+      this.productName,
+      this.variant,
+      this.productDesc,
+      this.price,
+      this.status,
+      this.createdAt,
+      this.qty,
+      this.martId,
+      this.categoryId,
+      this.sizes,
+      this.companyName});
 
   ProductCMData.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'] ?? 0;
@@ -77,6 +78,7 @@ class ProductCMData {
     martId = json['mart_id'] ?? 0;
     categoryId = json['category_id'] ?? 0;
     sizes = json['sizes'].toString() ?? '';
+    companyName = json['company_name'] ?? '';
   }
 
   Map<String, dynamic> toJson() {

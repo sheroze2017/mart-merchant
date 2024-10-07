@@ -42,7 +42,9 @@ class MerchantOperationService extends BaseService {
       return response;
     } catch (e) {
       throw e;
-    } finally {}
+    } finally {
+      
+    }
   }
 
   Future<Map<String, dynamic>> updateProductQuantity(
@@ -54,7 +56,7 @@ class MerchantOperationService extends BaseService {
           .post(Endpoints.updateProductQuantityMerchant, data: data);
       return response;
     } catch (e) {
-      rethrow;
+      rethrow ;
     }
   }
 }

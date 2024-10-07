@@ -14,10 +14,25 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class MerchantRestockDetailCompany extends StatelessWidget {
+class MerchantRestockDetailCompany extends StatefulWidget {
   MerchantRestockDetailCompany({super.key});
+
+  @override
+  State<MerchantRestockDetailCompany> createState() => _MerchantRestockDetailCompanyState();
+}
+
+class _MerchantRestockDetailCompanyState extends State<MerchantRestockDetailCompany> {
   final controllerCompany = Get.find<CompanyOperationBloc>();
+
   final TextEditingController martId = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (controllerCompany.marts.isEmpty) {
+      controllerCompany.getAllMart();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +50,24 @@ class MerchantRestockDetailCompany extends StatelessWidget {
                     Expanded(
                       child: Card(
                         elevation: 2,
-                        child: CustomDropdown.search(
-                          hintText: 'Select Mart',
-                          items: controllerCompany.marts
-                              .map((m) => m.martName)
-                              .toList(),
-                          onChanged: (value) {
-                            int exactIndex = controllerCompany.marts
-                                .indexWhere((m) => m.martName == value);
-                            if (exactIndex != -1) {
-                              martId.text = controllerCompany
-                                  .marts[exactIndex].martId
-                                  .toString();
-                              controller
-                                  .getAllMerchantRestockDetail(martId.text);
-                            }
-                          },
+                        child: Obx(
+                          () => CustomDropdown.search(
+                            hintText: 'Select Mart',
+                            items: controllerCompany.marts
+                                .map((m) => m.martName)
+                                .toList(),
+                            onChanged: (value) {
+                              int exactIndex = controllerCompany.marts
+                                  .indexWhere((m) => m.martName == value);
+                              if (exactIndex != -1) {
+                                martId.text = controllerCompany
+                                    .marts[exactIndex].martId
+                                    .toString();
+                                controller
+                                    .getAllMerchantRestockDetail(martId.text);
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -144,7 +161,9 @@ class MerchantRestockDetailCompany extends StatelessWidget {
                                                     text: 'Details',
                                                     onPressed: () {
                                                       Get.to(
-                                                          RestockDetailScreen(data: data,),
+                                                          RestockDetailScreen(
+                                                            data: data,
+                                                          ),
                                                           transition: Transition
                                                               .rightToLeft);
                                                     },

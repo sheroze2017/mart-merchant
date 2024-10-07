@@ -13,20 +13,20 @@ class CompanyOperationService extends BaseService {
     required String price,
     required String qty,
     required String varient,
-    required String martId,
+    required String size,
   }) async {
     var userId = await Utils.getUserId();
 
     try {
       Map<String, dynamic> data = {
-        "company_id": userId,
-        "category_id": '1',
-        "mart_id": '1',
+        "company_id": userId.toString(),
+        "category_id": categoryId.toString(),
         "product_name": name,
         "product_description": desc,
         "price": price,
         "qty": qty,
-        "varient": varient
+        "varient": varient,
+        "size": size
       };
 
       final response =

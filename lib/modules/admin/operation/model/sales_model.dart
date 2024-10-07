@@ -40,16 +40,19 @@ class IndividualSalesData {
   int? martId;
   BA? bA;
   List<ProductsSold>? productsSold;
+  String? companyName;
+  String? martName;
 
-  IndividualSalesData({
-    this.saleId,
-    this.createdAt,
-    this.saleBy,
-    this.companyId,
-    this.martId,
-    this.bA,
-    this.productsSold,
-  });
+  IndividualSalesData(
+      {this.saleId,
+      this.createdAt,
+      this.saleBy,
+      this.companyId,
+      this.martId,
+      this.bA,
+      this.productsSold,
+      this.companyName,
+      this.martName});
 
   IndividualSalesData.fromJson(Map<String, dynamic> json) {
     saleId = json['sale_id'] ?? 0;
@@ -57,6 +60,8 @@ class IndividualSalesData {
     saleBy = json['sale_by'] ?? 0;
     companyId = json['company_id'] ?? 0;
     martId = json['mart_id'] ?? 0;
+    companyName = json['company_name'] ?? '';
+    martName = json['mart_name'] ?? '';
     bA = json['BA'] != null ? BA.fromJson(json['BA']) : BA();
     if (json['products_sold'] != null && json['products_sold'] is List) {
       productsSold = <ProductsSold>[];

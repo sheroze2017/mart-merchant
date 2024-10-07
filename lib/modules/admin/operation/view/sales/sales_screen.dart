@@ -94,13 +94,19 @@ class SalesScreenMartCompany extends StatelessWidget {
                                   margin: EdgeInsets.all(8),
                                   child: ExpansionTile(
                                     title: Text(
-                                      'Sales ID: ${saleData.saleId}',
+                                      'Sales ID: ${saleData.saleId} - ${saleData.companyName}',
                                       style: CustomTextStyles.w600TextStyle(),
                                     ),
                                     subtitle: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        Text(
+                                          'Mart Name: ${saleData.martName ?? ''}',
+                                          style:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 13),
+                                        ),
                                         Text(
                                           'Reported Date: ${Utils.formatDate(saleData.createdAt.toString()) + ' ' + Utils.formatTime(saleData.createdAt.toString())}',
                                           style:

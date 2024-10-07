@@ -12,11 +12,15 @@ class InsertSalesRecord extends GetxController {
   var statusRecordLoader = false.obs;
   var updatePriceLoader = false.obs;
   RxList<ByUserRoleData> companyNameList = RxList();
+  RxList<ByUserRoleData> compititorNameList = RxList();
+
   Rxn<ByUserRoleData> selectedCompanyIndividual = Rxn();
 
   BaOperationService baOperationService = BaOperationService();
   final AdminOperationService _adminOperationService = AdminOperationService();
   RxList<ProductCMData> productList = RxList();
+  RxList<ProductCMData> competitorProductList = RxList();
+
   RxList<TextEditingController> textControllers = RxList();
 
   @override
@@ -24,6 +28,7 @@ class InsertSalesRecord extends GetxController {
     super.onInit();
     getAllProductByCompanyMart();
     getAllCompany();
+    getAllCompititor();
   }
 
   Future<void> insertSalesRecord(BuildContext context) async {
@@ -97,6 +102,27 @@ class InsertSalesRecord extends GetxController {
     }
   }
 
+  Future<void> getAllCompetitorProductByCompanyMart(companyId) async {
+    competitorProductList.clear();
+    try {
+      fetchProductCompanyLoader.value = true;
+      AllCompanyProductData response =
+          await _adminOperationService.getAllProducts(
+        companyId,
+      );
+      if (response.data != null && response.code == 200) {
+        fetchProductCompanyLoader.value = false;
+        competitorProductList.value = response.data ?? [];
+        textControllers.value = List.generate(
+            response.data!.length, (index) => TextEditingController(text: ''));
+      } else {
+        fetchProductCompanyLoader.value = false;
+      }
+    } catch (e) {
+      fetchProductCompanyLoader.value = false;
+    }
+  }
+
   Future<void> getAllProductByCompanyMart() async {
     productList.clear();
     var companyId = await Utils.getCompanyId();
@@ -106,11 +132,10 @@ class InsertSalesRecord extends GetxController {
       fetchProductCompanyLoader.value = true;
       AllCompanyProductData response =
           await _adminOperationService.getAllProducts(
-              selectedCompanyIndividual.value == null
-                  ? int.parse(companyId!)
-                  : int.parse(
-                      selectedCompanyIndividual.value!.userId.toString()),
-              int.parse(martId!));
+        selectedCompanyIndividual.value == null
+            ? int.parse(companyId!)
+            : int.parse(selectedCompanyIndividual.value!.userId.toString()),
+      );
       if (response.data != null && response.code == 200) {
         fetchProductCompanyLoader.value = false;
         productList.value = response.data ?? [];
@@ -172,6 +197,17 @@ class InsertSalesRecord extends GetxController {
           await _adminOperationService.getAllUserByRole('COMPANY');
       if (response.data != null && response.code == 200) {
         companyNameList.value = response.data ?? [];
+      } else {}
+    } catch (e) {}
+  }
+
+  Future<void> getAllCompititor() async {
+    compititorNameList.clear();
+    try {
+      AllUserByRole response =
+          await _adminOperationService.getAllUserByRole('COMPITITOR');
+      if (response.data != null && response.code == 200) {
+        compititorNameList.value = response.data ?? [];
       } else {}
     } catch (e) {}
   }

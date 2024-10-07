@@ -8,12 +8,14 @@ class BaOperationService extends BaseService {
       List<Map<String, String>> products) async {
     var userId = await Utils.getUserId();
     var martId = await Utils.getMartId();
+    var companyId = await Utils.getCompanyId();
 
     try {
       Map<String, dynamic> data = {
         "products": products,
         "user_id": userId.toString(),
-        "mart_id": martId.toString()
+        "mart_id": martId.toString(),
+        "company_id": companyId.toString()
       };
 
       final response = await dioClient.post(Endpoints.recordSales, data: data);

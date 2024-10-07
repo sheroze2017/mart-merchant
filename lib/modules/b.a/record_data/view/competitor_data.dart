@@ -26,6 +26,9 @@ class _CompetitorDataState extends State<CompetitorData> {
   @override
   void initState() {
     super.initState();
+    if (salesController.compititorNameList.isEmpty) {
+      salesController.getAllCompititor();
+    }
   }
 
   @override
@@ -43,22 +46,27 @@ class _CompetitorDataState extends State<CompetitorData> {
               const heading(title: 'Select location to find company products'),
               Obx(() => Card(
                     elevation: 2,
-                    child: CustomDropdown(
+                    child: CustomDropdown.search(
                       decoration: CustomDropdownDecoration(
                         prefixIcon: Icon(Icons.location_on_sharp),
                         expandedFillColor: AppColors.primaryColor,
                         closedFillColor: AppColors.primaryColor,
                       ),
                       hintText: 'Select Company',
-                      items: salesController.companyNameList
+                      items: salesController.compititorNameList
                           .map((company) => company.name)
                           .toList(),
                       onChanged: (selected) async {
                         if (selected != null) {
                           salesController.selectedCompanyIndividual.value =
-                              await salesController.companyNameList
+                              await salesController.compititorNameList
                                   .firstWhere((c) => c.name == selected);
-                          salesController.getAllProductByCompanyMart();
+                          salesController.getAllCompetitorProductByCompanyMart(
+                              int.tryParse(salesController
+                                      .selectedCompanyIndividual
+                                      .value!
+                                      .companyId!) ??
+                                  null);
                         }
                       },
                     ),
@@ -78,15 +86,17 @@ class _CompetitorDataState extends State<CompetitorData> {
                 height: 2.h,
               ),
               Expanded(
-                  child: Obx(
-                      () => (salesController.fetchProductCompanyLoader.value)
+                  child: Obx(() =>
+                      (salesController.fetchProductCompanyLoader.value)
                           ? Center(child: CircularProgressIndicator())
                           : ListView.builder(
                               shrinkWrap: true,
                               physics: AlwaysScrollableScrollPhysics(),
-                              itemCount: salesController.productList.length,
+                              itemCount:
+                                  salesController.competitorProductList.length,
                               itemBuilder: (context, index) {
-                                final data = salesController.productList[index];
+                                final data = salesController
+                                    .competitorProductList[index];
                                 return AnimationConfiguration.staggeredList(
                                     position: index,
                                     duration: const Duration(milliseconds: 375),

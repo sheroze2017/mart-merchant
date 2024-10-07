@@ -116,6 +116,7 @@ class AdminOperation extends GetxController {
           textColor: Colors.white,
           fontSize: 14.0,
         );
+        getAllCompany();
         Get.back();
       } else {
         newCompanyLoader.value = false;
@@ -166,6 +167,7 @@ class AdminOperation extends GetxController {
           fontSize: 14.0,
         );
         Get.back();
+        getAllBa();
       } else {
         newBALoader.value = false;
         AnimatedSnackbar.showSnackbar(
@@ -205,6 +207,7 @@ class AdminOperation extends GetxController {
           textColor: Colors.white,
           fontSize: 14.0,
         );
+        getAllMerchant();
         Get.back();
       } else {
         newBALoader.value = false;
@@ -253,7 +256,7 @@ class AdminOperation extends GetxController {
     try {
       fetchProductCompanyLoader.value = true;
       AllCompanyProductData response =
-          await _adminOperationService.getAllProducts(companyId, martId);
+          await _adminOperationService.getAllProducts(companyId);
       if (response.data != null && response.code == 200) {
         fetchProductCompanyLoader.value = false;
         productList.value = response.data ?? [];

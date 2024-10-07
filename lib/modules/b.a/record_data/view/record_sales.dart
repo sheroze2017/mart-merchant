@@ -105,13 +105,17 @@ class _RecordSalesState extends State<RecordSales> {
                                   elevation: 2,
                                   child: ListTile(
                                       minVerticalPadding: 10,
-                                      title: Text(data.productName!,
+                                      title: Text(
+                                          '${data.productName!} - ${data.companyName} (${data.variant})',
                                           style:
                                               CustomTextStyles.darkTextStyle()),
                                       subtitle: Text(
-                                          '*${data.variant}\n*PKR ${data.price} \n*Stock ${data.qty}',
+                                          '\nPrice: ${data.price} \nStock: ${data.qty}',
                                           style: CustomTextStyles
-                                              .lightSmallTextStyle(size: 13)),
+                                              .lightSmallTextStyle(
+                                                  size: 13,
+                                                  color: AppColors
+                                                      .primaryColorDark)),
                                       trailing: SizedBox(
                                         width: 100,
                                         child: Row(

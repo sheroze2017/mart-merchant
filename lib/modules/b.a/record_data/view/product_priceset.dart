@@ -76,11 +76,11 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                                                           size: 14)),
                                               minVerticalPadding: 10,
                                               title: Text(
-                                                  'Name: ${data.productName!}',
+                                                  '${data.productName!} - ${data.companyName} (${data.variant})',
                                                   style: CustomTextStyles
                                                       .darkTextStyle()),
                                               subtitle: Text(
-                                                  '*${data.variant}\n*Stock ${data.qty}',
+                                                  'Price: ${data.price}\nStock: ${data.qty}',
                                                   style: CustomTextStyles
                                                       .lightSmallTextStyle(
                                                           size: 13)),
