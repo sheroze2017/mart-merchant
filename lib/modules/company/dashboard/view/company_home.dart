@@ -4,6 +4,7 @@ import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/competitor_price_view/competitor_price_view.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/company/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/company/operation/view/stock_restock/short_stock_view.dart';
@@ -194,6 +195,22 @@ class _CompanyHomeState extends State<CompanyHome> {
                         ),
                       ),
                     )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(CompetitorDataAdmin(),
+                              transition: Transition.rightToLeft);
+                        },
+                        child: DashboardCard(
+                          asset: 'assets/images/comp.png',
+                          title: 'Competitor price View',
+                        ),
+                      ),
+                    ),
                   ],
                 ),
 

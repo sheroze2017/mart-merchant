@@ -43,7 +43,7 @@ class _CompetitorDataState extends State<CompetitorData> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             children: [
-              const heading(title: 'Select location to find company products'),
+              const heading(title: 'Select company to find products'),
               Obx(() => Card(
                     elevation: 2,
                     child: CustomDropdown.search(
@@ -63,9 +63,8 @@ class _CompetitorDataState extends State<CompetitorData> {
                                   .firstWhere((c) => c.name == selected);
                           salesController.getAllCompetitorProductByCompanyMart(
                               int.tryParse(salesController
-                                      .selectedCompanyIndividual
-                                      .value!
-                                      .companyId!) ??
+                                      .selectedCompanyIndividual.value!.userId
+                                      .toString()) ??
                                   null);
                         }
                       },
@@ -107,7 +106,8 @@ class _CompetitorDataState extends State<CompetitorData> {
                                           color: AppColors.primaryColor,
                                           elevation: 2,
                                           child: ListTile(
-                                              leading: Text('PKR ${data.price}',
+                                              leading: Text(
+                                                  'PKR\n${data.price}',
                                                   style: CustomTextStyles
                                                       .darkHeadingTextStyle(
                                                           color: AppColors
@@ -115,14 +115,15 @@ class _CompetitorDataState extends State<CompetitorData> {
                                                           size: 14)),
                                               minVerticalPadding: 10,
                                               title: Text(
-                                                  'Name: ${data.productName!}',
+                                                  '${data.productName!} -  ${data.companyName}',
                                                   style: CustomTextStyles
                                                       .darkTextStyle()),
-                                              subtitle: Text(
-                                                  '*${data.variant}\n*Stock ${data.qty}',
+                                              subtitle: Text('${data.variant}',
                                                   style: CustomTextStyles
                                                       .lightSmallTextStyle(
-                                                          size: 13)),
+                                                          size: 13,
+                                                          color: AppColors
+                                                              .primaryColorDark)),
                                               onTap: () {
                                                 final TextEditingController
                                                     _textFieldController =
@@ -204,11 +205,7 @@ class _CompetitorDataState extends State<CompetitorData> {
                                                                                     fontSize: 14.0,
                                                                                   );
                                                                                 } else {
-                                                                                  salesController.updateProductPrice(
-                                                                                    context,
-                                                                                    _textFieldController.text,
-                                                                                    data.productId.toString(),
-                                                                                  );
+                                                                                  salesController.updateProductPrice(context, _textFieldController.text, data.productId.toString(), data.companyId.toString());
                                                                                 }
                                                                               },
                                                                               backgroundColor: AppColors.primaryColorDark,

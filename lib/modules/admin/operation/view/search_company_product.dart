@@ -28,7 +28,7 @@ class SearchCompanyProduct extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const heading(title: 'Select location to find company products'),
+            const heading(title: 'Select company to find products'),
             Obx(() => Card(
                   elevation: 2,
                   child: CustomDropdown(

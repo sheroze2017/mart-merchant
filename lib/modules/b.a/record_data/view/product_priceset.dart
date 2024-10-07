@@ -133,6 +133,9 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                                                               SizedBox(
                                                                   height: 16),
                                                               RoundedBorderTextField(
+                                                                textInputType:
+                                                                    TextInputType
+                                                                        .number,
                                                                 validator:
                                                                     Validator
                                                                         .ValidText,
@@ -165,11 +168,7 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                                                                                     fontSize: 14.0,
                                                                                   );
                                                                                 } else {
-                                                                                  salesController.updateProductPrice(
-                                                                                    context,
-                                                                                    _textFieldController.text,
-                                                                                    data.productId.toString(),
-                                                                                  );
+                                                                                  salesController.updateProductPrice(context, _textFieldController.text, data.productId.toString(), null);
                                                                                 }
                                                                               },
                                                                               backgroundColor: AppColors.primaryColorDark,

@@ -149,7 +149,8 @@ class InsertSalesRecord extends GetxController {
     }
   }
 
-  Future<void> updateProductPrice(context, String price, String id) async {
+  Future<void> updateProductPrice(
+      context, String price, String id, String? companyId) async {
     try {
       updatePriceLoader.value = true;
       final response = await baOperationService.updateProductPrice(price, id);
@@ -164,6 +165,9 @@ class InsertSalesRecord extends GetxController {
           fontSize: 14.0,
         );
         getAllProductByCompanyMart();
+        if (companyId != null) {
+          getAllCompetitorProductByCompanyMart(int.parse(companyId));
+        }
         Get.back();
       } else {
         updatePriceLoader.value = false;

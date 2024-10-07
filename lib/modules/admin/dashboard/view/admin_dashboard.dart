@@ -3,6 +3,7 @@ import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/admin/dashboard/widget/dashboard_card.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/competitor_price_view/competitor_price_view.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/stock_restock.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
@@ -150,6 +151,14 @@ class AdminHome extends StatelessWidget {
                   title: 'Search Company Products',
                   onTap: () {
                     Get.toNamed(Routes.SEARCHCOMPANYPRODUCT);
+                  },
+                ),
+                DashboardCard(
+                  asset: 'assets/images/comp.png',
+                  title: 'Competitor price View',
+                  onTap: () {
+                    Get.to(CompetitorDataAdmin(),
+                        transition: Transition.rightToLeft);
                   },
                 ),
               ],
