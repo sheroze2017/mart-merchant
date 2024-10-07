@@ -58,7 +58,7 @@ class SalesDetailScreen extends StatelessWidget {
                                           size: 13,
                                           color: AppColors.primaryColorDark)),
                                   Text(
-                                      'Total Price ${double.parse(data.qty ?? '0.0') * double.parse(data.unitPrice ?? '0.0')}',
+                                      'Total Price: ${(double.tryParse(data.qty!) ?? 0) * (double.tryParse(data.unitPrice ?? '0') ?? 0)}',
                                       style: CustomTextStyles.lightTextStyle(
                                           size: 13,
                                           color: AppColors.primaryColorDark)),

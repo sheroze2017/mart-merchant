@@ -92,9 +92,7 @@ class ShortStockScreenAdmin extends StatelessWidget {
                                     elevation: 2,
                                     child: ExpansionTile(
                                       title: Text(
-                                        toothpaste
-                                                .productDetails?.productName ??
-                                            'N/A',
+                                        "${toothpaste.productDetails?.productName} - ${toothpaste.martDetails!.martName}",
                                         style: CustomTextStyles.darkTextStyle(),
                                       ),
                                       subtitle: Column(

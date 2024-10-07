@@ -86,7 +86,7 @@ class CompanySales extends StatelessWidget {
                                 margin: EdgeInsets.all(8),
                                 child: ExpansionTile(
                                   title: Text(
-                                    'Sales ID: ${saleData.saleId}',
+                                    'Sales ID: ${saleData.saleId} - ${saleData.martName}',
                                     style: CustomTextStyles.w600TextStyle(),
                                   ),
                                   subtitle: Column(
