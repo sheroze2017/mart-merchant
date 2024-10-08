@@ -11,13 +11,29 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:intl/intl.dart';
 import '../../../b.a/dashboard/view/dashboard.dart';
 
-class SearchCompanyProduct extends StatelessWidget {
+class SearchCompanyProduct extends StatefulWidget {
   SearchCompanyProduct({super.key});
+
+  @override
+  State<SearchCompanyProduct> createState() => _SearchCompanyProductState();
+}
+
+class _SearchCompanyProductState extends State<SearchCompanyProduct> {
   final TextEditingController locationController = TextEditingController();
+
   String today = DateFormat('yyyy-MMM-dd').format(DateTime.now());
-  final AdminOperation companyController = Get.put(AdminOperation());
+
+  final AdminOperation companyController = Get.find<AdminOperation>();
 
   List<int> restockCount = [];
+  @override
+  void initState() {
+    super.initState();
+    if (companyController.companyNameList.isEmpty) {
+      companyController.getAllCompany();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

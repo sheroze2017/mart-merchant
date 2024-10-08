@@ -85,10 +85,10 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                                                   style: CustomTextStyles
                                                       .darkTextStyle()),
                                               subtitle: Text(
-                                                  '\nStock Quantity: ${data.qty}',
+                                                  '\nStock Quantity: ${data.qty}\nSize: ${data.sizes}',
                                                   style: CustomTextStyles
                                                       .lightSmallTextStyle(
-                                                          size: 13,
+                                                          size: 15,
                                                           color: AppColors
                                                               .primaryColorDark)),
                                               onTap: () {

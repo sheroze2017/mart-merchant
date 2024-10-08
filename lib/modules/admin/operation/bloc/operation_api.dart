@@ -176,10 +176,13 @@ class AdminOperationService extends BaseService {
     }
   }
 
-  Future<AllUserByRole> getAllUserByRole(String userRole) async {
+  Future<AllUserByRole> getAllUserByRole(String userRole,
+      {String? categoryId}) async {
+    String url = '&category_id=$categoryId';
+
     try {
-      final response =
-          await dioClient.get('${Endpoints.getUserByRole}?role=${userRole}');
+      final response = await dioClient.get(
+          '${Endpoints.getUserByRole}?role=${userRole}${categoryId != null ? url : ''}');
       return AllUserByRole.fromJson(response);
     } catch (e) {
       rethrow;

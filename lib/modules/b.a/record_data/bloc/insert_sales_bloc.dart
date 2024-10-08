@@ -208,9 +208,10 @@ class InsertSalesRecord extends GetxController {
 
   Future<void> getAllCompititor() async {
     compititorNameList.clear();
+    var categoryId = await Utils.getCategoryId();
     try {
-      AllUserByRole response =
-          await _adminOperationService.getAllUserByRole('COMPITITOR');
+      AllUserByRole response = await _adminOperationService
+          .getAllUserByRole('COMPITITOR', categoryId: categoryId);
       if (response.data != null && response.code == 200) {
         compititorNameList.value = response.data ?? [];
       } else {}

@@ -113,7 +113,7 @@ class _CompetitorDataAdminState extends State<CompetitorDataAdmin> {
                                                 style: CustomTextStyles
                                                     .darkTextStyle()),
                                             subtitle: Text(
-                                                'Varient: ${data.variant}',
+                                                'Varient: ${data.variant}\nSize: ${data.sizes}\nProduct Id: ${data.productId}',
                                                 style: CustomTextStyles
                                                     .lightSmallTextStyle(
                                                         size: 13,

@@ -25,6 +25,8 @@ class CompanyOperationBloc extends GetxController {
   RxList<ProductCMData> productList = RxList();
   List<String> employeeRole = [];
   RxList<ByUserRoleData> baNameList = RxList();
+  RxList<ByUserRoleData> merchantNameList = RxList();
+
   RxList<Location> locations = RxList();
   RxList<Employee> employees = RxList();
   RxList<CategoryData> categories = RxList();
@@ -37,6 +39,7 @@ class CompanyOperationBloc extends GetxController {
     super.onInit();
     getAllCategory();
     getAllMart();
+    getAllMerchant();
     getAllBa();
   }
 
@@ -78,17 +81,16 @@ class CompanyOperationBloc extends GetxController {
   }
 
   Future<void> addNewProduct(
-      categoryId, name, desc, price, qty, varient,size, context) async {
+      categoryId, name, desc, price, qty, varient, size, context) async {
     addProductLoader.value = true;
     final response = await _companyOperationService.createNewProduct(
-      categoryId: categoryId,
-      name: name,
-      desc: desc,
-      price: price,
-      qty: qty,
-      varient: varient,
-      size:size
-    );
+        categoryId: categoryId,
+        name: name,
+        desc: desc,
+        price: price,
+        qty: qty,
+        varient: varient,
+        size: size);
     if (response['data'] != null && response['code'] == 200) {
       addProductLoader.value = false;
       AnimatedSnackbar.showSnackbar(
@@ -194,6 +196,22 @@ class CompanyOperationBloc extends GetxController {
         var userId = await Utils.getUserId();
         baNameList.value = response.data
                 ?.where((ba) => ba.companyId.toString() == userId.toString())
+                .toList() ??
+            [];
+      } else {}
+    } catch (e) {}
+  }
+
+  Future<void> getAllMerchant() async {
+    merchantNameList.clear();
+    try {
+      AllUserByRole response =
+          await _adminOperationService.getAllUserByRole('MERCHANT');
+      if (response.data != null && response.code == 200) {
+        var userId = await Utils.getUserId();
+        merchantNameList.value = response.data
+                ?.where((merchant) =>
+                    merchant.companyId.toString() == userId.toString())
                 .toList() ??
             [];
       } else {}

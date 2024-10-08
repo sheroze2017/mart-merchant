@@ -118,7 +118,8 @@ class _CompetitorDataState extends State<CompetitorData> {
                                                   '${data.productName!} -  ${data.companyName}',
                                                   style: CustomTextStyles
                                                       .darkTextStyle()),
-                                              subtitle: Text('${data.variant}',
+                                              subtitle: Text(
+                                                  'Varient: ${data.variant}\nSize: ${data.sizes}\nProduct ID: ${data.productId}',
                                                   style: CustomTextStyles
                                                       .lightSmallTextStyle(
                                                           size: 13,
