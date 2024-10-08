@@ -40,6 +40,7 @@ class UserData {
   String? image;
   String? martId;
   String? companyId;
+  String? categoryId;
   String? deviceToken;
 
   UserData({
@@ -57,6 +58,7 @@ class UserData {
     this.image,
     this.martId,
     this.companyId,
+    this.categoryId,
     this.deviceToken,
   });
 
@@ -75,6 +77,7 @@ class UserData {
     image = json['image'] ?? ''; // Default to empty string if null
     martId = json['mart_id'] ?? ''; // Default to 0 if null
     companyId = json['company_id'] ?? ''; // Default to 0 if null
+    categoryId = json['category_id'] ?? '';
     deviceToken = json['device_token'] ?? ''; // Default to empty string if null
   }
 
@@ -95,6 +98,7 @@ class UserData {
     data['mart_id'] = this.martId;
     data['company_id'] = this.companyId;
     data['device_token'] = this.deviceToken;
+    data['category_id'] = this.categoryId;
     return data;
   }
 }

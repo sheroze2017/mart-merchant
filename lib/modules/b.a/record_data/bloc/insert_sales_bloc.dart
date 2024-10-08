@@ -104,12 +104,11 @@ class InsertSalesRecord extends GetxController {
 
   Future<void> getAllCompetitorProductByCompanyMart(companyId) async {
     competitorProductList.clear();
+    var categoryId = await Utils.getCategoryId();
     try {
       fetchProductCompanyLoader.value = true;
-      AllCompanyProductData response =
-          await _adminOperationService.getAllProducts(
-        companyId,
-      );
+      AllCompanyProductData response = await _adminOperationService
+          .getAllProducts(companyId, categoryId: categoryId);
       if (response.data != null && response.code == 200) {
         fetchProductCompanyLoader.value = false;
         competitorProductList.value = response.data ?? [];
@@ -126,16 +125,18 @@ class InsertSalesRecord extends GetxController {
   Future<void> getAllProductByCompanyMart() async {
     productList.clear();
     var companyId = await Utils.getCompanyId();
-    print(companyId);
+    var categoryId = await Utils.getCategoryId();
     var martId = await Utils.getMartId();
     try {
       fetchProductCompanyLoader.value = true;
       AllCompanyProductData response =
           await _adminOperationService.getAllProducts(
-        selectedCompanyIndividual.value == null
-            ? int.parse(companyId!)
-            : int.parse(selectedCompanyIndividual.value!.userId.toString()),
-      );
+              selectedCompanyIndividual.value == null
+                  ? int.parse(companyId!)
+                  : int.parse(
+                      selectedCompanyIndividual.value!.userId.toString(),
+                    ),
+              categoryId: categoryId);
       if (response.data != null && response.code == 200) {
         fetchProductCompanyLoader.value = false;
         productList.value = response.data ?? [];

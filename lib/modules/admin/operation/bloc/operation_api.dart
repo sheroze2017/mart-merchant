@@ -143,11 +143,14 @@ class AdminOperationService extends BaseService {
     }
   }
 
-  Future<AllCompanyProductData> getAllProducts(
-    int companyId,
-  ) async {
+  Future<AllCompanyProductData> getAllProducts(int companyId,
+      {String? categoryId}) async {
     try {
-      Map<String, dynamic> data = {"company_id": companyId};
+      Map<String, dynamic> data = {
+        "company_id": companyId,
+        "mart_id": null,
+        if (categoryId != null) "category_id": categoryId
+      };
 
       final response =
           await dioClient.post(Endpoints.getAllCompanyMartProduct, data: data);
@@ -196,13 +199,13 @@ class AdminOperationService extends BaseService {
   }
 
   Future<Map<String, dynamic>> assignEmployeeToBa(
-      String userId, int companyId, int martId,categoryId) async {
+      String userId, int companyId, int martId, categoryId) async {
     try {
       Map<String, dynamic> data = {
         "user_id": userId,
         "company_id": companyId,
         "mart_id": martId,
-        "category_id":categoryId
+        "category_id": categoryId
       };
 
       final response =

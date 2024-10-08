@@ -32,21 +32,21 @@ class AllCategoryModel {
 
 class CategoryData {
   int? categoryId;
-  int? CategoryId;
+  int? companyId;
   String? name;
   String? status;
   String? createdAt;
 
   CategoryData(
       {this.categoryId,
-      this.CategoryId,
+      this.companyId,
       this.name,
       this.status,
       this.createdAt});
 
   CategoryData.fromJson(Map<String, dynamic> json) {
     categoryId = json['category_id'];
-    CategoryId = json['Category_id'];
+    companyId = json['company_id'];
     name = json['name'];
     status = json['status'];
     createdAt = json['created_at'];
@@ -55,7 +55,7 @@ class CategoryData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['category_id'] = this.categoryId;
-    data['Category_id'] = this.CategoryId;
+    data['company_id'] = this.companyId;
     data['name'] = this.name;
     data['status'] = this.status;
     data['created_at'] = this.createdAt;

@@ -49,9 +49,13 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                 height: 2.h,
               ),
               Expanded(
-                  child: Obx(
-                      () => (salesController.fetchProductCompanyLoader.value)
-                          ? Center(child: CircularProgressIndicator())
+                  child: Obx(() => (salesController
+                          .fetchProductCompanyLoader.value)
+                      ? Center(child: CircularProgressIndicator())
+                      : salesController.productList.isEmpty
+                          ? Center(
+                              child: Text('No Product Found'),
+                            )
                           : ListView.builder(
                               shrinkWrap: true,
                               physics: AlwaysScrollableScrollPhysics(),

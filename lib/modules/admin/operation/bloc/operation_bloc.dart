@@ -397,7 +397,7 @@ class AdminOperation extends GetxController {
             userId,
             selectedCompany.value!.userId!,
             !isMerchant ? selectedMart.value!.martId! : 2,
-            selectedCategory.value!.CategoryId);
+            selectedCategory.value!.categoryId);
         if (response['data'] != null && response['code'] == 200) {
           assignBaLoader.value = false;
           Get.back();

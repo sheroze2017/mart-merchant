@@ -27,6 +27,7 @@ class CustomDrawer extends StatelessWidget {
             colors: [
               AppColors.redLight,
               AppColors.redLight,
+              AppColors.redLight,
               AppColors.primaryColorDark,
             ],
           ),
@@ -37,7 +38,7 @@ class CustomDrawer extends StatelessWidget {
               children: [
                 DrawerHeader(
                   child: CircleAvatar(
-                    radius: 50,
+                    radius: 80,
                     child: Image.asset('assets/images/logo.png'),
                   ),
                 ),
