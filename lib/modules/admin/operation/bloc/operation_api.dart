@@ -196,12 +196,13 @@ class AdminOperationService extends BaseService {
   }
 
   Future<Map<String, dynamic>> assignEmployeeToBa(
-      String userId, int companyId, int martId) async {
+      String userId, int companyId, int martId,categoryId) async {
     try {
       Map<String, dynamic> data = {
         "user_id": userId,
         "company_id": companyId,
-        "mart_id": martId
+        "mart_id": martId,
+        "category_id":categoryId
       };
 
       final response =

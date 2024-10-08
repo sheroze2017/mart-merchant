@@ -55,8 +55,13 @@ class AssignNewEmploye extends StatelessWidget {
                       .toList(),
                   onChanged: (selected) {
                     if (selected != null) {
+                      companyController.categories.clear();
+                      companyController.selectedCategory.value = null;
                       companyController.selectCompanyByName(selected);
                       companyController.getAllMart();
+                      companyController.getAllCategory(companyController
+                          .selectedCompany.value!.userId
+                          .toString());
                     }
                   },
                 ),
@@ -86,6 +91,30 @@ class AssignNewEmploye extends StatelessWidget {
                         },
                       ),
                     ),
+              SizedBox(
+                height: 2.h,
+              ),
+              const heading(title: 'Select Category'),
+              Obx(
+                () => Card(
+                    elevation: 2,
+                    child: CustomDropdown.search(
+                      decoration: CustomDropdownDecoration(
+                        prefixIcon: Icon(Icons.location_on_sharp),
+                        expandedFillColor: AppColors.primaryColor,
+                        closedFillColor: AppColors.primaryColor,
+                      ),
+                      hintText: 'Select Category',
+                      items: companyController.categories
+                          .map((company) => company.name)
+                          .toList(),
+                      onChanged: (selected) {
+                        if (selected != null) {
+                          companyController.selectCategoryByName(selected);
+                        }
+                      },
+                    )),
+              ),
             ],
           ),
         ),
@@ -95,7 +124,7 @@ class AssignNewEmploye extends StatelessWidget {
           children: [
             Expanded(
                 child: Obx(
-              () => RoundedButtonSmall(
+              () => RoundedButton(
                   showLoader: companyController.assignBaLoader.value,
                   text: 'Save',
                   onPressed: () async {

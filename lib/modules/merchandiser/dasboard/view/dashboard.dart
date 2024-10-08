@@ -10,6 +10,7 @@ import 'package:ba_merchandise/widgets/drawer/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../core/routes/routes.dart';
 import '../../../../widgets/custom/feature_card.dart';
 import '../../operation/view/restock_inventory.dart';
 
@@ -127,40 +128,6 @@ class _BaHomeState extends State<MerchantDashboard> {
                       },
                       subtitle: 'Record the inventory restock',
                     ),
-                    // FeatureCard(
-                    //   icon: Icons.co_present_sharp,
-                    //   title: 'Competitior data',
-                    //   onTap: () {
-                    //     Get.toNamed(Routes.COMPETITORDATA);
-                    //   },
-                    //   subtitle: 'Record competitor data for product',
-                    // ),
-                    // FeatureCard(
-                    //   icon: Icons.co_present_sharp,
-                    //   title: 'Competitor Price',
-                    //   onTap: () {
-                    //     Get.toNamed(Routes.PRODUCT_PRICE);
-                    //   },
-                    //   subtitle: 'Set competitor price',
-                    // ),
-                    // FeatureCard(
-                    //   icon: Icons.person,
-                    //   title: 'Record Intercepts',
-                    //   onTap: () {
-                    //     final TextEditingController dialogController =
-                    //         TextEditingController();
-                    //     final TextEditingController soldController =
-                    //         TextEditingController();
-                    //     showDialog(
-                    //       context: context,
-                    //       builder: (context) => CustomDialog(
-                    //         textcontroller: dialogController,
-                    //         productSold: soldController,
-                    //       ),
-                    //     );
-                    //   },
-                    //   subtitle: 'Record customer interception',
-                    // ),
 
                     FeatureCard(
                       icon: Icons.production_quantity_limits_outlined,
@@ -171,7 +138,40 @@ class _BaHomeState extends State<MerchantDashboard> {
                       },
                       subtitle: 'Update Product Quantity',
                     ),
-
+                    FeatureCard(
+                      icon: Icons.co_present_sharp,
+                      title: 'Competitior data',
+                      onTap: () {
+                        Get.toNamed(Routes.COMPETITORDATA);
+                      },
+                      subtitle: 'Record competitor data for product',
+                    ),
+                    FeatureCard(
+                      icon: Icons.price_change,
+                      title: 'Product Price',
+                      onTap: () {
+                        Get.toNamed(Routes.PRODUCT_PRICE);
+                      },
+                      subtitle: 'Set product price',
+                    ),
+                    FeatureCard(
+                      icon: Icons.person,
+                      title: 'Record Intercepts',
+                      onTap: () {
+                        final TextEditingController dialogController =
+                            TextEditingController();
+                        final TextEditingController soldController =
+                            TextEditingController();
+                        showDialog(
+                          context: context,
+                          builder: (context) => CustomDialog(
+                            textcontroller: dialogController,
+                            productSold: soldController,
+                          ),
+                        );
+                      },
+                      subtitle: 'Record customer interception',
+                    ),
                     // FeatureCard(
                     //   icon: Icons.co_present_sharp,
                     //   title: 'Sync data',

@@ -5,6 +5,7 @@ import 'package:ba_merchandise/modules/admin/operation/model/createUser_model.da
 import 'package:ba_merchandise/modules/admin/operation/model/sales_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/company_operation_api.dart';
+import 'package:ba_merchandise/modules/company/operation/model/company_model.dart';
 import 'package:ba_merchandise/modules/company/operation/model/mart_model.dart';
 import 'package:ba_merchandise/widgets/custom/error_toast.dart';
 import 'package:flutter/material.dart';
@@ -36,8 +37,12 @@ class AdminOperation extends GetxController {
   final AdminOperationService _adminOperationService = AdminOperationService();
 
   var selectedCompany = Rxn<ByUserRoleData>(); // Currently selected company
+  var selectedCategory = Rxn<CategoryData>(); // Currently selected company
+
   var selectedba = Rxn<ByUserRoleData>(); // Currently selected company
-  var selectedMart = Rxn<MartData>(); // Currently selected company
+  var selectedMart = Rxn<MartData>();
+  RxList<CategoryData> categories = RxList();
+  // Currently selected company
 
   @override
   void onInit() {
@@ -234,6 +239,14 @@ class AdminOperation extends GetxController {
     selectedCompany.value = company;
   }
 
+  void selectCategoryByName(String category) {
+    final cate = categories.firstWhere(
+      (cat) => cat.name == category,
+      orElse: () => throw Exception('Company not found'),
+    );
+    selectedCategory.value = cate;
+  }
+
   void selectBaByName(String companyName) {
     final ba = baNameList.firstWhere(
       (ba) => ba.name == companyName,
@@ -373,7 +386,9 @@ class AdminOperation extends GetxController {
 
   Future<void> assignBAToCompanyMart(
       String userId, BuildContext context, bool isMerchant) async {
-    if (selectedCompany.value != null || isMerchant
+    if (selectedCompany.value != null ||
+            selectedCategory.value != null ||
+            isMerchant
         ? true
         : selectedMart.value != null) {
       assignBaLoader.value = true;
@@ -381,7 +396,8 @@ class AdminOperation extends GetxController {
         final response = await _adminOperationService.assignEmployeeToBa(
             userId,
             selectedCompany.value!.userId!,
-            !isMerchant ? selectedMart.value!.martId! : 2);
+            !isMerchant ? selectedMart.value!.martId! : 2,
+            selectedCategory.value!.CategoryId);
         if (response['data'] != null && response['code'] == 200) {
           assignBaLoader.value = false;
           Get.back();
@@ -425,7 +441,7 @@ class AdminOperation extends GetxController {
     } else {
       AnimatedSnackbar.showSnackbar(
         context: context,
-        message: 'Please choose field first',
+        message: 'Please look if you are missing any field',
         icon: Icons.info,
         backgroundColor: Colors.red,
         textColor: Colors.white,
@@ -448,6 +464,14 @@ class AdminOperation extends GetxController {
       }
     } catch (e) {
       salesLoader.value = false;
+    }
+  }
+
+  Future<void> getAllCategory(String companyId) async {
+    AllCategoryModel response =
+        await _companyOperationService.getAllCategories(companyId: companyId);
+    if (response.data != null && response.code == 200) {
+      categories.value = response.data ?? [];
     }
   }
 }

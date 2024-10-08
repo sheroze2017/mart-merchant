@@ -68,7 +68,8 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                                           color: AppColors.primaryColor,
                                           elevation: 2,
                                           child: ListTile(
-                                              leading: Text('PKR ${data.price}',
+                                              leading: Text(
+                                                  'PKR\n${data.price}',
                                                   style: CustomTextStyles
                                                       .darkHeadingTextStyle(
                                                           color: AppColors
@@ -80,10 +81,12 @@ class _ProductPriceSetState extends State<ProductPriceSet> {
                                                   style: CustomTextStyles
                                                       .darkTextStyle()),
                                               subtitle: Text(
-                                                  'Price: ${data.price}\nStock: ${data.qty}',
+                                                  '\nStock Quantity: ${data.qty}',
                                                   style: CustomTextStyles
                                                       .lightSmallTextStyle(
-                                                          size: 13)),
+                                                          size: 13,
+                                                          color: AppColors
+                                                              .primaryColorDark)),
                                               onTap: () {
                                                 final TextEditingController
                                                     _textFieldController =

@@ -53,12 +53,12 @@ class CompanyOperationService extends BaseService {
     }
   }
 
-  Future<AllCategoryModel> getAllCategories() async {
+  Future<AllCategoryModel> getAllCategories({String? companyId}) async {
     var userId = await Utils.getUserId();
 
     try {
-      final response = await dioClient
-          .get('${Endpoints.getAllCategories}?company_id=${userId}');
+      final response = await dioClient.get(
+          '${Endpoints.getAllCategories}?company_id=${companyId ?? userId}');
       return AllCategoryModel.fromJson(response);
     } catch (e) {
       rethrow;

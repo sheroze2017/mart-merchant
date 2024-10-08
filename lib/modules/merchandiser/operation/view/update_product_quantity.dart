@@ -111,11 +111,12 @@ class UpdateProductQuantity extends StatelessWidget {
                                                       .primaryColorDark,
                                                   size: 14)),
                                       minVerticalPadding: 10,
-                                      title: Text('Name: ${data.productName!}',
+                                      title: Text(
+                                          '${data.productName!} - ${data.companyName} (${data.variant})',
                                           style:
                                               CustomTextStyles.darkTextStyle()),
                                       subtitle: Text(
-                                          '${data.variant}\nStock ${data.qty}',
+                                          'Stock Quantity: ${data.qty}',
                                           style: CustomTextStyles
                                               .lightSmallTextStyle(
                                                   size: 13,
