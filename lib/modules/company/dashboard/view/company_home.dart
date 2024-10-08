@@ -5,7 +5,6 @@ import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/competitor_price_view/competitor_price_view.dart';
-import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/company/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/company/operation/view/stock_restock/short_stock_view.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
@@ -17,7 +16,6 @@ import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
 import 'package:ba_merchandise/widgets/drawer/app_drawer.dart';
 import 'package:ba_merchandise/widgets/textfield/rounded_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 

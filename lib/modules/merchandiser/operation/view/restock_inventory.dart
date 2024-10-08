@@ -5,15 +5,11 @@ import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/modules/merchandiser/operation/bloc/operation_bloc.dart';
-import 'package:ba_merchandise/modules/merchandiser/operation/view/upload_image.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:input_quantity/input_quantity.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:intl/intl.dart';
 import '../../../b.a/dashboard/view/dashboard.dart';
@@ -282,6 +278,4 @@ class _RestockInventoryState extends State<RestockInventory> {
       ),
     );
   }
-
-
 }

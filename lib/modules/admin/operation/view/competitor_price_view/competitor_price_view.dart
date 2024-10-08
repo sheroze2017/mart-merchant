@@ -1,13 +1,9 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
-import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/insert_sales_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
-import 'package:ba_merchandise/widgets/button/rounded_button.dart';
-import 'package:ba_merchandise/widgets/custom/error_toast.dart';
-import 'package:ba_merchandise/widgets/textfield/rounded_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';

@@ -4,8 +4,6 @@ import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/merchant_restock_controller.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
-import 'package:ba_merchandise/modules/admin/operation/bloc/restock_bloc.dart';
-import 'package:ba_merchandise/modules/b.a/record_data/model/restock_data_model.dart';
 import 'package:ba_merchandise/modules/company/operation/model/merchant_restock_model.dart';
 import 'package:ba_merchandise/modules/company/operation/view/stock_restock/restock_detail_screen.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';

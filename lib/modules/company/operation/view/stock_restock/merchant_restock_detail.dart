@@ -2,7 +2,6 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/function.dart';
-import 'package:ba_merchandise/modules/company/operation/bloc/company_short_stock_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/merchant_restock_detail_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/model/merchant_restock_model.dart';
@@ -10,7 +9,6 @@ import 'package:ba_merchandise/modules/company/operation/view/stock_restock/rest
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -18,10 +16,12 @@ class MerchantRestockDetailCompany extends StatefulWidget {
   MerchantRestockDetailCompany({super.key});
 
   @override
-  State<MerchantRestockDetailCompany> createState() => _MerchantRestockDetailCompanyState();
+  State<MerchantRestockDetailCompany> createState() =>
+      _MerchantRestockDetailCompanyState();
 }
 
-class _MerchantRestockDetailCompanyState extends State<MerchantRestockDetailCompany> {
+class _MerchantRestockDetailCompanyState
+    extends State<MerchantRestockDetailCompany> {
   final controllerCompany = Get.find<CompanyOperationBloc>();
 
   final TextEditingController martId = TextEditingController();

@@ -1,4 +1,3 @@
-import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/admin/dashboard/bloc/dashboard_controller.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';

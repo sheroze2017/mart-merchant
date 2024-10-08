@@ -4,11 +4,9 @@ import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/model/restock_data_model.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/company_short_stock_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
-import 'package:ba_merchandise/modules/sync/model/user_sync_model.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class ShortStockScreen extends StatefulWidget {
