@@ -299,7 +299,10 @@ class DashboardCard extends StatelessWidget {
     return Container(
       width: 120,
       child: Card(
-        color: AppColors.primaryColor,
+        shape: RoundedRectangleBorder(
+            side: BorderSide(color: AppColors.redLight),
+            borderRadius: BorderRadius.circular(10)),
+        color: AppColors.whiteColor,
         elevation: 4,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -318,7 +321,7 @@ class DashboardCard extends StatelessWidget {
               ),
               Text(
                 title,
-                style: CustomTextStyles.lightTextStyle(size: 16),
+                style: CustomTextStyles.w600TextStyle(size: 16),
               ),
             ],
           ),

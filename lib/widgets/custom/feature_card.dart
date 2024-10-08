@@ -24,14 +24,15 @@ class FeatureCard extends StatelessWidget {
       child: Card(
           shadowColor: AppColors.primaryColor,
           elevation: 4,
-          color: AppColors.redLight,
+          color: AppColors.whiteColor,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
-              side: BorderSide(color: AppColors.primaryColor)),
+              side: BorderSide(color: AppColors.redLight, width: 1)),
           child: ListTile(
             leading: Icon(
               icon,
               color: AppColors.primaryColorDark,
+              size: 35,
             ),
             title: Text(
               title,

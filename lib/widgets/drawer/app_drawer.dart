@@ -18,76 +18,89 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: AppColors.redLight,
-      child: Column(
-        children: [
-          Column(
-            children: [
-              DrawerHeader(
-                child: CircleAvatar(
-                  radius: 50,
-                  child: Image.asset('assets/images/logo.png'),
-                ),
-              ),
+      //backgroundColor: AppColors.redLight,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.redLight,
+              AppColors.redLight,
+              AppColors.primaryColorDark,
             ],
           ),
-          Text(
-            'Name',
-            style: CustomTextStyles.w600TextStyle(
-                size: 20, color: AppColors.primaryColorDark),
-          ),
-          Obx(() => Text(
-                controller.userData.value!.name.toString(),
-                style: CustomTextStyles.lightTextStyle(
-                    size: 16, color: AppColors.blackColor),
-              )),
-          SizedBox(
-            height: 2.h,
-          ),
-          Text(
-            'User Role',
-            style: CustomTextStyles.w600TextStyle(
-                size: 20, color: AppColors.primaryColorDark),
-          ),
-          Obx(() => Text(
-                controller.userData.value!.role.toString(),
-                style: CustomTextStyles.lightTextStyle(
-                    size: 16, color: AppColors.blackColor),
-              )),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
+        ),
+        child: Column(
+          children: [
+            Column(
               children: [
-                Expanded(
-                  child: RoundedButton(
-                      text: 'Logout',
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => CustomDialogMessage(
-                            dialogText: 'Are you sure you want to Logout?',
-                            buttonText1: 'No',
-                            buttonText2: 'Yes',
-                            onButton1Pressed: () {
-                              Get.back();
-                            },
-                            onButton2Pressed: () {
-                              final AuthStorage authStorage =
-                                  Get.find<AuthStorage>();
-                              authStorage.clear();
-                              Get.offAllNamed(Routes.USERROLE);
-                            },
-                          ),
-                        );
-                      },
-                      backgroundColor: AppColors.primaryColorDark,
-                      textColor: AppColors.whiteColor),
+                DrawerHeader(
+                  child: CircleAvatar(
+                    radius: 50,
+                    child: Image.asset('assets/images/logo.png'),
+                  ),
                 ),
               ],
             ),
-          )
-        ],
+            Text(
+              'Name',
+              style: CustomTextStyles.w600TextStyle(
+                  size: 20, color: AppColors.primaryColorDark),
+            ),
+            Obx(() => Text(
+                  controller.userData.value!.name.toString(),
+                  style: CustomTextStyles.lightTextStyle(
+                      size: 16, color: AppColors.blackColor),
+                )),
+            SizedBox(
+              height: 4.h,
+            ),
+            Text(
+              'User Role',
+              style: CustomTextStyles.w600TextStyle(
+                  size: 20, color: AppColors.primaryColorDark),
+            ),
+            Obx(() => Text(
+                  controller.userData.value!.role.toString(),
+                  style: CustomTextStyles.lightTextStyle(
+                      size: 16, color: AppColors.blackColor),
+                )),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: RoundedButton(
+                        text: 'Logout',
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => CustomDialogMessage(
+                              dialogText: 'Are you sure you want to Logout?',
+                              buttonText1: 'No',
+                              buttonText2: 'Yes',
+                              onButton1Pressed: () {
+                                Get.back();
+                              },
+                              onButton2Pressed: () {
+                                final AuthStorage authStorage =
+                                    Get.find<AuthStorage>();
+                                authStorage.clear();
+                                Get.offAllNamed(Routes.USERROLE);
+                              },
+                            ),
+                          );
+                        },
+                        backgroundColor: AppColors.primaryColorDark,
+                        textColor: AppColors.whiteColor),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

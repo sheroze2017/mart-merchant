@@ -73,38 +73,42 @@ class CustomDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                RoundedButtonSmall(
-                    text: 'Cancel',
-                    onPressed: () {
-                      Get.back();
-                    },
-                    backgroundColor: AppColors.redLight,
-                    textColor: Colors.white),
+                Expanded(
+                  child: RoundedButton(
+                      text: 'Cancel',
+                      onPressed: () {
+                        Get.back();
+                      },
+                      backgroundColor: AppColors.blackColor,
+                      textColor: Colors.white),
+                ),
                 SizedBox(width: 10),
                 Obx(
-                  () => RoundedButtonSmall(
-                      showLoader: controller.statusRecordLoader.value,
-                      text: 'Record',
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-                        // Handle submission logic here
-                        if (textcontroller.text.isEmpty ||
-                            productSold.text.isEmpty) {
-                          AnimatedSnackbar.showSnackbar(
-                            context: context,
-                            message: 'Please enter count',
-                            icon: Icons.info,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 14.0,
-                          );
-                        } else {
-                          controller.recordIntercept(
-                              context, textcontroller.text, productSold.text);
-                        }
-                      },
-                      backgroundColor: AppColors.primaryColorDark,
-                      textColor: AppColors.whiteColor),
+                  () => Expanded(
+                    child: RoundedButton(
+                        showLoader: controller.statusRecordLoader.value,
+                        text: 'Record',
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          // Handle submission logic here
+                          if (textcontroller.text.isEmpty ||
+                              productSold.text.isEmpty) {
+                            AnimatedSnackbar.showSnackbar(
+                              context: context,
+                              message: 'Please enter count',
+                              icon: Icons.info,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 14.0,
+                            );
+                          } else {
+                            controller.recordIntercept(
+                                context, textcontroller.text, productSold.text);
+                          }
+                        },
+                        backgroundColor: AppColors.primaryColorDark,
+                        textColor: AppColors.whiteColor),
+                  ),
                 )
               ],
             ),

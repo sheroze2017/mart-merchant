@@ -42,6 +42,10 @@ class _GrantRevokeAccessState extends State<GrantRevokeAccess> {
               Tab(text: 'Active'),
               Tab(text: 'Inactive'),
             ],
+            labelStyle:
+                TextStyle(color: AppColors.primaryColorDark, fontSize: 16),
+            indicatorColor: AppColors.primaryColorDark,
+            indicatorSize: TabBarIndicatorSize.tab,
           ),
         ),
         body: TabBarView(
@@ -57,10 +61,8 @@ class _GrantRevokeAccessState extends State<GrantRevokeAccess> {
     );
   }
 
-  // Widget to build the employee list based on the given status
   Widget buildEmployeeList({required String status}) {
     return Obx(() {
-      // Filter employees based on their status (active/inactive)
       final filteredList = controller.baNameList
           .where((employee) => employee.status == status)
           .toList();
@@ -93,11 +95,13 @@ class _GrantRevokeAccessState extends State<GrantRevokeAccess> {
                               child: FadeInAnimation(
                                 child: Card(
                                   color: AppColors.primaryColor,
-                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  elevation: 4,
                                   child: ListTile(
                                     leading: Container(
-                                      height: 2.h,
-                                      width: 2.h,
+                                      height: 3.h,
+                                      width: 3.h,
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(50),
@@ -110,9 +114,12 @@ class _GrantRevokeAccessState extends State<GrantRevokeAccess> {
                                         style:
                                             CustomTextStyles.darkTextStyle()),
                                     subtitle: Text(
-                                        '*Email ${data.email} \n*Role ${data.role} \n*UserId ${data.userId}',
+                                        'Email: ${data.email}\nRole: ${data.role}\nUserId: ${data.userId}\nCompanyId: ${data.companyId}',
                                         style: CustomTextStyles
-                                            .lightSmallTextStyle(size: 13)),
+                                            .lightSmallTextStyle(
+                                                size: 14,
+                                                color: AppColors
+                                                    .primaryColorDark)),
                                     trailing: data.status == 'active'
                                         ? Text('Revoke Access',
                                             style:
