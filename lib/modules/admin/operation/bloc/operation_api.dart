@@ -169,7 +169,7 @@ class AdminOperationService extends BaseService {
       };
 
       final response =
-          await dioClient.post(Endpoints.getAllBaAttendance, data: data);
+      await dioClient.post(Endpoints.getAllBaAttendance, data: data);
       return AllUserAttendance.fromJson(response);
     } catch (e) {
       rethrow;
