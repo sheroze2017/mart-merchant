@@ -22,4 +22,15 @@ class AttendanceService extends BaseService {
       rethrow;
     }
   }
+
+  Future<Map<String, dynamic>> checkAttendance() async {
+    var userId = await Utils.getUserId();
+    try {
+      final response =
+          await dioClient.get('${Endpoints.checkAttendance}?user_id=$userId');
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

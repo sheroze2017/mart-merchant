@@ -25,7 +25,8 @@ class AttendanceController extends GetxController {
   void onInit() async {
     super.onInit();
     getCurrentLocation();
-    getTodayAttendance();
+    // getTodayAttendance();
+    checkAttendanceApi();
   }
 
   Future<void> markAttendanceApi(
@@ -68,19 +69,35 @@ class AttendanceController extends GetxController {
     }
   }
 
+  Future<void> checkAttendanceApi() async {
+    try {
+      final response = await _attendanceService.checkAttendance();
+      if (response['data'] != null && response['code'] == 200) {
+        Attendance attendance = Attendance(
+          date: today,
+          status: true,
+          checkOutTime: response['data']['checkout_time'] ?? '',
+          checkInTime: response['data']['checkin_time'] ?? '',
+        );
+        attenToday.value = attendance;
+        attendanceBox.put(today, attendance);
+      } else {}
+    } catch (e) {}
+  }
+
   void getCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     currentLocation.value = LatLng(position.latitude, position.longitude);
   }
 
-  void getTodayAttendance() async {
-    Attendance? attendance = attendanceBox.get(today);
-    if (attendance != null) {
-      attenToday.value = attendance;
-      print(attendance.checkInTime);
-    }
-  }
+  // void getTodayAttendance() async {
+  //   Attendance? attendance = attendanceBox.get(today);
+  //   if (attendance != null) {
+  //     attenToday.value = attendance;
+  //     print(attendance.checkInTime);
+  //   }
+  // }
 
   Future<void> markAttendance(double latitude, double longitude) async {
     double distanceInMeters = Geolocator.distanceBetween(

@@ -1,12 +1,15 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/core/local/hive_db/hive.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/admin/dashboard/bloc/dashboard_controller.dart';
+import 'package:ba_merchandise/modules/attendence/bloc/attendance_bloc.dart';
 import 'package:ba_merchandise/services/local_storage/auth_storage.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -85,10 +88,11 @@ class CustomDrawer extends StatelessWidget {
                               onButton1Pressed: () {
                                 Get.back();
                               },
-                              onButton2Pressed: () {
+                              onButton2Pressed: () async {
                                 final AuthStorage authStorage =
                                     Get.find<AuthStorage>();
                                 authStorage.clear();
+                                await logoutAndCleanAttendance();
                                 Get.offAllNamed(Routes.USERROLE);
                               },
                             ),
@@ -104,5 +108,39 @@ class CustomDrawer extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Future<void> logoutAndCleanAttendance() async {
+  try {
+    final attendanceController = Get.find<AttendanceController>();
+    attendanceController.martAttendanceLoader.value = false;
+
+    // 3. Clear all reactive variables
+    attendanceController.currentLocation.value = null;
+    attendanceController.attenToday.value = Attendance(); // Reset to empty
+
+    // 4. Get the already opened box instance
+    final attendanceBox = Hive.box('attendanceBox');
+
+    // 5. Clear the box data
+
+    // 6. Close all Rx variables (these are typically closed in onClose())
+    attendanceController.martAttendanceLoader.close();
+    attendanceController.currentLocation.close();
+    attendanceController.attenToday.close();
+
+    // 7. Delete the controller instance
+    Get.delete<AttendanceController>(force: true);
+
+    print('Successfully cleaned attendance data on logout');
+  } catch (e) {
+    print('Error cleaning attendance data on logout: $e');
+  } finally {
+    // 8. Proceed with your normal logout process
+    // Add your auth logout logic here
+    // await AuthService().logout();
+
+    // Navigate to login screen
   }
 }

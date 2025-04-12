@@ -5,12 +5,13 @@ class Endpoints {
     return kReleaseMode ? baseUrlProduction : baseUrlTesting;
   }
 
-  static const String baseUrlProduction = "http://194.233.69.219:3005/";
-  static const String baseUrlTesting = "http://194.233.69.219:3005/";
-  static const String baseUrlStaging = "http://194.233.69.219:3005/";
+  static const String baseUrlProduction = "http://154.38.181.14:1003/";
+  static const String baseUrlTesting = "http://154.38.181.14:1003/";
+  static const String baseUrlStaging = "http://154.38.181.14:1003/";
 
   static const String login = "auth/login";
   static const String attendance = "auth/attendance";
+  static const String checkAttendance = "auth/checkAttendence";
   static const String recordSales = "auth/insertSales";
   static const String createUser = "auth/createUser";
   static const String restockRecord = "auth/shelfRestocked";

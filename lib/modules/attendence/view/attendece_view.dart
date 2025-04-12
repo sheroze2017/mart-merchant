@@ -39,6 +39,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   void initState() {
     super.initState();
     getCurrentLocation();
+    attendanceController.checkAttendanceApi();
   }
 
   getCurrentLocation() async {
@@ -142,7 +143,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                     await attendanceController
                                         .markAttendanceApi(
                                             _latitude, _longitude, context);
-                                    attendanceController.getTodayAttendance();
+                                    attendanceController.checkAttendanceApi();
                                   }
                                 },
                                 child: StatusContainer(
@@ -157,7 +158,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         ),
                       ),
               ),
-
               InkWell(
                   child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -183,7 +183,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                                 _latitude, _longitude, context);
                                         setState(() {});
                                         attendanceController
-                                            .getTodayAttendance();
+                                            .checkAttendanceApi();
 
                                         Get.back();
                                       },
@@ -273,13 +273,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           ),
                           Obx(
                             () => Text(
-                              Utils.formatDate(attendanceController
-                                      .attenToday.value.checkInTime
-                                      .toString()) +
-                                  ' ' +
-                                  Utils.formatTime(attendanceController
-                                      .attenToday.value.checkInTime
-                                      .toString()),
+                              '${Utils.formatDate(attendanceController.attenToday.value.checkInTime.toString())} ${Utils.formatTime(attendanceController.attenToday.value.checkInTime.toString())}',
                               style: CustomTextStyles.lightTextStyle(),
                             ),
                           )

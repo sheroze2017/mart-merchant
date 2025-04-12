@@ -94,6 +94,7 @@ class _RecordSalesState extends State<RecordSales> {
                           itemCount: salesController.productList.length,
                           itemBuilder: (context, index) {
                             final data = salesController.productList[index];
+                            print(data.status);
                             return AnimationConfiguration.staggeredList(
                               position: index,
                               duration: const Duration(milliseconds: 375),
