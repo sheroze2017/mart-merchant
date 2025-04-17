@@ -32,9 +32,14 @@ class AttendanceController extends GetxController {
   Future<void> markAttendanceApi(
       double latitude, double longitude, context) async {
     martAttendanceLoader.value = true;
+    String todayDateTime =
+        DateFormat('yyyy MMM dd HH:mm:ss').format(DateTime.now());
+
     try {
       final response = await _attendanceService.attendance(
-          lat: latitude.toString(), lng: longitude.toString());
+          lat: latitude.toString(),
+          lng: longitude.toString(),
+          time: todayDateTime);
       if (response['data'] != null && response['code'] == 200) {
         martAttendanceLoader.value = false;
         DateTime now = DateTime.now();
@@ -153,9 +158,14 @@ class AttendanceController extends GetxController {
   Future<void> markCheckoutApi(
       double latitude, double longitude, context) async {
     martAttendanceLoader.value = true;
+    String todayDateTime =
+        DateFormat('yyyy MMM dd HH:mm:ss').format(DateTime.now());
+
     try {
       final response = await _attendanceService.attendance(
-          lat: latitude.toString(), lng: longitude.toString());
+          lat: latitude.toString(),
+          lng: longitude.toString(),
+          time: todayDateTime);
       if (response['data'] != null && response['code'] == 200) {
         martAttendanceLoader.value = false;
         DateTime now = DateTime.now();

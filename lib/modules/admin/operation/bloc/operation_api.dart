@@ -144,11 +144,11 @@ class AdminOperationService extends BaseService {
   }
 
   Future<AllCompanyProductData> getAllProducts(int companyId,
-      {String? categoryId}) async {
+      {String? categoryId, String? martId}) async {
     try {
       Map<String, dynamic> data = {
         "company_id": companyId,
-        "mart_id": null,
+        "mart_id": martId,
         if (categoryId != null) "category_id": categoryId
       };
 
@@ -169,7 +169,7 @@ class AdminOperationService extends BaseService {
       };
 
       final response =
-      await dioClient.post(Endpoints.getAllBaAttendance, data: data);
+          await dioClient.post(Endpoints.getAllBaAttendance, data: data);
       return AllUserAttendance.fromJson(response);
     } catch (e) {
       rethrow;
@@ -221,7 +221,11 @@ class AdminOperationService extends BaseService {
 
   Future<SalesModel> getSales(String companyId, String martId) async {
     try {
-      Map<String, dynamic> data = {"company_id": companyId, "mart_id": martId};
+      Map<String, dynamic> data = {
+        "company_id": companyId,
+        "mart_id": martId,
+        "user_id": "78"
+      };
 
       final response = await dioClient.post(Endpoints.getSales, data: data);
       return SalesModel.fromJson(response);

@@ -13,11 +13,11 @@ class SalesCompanyController extends GetxController {
 
   Future<void> getSalesforMartCompany(String martId) async {
     salesLoader.value = true;
-    var userId = await Utils.getUserId();
+    var companyId = await Utils.getUserId();
 
     try {
       SalesModel response =
-          await _adminOperationService.getSales(userId.toString(), martId);
+          await _adminOperationService.getSales(companyId.toString(), martId);
       if (response.data != null && response.code == 200) {
         salesLoader.value = false;
         individualSales.value = response.data ?? [];
@@ -37,5 +37,4 @@ class SalesCompanyController extends GetxController {
     super.onInit();
     getSalesforMartCompany('');
   }
-  
 }

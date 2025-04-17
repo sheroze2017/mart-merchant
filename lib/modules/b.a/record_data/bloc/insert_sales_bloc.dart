@@ -136,7 +136,8 @@ class InsertSalesRecord extends GetxController {
                   : int.parse(
                       selectedCompanyIndividual.value!.userId.toString(),
                     ),
-              categoryId: categoryId);
+              categoryId: categoryId,
+              martId: martId);
       if (response.data != null && response.code == 200) {
         fetchProductCompanyLoader.value = false;
         productList.value = response.data ?? [];

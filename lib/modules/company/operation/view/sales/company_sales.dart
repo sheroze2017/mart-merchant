@@ -16,6 +16,7 @@ class CompanySales extends StatelessWidget {
   CompanySales({super.key});
   final controllerCompany = Get.find<CompanyOperationBloc>();
   final TextEditingController martId = TextEditingController();
+  // final TextEditingController emplyeeId = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,9 @@ class CompanySales extends StatelessWidget {
                               martId.text = controllerCompany
                                   .marts[exactIndex].martId
                                   .toString();
-                              controller.getSalesforMartCompany(martId.text);
+                              controller.getSalesforMartCompany(
+                                martId.text,
+                              );
                             }
                           },
                         ),
@@ -53,7 +56,9 @@ class CompanySales extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        controller.getSalesforMartCompany('');
+                        controller.getSalesforMartCompany(
+                          '',
+                        );
                       },
                       child: Container(
                           decoration: BoxDecoration(
@@ -67,6 +72,26 @@ class CompanySales extends StatelessWidget {
                   ],
                 ),
               ),
+              // Card(
+              //   elevation: 2,
+              //   child: CustomDropdown.search(
+              //     hintText: 'Select Employee',
+              //     items:
+              //         controllerCompany.employees.map((m) => m.name).toList(),
+              //     onChanged: (value) {
+              //       int exactIndex = controllerCompany.employees
+              //           .indexWhere((m) => m.name == value);
+              //       if (exactIndex != -1) {
+              //         emplyeeId.text = controllerCompany
+              //             .employees[exactIndex].userId
+              //             .toString();
+              //         controller.getSalesforMartCompany(martId.text,
+              //             emplyeeId.text.isEmpty ? null : emplyeeId.text);
+              //       }
+              //     },
+              //   ),
+              // ).paddingSymmetric(horizontal: 8),
+
               Expanded(
                 child: controller.salesLoader.value
                     ? Center(

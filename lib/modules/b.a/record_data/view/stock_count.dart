@@ -67,7 +67,7 @@ class StockPage extends StatelessWidget {
         itemCount: salesController.productList.length,
         itemBuilder: (context, index) {
           final toothpaste = salesController.productList[index];
-          return toothpaste.status == 'restock'
+          return toothpaste.status == 'pending'
               ? Container()
               : Padding(
                   padding:
