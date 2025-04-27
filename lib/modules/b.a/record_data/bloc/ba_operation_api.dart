@@ -84,9 +84,13 @@ class BaOperationService extends BaseService {
   }
 
   Future<RestockDataModel?> getAllRestockRequest(
-      String companyId, String martId) async {
+      String companyId, String martId, String? userId) async {
     try {
-      Map<String, dynamic> data = {"company_id": companyId, "mart_id": martId};
+      Map<String, dynamic> data = {
+        "company_id": companyId,
+        "mart_id": martId,
+        "user_id": userId
+      };
 
       final response =
           await dioClient.post(Endpoints.getAllRestockRequest, data: data);

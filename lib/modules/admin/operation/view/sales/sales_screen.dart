@@ -16,6 +16,7 @@ class SalesScreenMartCompany extends StatelessWidget {
   final AdminOperation controllerCompany = Get.find<AdminOperation>();
   final TextEditingController companyId = TextEditingController();
   final TextEditingController martId = TextEditingController();
+  final TextEditingController employeeId = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,9 @@ class SalesScreenMartCompany extends StatelessWidget {
                             .toString();
                         // Fetch the sales data based on selected company and mart ID
                         controller.getSalesforMartCompany(
-                            companyId.text, martId.text);
+                            companyId.text,
+                            martId.text,
+                            employeeId.text.isEmpty ? null : employeeId.text);
                       }
                     },
                   ),
@@ -65,7 +68,38 @@ class SalesScreenMartCompany extends StatelessWidget {
                         martId.text = controllerCompany.marts[exactIndex].martId
                             .toString();
                         controller.getSalesforMartCompany(
-                            companyId.text, martId.text);
+                            companyId.text,
+                            martId.text,
+                            employeeId.text.isEmpty ? null : employeeId.text);
+                      }
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 12, right: 12),
+                child: Card(
+                  elevation: 2,
+                  child: CustomDropdown.search(
+                    hintText: 'Select Employee',
+                    items: controllerCompany.baNameList
+                        .where((m) =>
+                            companyId.text.isEmpty ||
+                            (m.companyId != null &&
+                                m.companyId == companyId.text))
+                        .map((m) => m.name)
+                        .toList(),
+                    onChanged: (value) {
+                      int exactIndex = controllerCompany.baNameList
+                          .indexWhere((m) => m.name == value);
+                      if (exactIndex != -1) {
+                        employeeId.text = controllerCompany
+                            .baNameList[exactIndex].userId
+                            .toString();
+                        controller.getSalesforMartCompany(
+                            companyId.text,
+                            martId.text,
+                            employeeId.text.isEmpty ? null : employeeId.text);
                       }
                     },
                   ),

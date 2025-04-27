@@ -11,13 +11,13 @@ class SalesCompanyController extends GetxController {
   final AdminOperationService _adminOperationService =
       AdminOperationService(); // Assuming you have a service class for API calls
 
-  Future<void> getSalesforMartCompany(String martId) async {
+  Future<void> getSalesforMartCompany(String martId, String? userId) async {
     salesLoader.value = true;
     var companyId = await Utils.getUserId();
 
     try {
-      SalesModel response =
-          await _adminOperationService.getSales(companyId.toString(), martId);
+      SalesModel response = await _adminOperationService.getSales(
+          companyId.toString(), martId, userId);
       if (response.data != null && response.code == 200) {
         salesLoader.value = false;
         individualSales.value = response.data ?? [];
@@ -35,6 +35,6 @@ class SalesCompanyController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getSalesforMartCompany('');
+    getSalesforMartCompany('', null);
   }
 }

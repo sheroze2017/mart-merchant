@@ -15,7 +15,7 @@ class ShortStockControllerAdmin extends GetxController {
     allRestockLoader.value = true;
     try {
       RestockDataModel? response = await baOperationService
-          .getAllRestockRequest(companyId.toString(), martId.toString());
+          .getAllRestockRequest(companyId.toString(), martId.toString(), null);
 
       if (response!.data != null && response.code == 200) {
         allRestockLoader.value = false;
@@ -39,7 +39,7 @@ class ShortStockControllerAdmin extends GetxController {
 
     try {
       RestockDataModel? response = await baOperationService
-          .getAllRestockRequest(companyId.toString(), martId.toString());
+          .getAllRestockRequest(companyId.toString(), martId.toString(), null);
 
       if (response!.data != null && response.code == 200) {
         allRestockLoader.value = false;

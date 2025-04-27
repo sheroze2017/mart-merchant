@@ -219,12 +219,13 @@ class AdminOperationService extends BaseService {
     }
   }
 
-  Future<SalesModel> getSales(String companyId, String martId) async {
+  Future<SalesModel> getSales(
+      String companyId, String martId, String? userId) async {
     try {
       Map<String, dynamic> data = {
         "company_id": companyId,
         "mart_id": martId,
-        "user_id": "78"
+        "user_id": userId
       };
 
       final response = await dioClient.post(Endpoints.getSales, data: data);

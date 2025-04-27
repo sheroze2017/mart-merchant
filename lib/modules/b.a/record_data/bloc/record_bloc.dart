@@ -172,10 +172,13 @@ class RecordController extends GetxController {
   Future<void> getallRestockRequest() async {
     var martId = await Utils.getMartId();
     var companyId = await Utils.getCompanyId();
+    var userId = await Utils.getUserId();
+
     allRestockLoader.value = true;
     try {
-      RestockDataModel? response = await baOperationService
-          .getAllRestockRequest(companyId.toString(), martId.toString());
+      RestockDataModel? response =
+          await baOperationService.getAllRestockRequest(
+              companyId.toString(), martId.toString(), userId.toString());
 
       if (response!.data != null && response.code == 200) {
         allRestockLoader.value = false;

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:google_places_flutter/model/place_type.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:geocoding/geocoding.dart'; // Import Geocoding package
@@ -27,6 +30,63 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   double _latitude = 0.00;
   double _longitude = 0.00;
   final double _zoom = 15;
+
+  String apiKey =
+      "AIzaSyBz1Z8bj49e6GWxSxdyzX1BdeRGNXPkU_4"; // Replace with your API key
+
+  List<dynamic> _suggestions = [];
+
+  Future<void> _searchPlaces(String input) async {
+    final url =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$apiKey&components=country:pk';
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        _suggestions = data['predictions'];
+      });
+    } else {
+      print("Failed to fetch suggestions");
+    }
+  }
+
+  Future<void> _selectSuggestion(String placeId) async {
+    final url =
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$apiKey';
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final location = data['result']['geometry']['location'];
+      final description = data['result']['formatted_address'];
+
+      _latitude = location['lat'];
+      _longitude = location['lng'];
+      _placeName = description;
+
+      _searchController.text = description;
+      _suggestions.clear();
+
+      final marker = Marker(
+        icon: _markerIcon,
+        markerId: const MarkerId('myLocation'),
+        position: LatLng(_latitude, _longitude),
+        infoWindow: const InfoWindow(title: 'Selected Location'),
+      );
+
+      setState(() {
+        _markers['myLocation'] = marker;
+        _mapController?.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(_latitude, _longitude), zoom: _zoom),
+          ),
+        );
+      });
+    } else {
+      print("Failed to get place details");
+    }
+  }
 
   GoogleMapController? _mapController;
   BitmapDescriptor _markerIcon = BitmapDescriptor.defaultMarker;
@@ -167,195 +227,80 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             },
           ),
           Positioned(
-              top: 50,
-              left: 10,
-              right: 10,
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(color: AppColors.whiteColor),
-                    child: GooglePlaceAutoCompleteTextField(
-                      textEditingController: _searchController,
-                      googleAPIKey: "AIzaSyBz1Z8bj49e6GWxSxdyzX1BdeRGNXPkU_4",
-                      inputDecoration:
-                          InputDecoration(hintText: 'Search Location'),
-                      debounceTime: 800,
-                      countries: ["pk"], // optional by default null is set
-                      isLatLngRequired: true,
-                      getPlaceDetailWithLatLng: (Prediction prediction) {
-                        _latitude = double.parse(prediction.lat.toString());
-                        _longitude = double.parse(prediction.lng.toString());
-                        _placeName = prediction.description.toString();
-                        _placeId = prediction.placeId.toString();
-
-                        _mapController?.animateCamera(
-                          CameraUpdate.newCameraPosition(
-                            CameraPosition(
-                                target: LatLng(_latitude, _longitude),
-                                zoom: _zoom),
-                          ),
-                        );
-                        final marker = Marker(
-                          icon: _markerIcon,
-                          markerId: const MarkerId('myLocation'),
-                          position: LatLng(_latitude, _longitude),
-                          infoWindow: const InfoWindow(
-                            title:
-                                'AppLocalizations.of(context).will_deliver_here',
-                          ),
-                        );
-                        setState(() => _markers['myLocation'] = marker);
-                        print("placeDetails" + prediction.lng.toString());
-                      },
-                      itemClick: (Prediction prediction) {
-                        _searchController.text = prediction.description!;
-                        _searchController.selection =
-                            TextSelection.fromPosition(TextPosition(
-                                offset: prediction.description!.length));
-                      },
-                      itemBuilder: (context, index, Prediction prediction) {
-                        return Container(
-                          padding: EdgeInsets.all(10),
-                          child: Row(
-                            children: [
-                              Icon(Icons.location_on),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Expanded(
-                                  child:
-                                      Text("${prediction.description ?? ""}"))
-                            ],
-                          ),
-                        );
-                      },
-                      seperatedBuilder: Divider(),
-                      isCrossBtnShown: true,
-                      containerHorizontalPadding: 10,
-                      placeType: PlaceType.geocode,
+            top: 50,
+            left: 10,
+            right: 10,
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search Location',
+                      hintStyle: TextStyle(color: Colors.grey[600]),
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: Icon(Icons.search, color: Colors.grey[800]),
+                      suffixIcon: _searchController.text.isNotEmpty
+                          ? IconButton(
+                              icon: Icon(Icons.clear, color: Colors.grey[800]),
+                              onPressed: () {
+                                setState(() {
+                                  _searchController.clear();
+                                  _suggestions.clear();
+                                });
+                              },
+                            )
+                          : null,
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
-                  )
-                ],
-              ))
+                    onChanged: (value) {
+                      if (value.length > 2) {
+                        _searchPlaces(value);
+                      } else {
+                        setState(() => _suggestions.clear());
+                      }
+                    },
+                  ),
+                ),
+                if (_suggestions.isNotEmpty)
+                  Container(
+                    color: Colors.white,
+                    height: 200,
+                    child: ListView.builder(
+                      itemCount: _suggestions.length,
+                      itemBuilder: (context, index) {
+                        final suggestion = _suggestions[index];
+                        return ListTile(
+                          leading: Icon(Icons.location_on),
+                          title: Text(suggestion['description']),
+                          onTap: () =>
+                              _selectSuggestion(suggestion['place_id']),
+                        );
+                      },
+                    ),
+                  ),
+              ],
+            ),
+          )
         ],
       ),
-    );
-  }
-
-  void _addLocation(latitude, longitude, placeName, placeId) {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController addressController =
-        TextEditingController(text: placeName);
-
-    String? _selectedBrand;
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-      ),
-      builder: (context) {
-        return Padding(
-            padding: MediaQuery.of(context).viewInsets,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                child: Wrap(
-                  children: [
-                    Text(
-                      'Add New Location',
-                      style: Theme.of(context).textTheme.displaySmall,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 0),
-                      child: RoundedBorderTextField(
-                        isenable: true,
-                        controller: nameController,
-                        hintText: 'Set Unique Name',
-                        icon: '',
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: headingSmall(title: 'Address'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(),
-                      child: RoundedBorderTextField(
-                        isenable: true,
-                        controller: addressController,
-                        hintText: placeName.toString(),
-                        icon: '',
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: headingSmall(title: 'Latitude'),
-                    ),
-                    RoundedBorderTextField(
-                      isenable: false,
-                      controller: TextEditingController(),
-                      hintText: latitude.toString(),
-                      icon: '',
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: headingSmall(title: 'Longitude'),
-                    ),
-                    RoundedBorderTextField(
-                      isenable: false,
-                      controller: TextEditingController(),
-                      hintText: longitude.toString(),
-                      icon: '',
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: headingSmall(title: 'Place Id'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: RoundedBorderTextField(
-                        isenable: false,
-                        controller: TextEditingController(),
-                        hintText: 'place id ' + placeId.toString(),
-                        icon: '',
-                      ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: RoundedButton(
-                                  text: 'Add Location',
-                                  onPressed: () {
-                                    if (nameController.text.isNotEmpty &&
-                                        addressController.text.isNotEmpty) {
-                                      operationBloc.addNewLocation(
-                                          placeId,
-                                          placeName,
-                                          latitude,
-                                          longitude,
-                                          nameController.text);
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: 'Please fill in all fields',
-                                          backgroundColor: Colors.red);
-                                    }
-                                  },
-                                  backgroundColor: AppColors.primaryColorDark,
-                                  textColor: AppColors.whiteColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ));
-      },
     );
   }
 }

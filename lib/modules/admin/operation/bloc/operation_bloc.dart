@@ -454,7 +454,7 @@ class AdminOperation extends GetxController {
     salesLoader.value = true;
     try {
       SalesModel response =
-          await _adminOperationService.getSales(companyId, martId);
+          await _adminOperationService.getSales(companyId, martId, null);
       if (response.data != null && response.code == 200) {
         getAllBaAttendanceLoader.value = false;
         individualSales.value = response.data ?? [];
