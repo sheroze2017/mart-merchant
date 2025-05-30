@@ -6,7 +6,10 @@ import 'package:ba_merchandise/services/base_service.dart';
 
 class AttendanceService extends BaseService {
   Future<Map<String, dynamic>> attendance(
-      {required String lat, required String lng, required String time}) async {
+      {required String lat,
+      required String lng,
+      required String time,
+      required String imageUrl}) async {
     var userId = await Utils.getUserId();
     var martId = await Utils.getMartId();
 
@@ -16,7 +19,8 @@ class AttendanceService extends BaseService {
         "lng": lng,
         "user_id": userId.toString(),
         "mart_id": martId.toString(),
-        "time": time
+        "time": time,
+        "image": imageUrl
       };
 
       final response = await dioClient.post(Endpoints.attendance, data: data);

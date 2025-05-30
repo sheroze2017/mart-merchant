@@ -2,13 +2,16 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
+import 'package:ba_merchandise/modules/admin/operation/bloc/media_bloc.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
+import 'package:ba_merchandise/modules/merchandiser/operation/view/upload_image.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:ba_merchandise/widgets/textfield/rounded_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class NewEmployee extends StatefulWidget {
@@ -52,6 +55,7 @@ class _NewEmployeeState extends State<NewEmployee> {
   }
 
   final AdminOperation adminOperation = Get.put(AdminOperation());
+  final MediaBloc mediaBloc = Get.put(MediaBloc());
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +74,57 @@ class _NewEmployeeState extends State<NewEmployee> {
                 style: Theme.of(context).textTheme.displaySmall,
               ),
               SizedBox(
-                height: 0.5.h,
+                height: 2.h,
+              ),
+              const headingSmall(title: 'Upload Photo'),
+              Obx(() {
+                final imageUrl = mediaBloc.imgUrl.value;
+                final isUploading = mediaBloc.imgUploaded.value;
+
+                return InkWell(
+                  onTap: () async {
+                    final ImagePicker picker = ImagePicker();
+                    final XFile? pickedImage =
+                        await picker.pickImage(source: ImageSource.gallery);
+
+                    if (pickedImage != null) {
+                      await mediaBloc.uploadPhoto(pickedImage.path, context);
+                    }
+                  },
+                  child: Center(
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.grey.shade200,
+                      child: isUploading
+                          ? const SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.black),
+                              ),
+                            )
+                          : ClipOval(
+                              child: imageUrl.isNotEmpty
+                                  ? Image.network(
+                                      imageUrl,
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : const Icon(
+                                      Icons.add_a_photo,
+                                      color: Colors.black,
+                                      size: 30,
+                                    ),
+                            ),
+                    ),
+                  ),
+                );
+              }),
+              SizedBox(
+                height: 1.h,
               ),
               const headingSmall(title: 'Name'),
               RoundedBorderTextField(
@@ -105,18 +159,6 @@ class _NewEmployeeState extends State<NewEmployee> {
               SizedBox(
                 height: 1.h,
               ),
-              // const headingSmall(title: 'Location'),
-              // RoundedBorderTextField(
-              //     focusNode: _focusNode5,
-              //     nextFocusNode: _focusNode6,
-              //     controller: _locationController,
-              //     hintText: 'City',
-              //     validator: Validator.validateCity,
-              //     icondata: Icons.location_city_sharp),
-              // SizedBox(
-              //   height: 1.h,
-              // ),
-
               const headingSmall(title: 'Phone No'),
               RoundedBorderTextField(
                   validator: Validator.validatePhoneNumber,
@@ -264,7 +306,7 @@ class _NewEmployeeState extends State<NewEmployee> {
                                         email: _emailController.text,
                                         password: _passwordController.text,
                                         location: _locationController.text,
-                                        image: '',
+                                        image: mediaBloc.imgUrl.value,
                                         phoneNo: _phoneNoController.text,
                                         name: _nameController.text,
                                         context: context)
@@ -275,7 +317,7 @@ class _NewEmployeeState extends State<NewEmployee> {
                                         email: _emailController.text,
                                         password: _passwordController.text,
                                         location: _locationController.text,
-                                        image: '',
+                                        image: mediaBloc.imgUrl.value,
                                         phoneNo: _phoneNoController.text,
                                         name: _nameController.text,
                                         context: context)

@@ -5,10 +5,9 @@ class Endpoints {
     return kReleaseMode ? baseUrlProduction : baseUrlTesting;
   }
 
-  static const String baseUrlProduction = "http://154.38.181.14:1003/";
-  static const String baseUrlTesting = "http://154.38.181.14:1003/";
-  static const String baseUrlStaging = "http://154.38.181.14:1003/";
-
+  static const String baseUrlProduction = "https://canvas.cybvegit.com/";
+  static const String baseUrlTesting = "https://canvas.cybvegit.com/";
+  static const String baseUrlStaging = "https://canvas.cybvegit.com/";
   static const String login = "auth/login";
   static const String attendance = "auth/attendance";
   static const String checkAttendance = "auth/checkAttendence";
@@ -20,6 +19,7 @@ class Endpoints {
   static const String createCategory = "auth/createCategory";
   static const String baIntercept = "auth/intercepts";
   static const String updateProductPrice = "auth/updateProductPrice";
+  static const String addCompetitorActivity = "auth/insertActivity";
   static const String updateProductQuantityMerchant = "auth/updateProductsQty";
   static const String restockApi = "auth/createRestock";
   static const String getAllCompanyMartProduct =
@@ -35,5 +35,7 @@ class Endpoints {
   static const String getAllBaAttendance = "auth/getAttendence";
   static const String assignBatoCompany = "auth/assignCompanyToBa";
   static const String getSales = "auth/getSales";
+  static const String getActivity = "auth/getActivities";
+
   static const String getAllRestockRequest = "auth/getAllRestocks";
 }

@@ -234,4 +234,16 @@ class AdminOperationService extends BaseService {
       rethrow;
     }
   }
+
+  Future<Map<String, dynamic>> getActivities(
+      String companyId, String martId) async {
+    try {
+      Map<String, dynamic> data = {"company_id": companyId, "mart_id": martId};
+
+      final response = await dioClient.post(Endpoints.getActivity, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

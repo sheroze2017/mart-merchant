@@ -3,6 +3,7 @@ import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/admin/dashboard/widget/dashboard_card.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/competitor/activity.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/competitor_price_view/competitor_price_view.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/stock_restock.dart';
@@ -158,6 +159,14 @@ class AdminHome extends StatelessWidget {
                   title: 'Competitor price View',
                   onTap: () {
                     Get.to(CompetitorDataAdmin(),
+                        transition: Transition.rightToLeft);
+                  },
+                ),
+                DashboardCard(
+                  asset: 'assets/images/comp.png',
+                  title: 'Competitor Activity View',
+                  onTap: () {
+                    Get.to(CompetitorAdminActivity(),
                         transition: Transition.rightToLeft);
                   },
                 ),

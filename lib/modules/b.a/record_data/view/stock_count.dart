@@ -1,5 +1,6 @@
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/insert_sales_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/record_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/model/restock_data_model.dart';
@@ -82,10 +83,13 @@ class StockPage extends StatelessWidget {
                           color: AppColors.primaryColor,
                           elevation: 2,
                           child: ListTile(
-                            minVerticalPadding: 20,
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 10),
+                            minVerticalPadding: 10,
                             title: Text(
                                 '${toothpaste.productName} - ${toothpaste.companyName} (${toothpaste.variant})',
-                                style: CustomTextStyles.darkTextStyle()),
+                                style: CustomTextStyles.darkTextStyle()
+                                    .copyWith(fontSize: 17)),
                             subtitle: Text(
                                 '${toothpaste.variant} \nQty Available ${toothpaste.qty}',
                                 style: CustomTextStyles.lightSmallTextStyle()),
@@ -199,15 +203,30 @@ class RestockPage extends StatelessWidget {
                                     color: AppColors.primaryColor,
                                     elevation: 2,
                                     child: ListTile(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 10),
                                         minVerticalPadding: 20,
                                         title: Text(
                                             '${toothpaste.productDetails!.productName} (${toothpaste.productDetails!.variant.toString()})',
-                                            style: CustomTextStyles
-                                                .darkTextStyle()),
-                                        subtitle: Text(
-                                            '${toothpaste.productDetails!.variant} \nPrice ${toothpaste.productDetails!.price}',
-                                            style: CustomTextStyles
-                                                .lightSmallTextStyle()),
+                                            style:
+                                                CustomTextStyles.darkTextStyle()
+                                                    .copyWith(fontSize: 17)),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                '${toothpaste.productDetails!.variant} \nPrice: ${toothpaste.productDetails!.price}',
+                                                style: CustomTextStyles
+                                                        .darkTextStyle()
+                                                    .copyWith(fontSize: 12)),
+                                            Text(
+                                                '\nDate record: ${Utils.formatDay(toothpaste.createdAt.toString())} ${Utils.formatDate(toothpaste.createdAt.toString())}',
+                                                style: CustomTextStyles
+                                                        .darkTextStyle()
+                                                    .copyWith(fontSize: 11)),
+                                          ],
+                                        ),
                                         trailing: Column(
                                           children: [
                                             RoundedButtonSmall(

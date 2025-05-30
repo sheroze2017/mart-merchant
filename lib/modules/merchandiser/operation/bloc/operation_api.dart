@@ -6,9 +6,9 @@ class MerchantOperationService extends BaseService {
     print(baseImage64);
     try {
       final result = await dioClient.post(
-          'http://194.233.69.219:3006/auth/uploadBase64',
+          '${Endpoints.baseUrl}auth/uploadBase64',
           data: {"base64Image": baseImage64});
-      print(result);
+
       if (result['sucess'] == true) {
         return result['data'];
       } else {
@@ -42,9 +42,7 @@ class MerchantOperationService extends BaseService {
       return response;
     } catch (e) {
       throw e;
-    } finally {
-      
-    }
+    } finally {}
   }
 
   Future<Map<String, dynamic>> updateProductQuantity(
@@ -56,7 +54,7 @@ class MerchantOperationService extends BaseService {
           .post(Endpoints.updateProductQuantityMerchant, data: data);
       return response;
     } catch (e) {
-      rethrow ;
+      rethrow;
     }
   }
 }

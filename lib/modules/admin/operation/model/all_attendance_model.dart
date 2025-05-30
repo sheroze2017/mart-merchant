@@ -81,15 +81,24 @@ class AttendanceRecords {
   String? status;
   String? checkinTime;
   String? checkoutTime;
+  String? imageIn;
+  String? imageOut;
 
   AttendanceRecords(
-      {this.date, this.status, this.checkinTime, this.checkoutTime});
+      {this.date,
+      this.status,
+      this.checkinTime,
+      this.checkoutTime,
+      this.imageIn,
+      this.imageOut});
 
   AttendanceRecords.fromJson(Map<String, dynamic> json) {
     date = json['date'] ?? '';
     status = json['status'] ?? '';
     checkinTime = json['checkin_time'] ?? '';
     checkoutTime = json['checkout_time'] ?? '';
+    imageIn = json['image_in'] ?? '';
+    imageOut = json['image_out'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
@@ -98,6 +107,8 @@ class AttendanceRecords {
     data['status'] = this.status;
     data['checkin_time'] = this.checkinTime;
     data['checkout_time'] = this.checkoutTime;
+    data['image_in'] = this.imageIn;
+    data['image_out'] = this.imageOut;
     return data;
   }
 }

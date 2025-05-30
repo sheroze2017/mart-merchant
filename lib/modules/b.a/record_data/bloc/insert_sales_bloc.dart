@@ -11,6 +11,7 @@ class InsertSalesRecord extends GetxController {
   var fetchProductCompanyLoader = false.obs;
   var statusRecordLoader = false.obs;
   var updatePriceLoader = false.obs;
+  var addActivityLoader = false.obs;
   RxList<ByUserRoleData> companyNameList = RxList();
   RxList<ByUserRoleData> compititorNameList = RxList();
 
@@ -193,6 +194,54 @@ class InsertSalesRecord extends GetxController {
         fontSize: 14.0,
       );
       updatePriceLoader.value = false;
+    }
+  }
+
+  Future<void> addCompetitorActivity(
+      context, String imageUrl, String description) async {
+    try {
+      var companyId = await Utils.getCompanyId();
+      var martId = await Utils.getMartId();
+      var userId = await Utils.getUserId();
+      addActivityLoader.value = true;
+      final response = await baOperationService.addCompetitorActivity(
+          userId!,
+          imageUrl,
+          description,
+          int.parse(companyId.toString()),
+          int.parse(martId.toString()));
+      if (response['data'] != null && response['code'] == 200) {
+        addActivityLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: 'Activity added successfully',
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        Get.back();
+      } else {
+        addActivityLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'],
+          icon: Icons.error,
+          backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: 'An error occured ${e}',
+        icon: Icons.error,
+        backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+        textColor: Colors.black,
+        fontSize: 14.0,
+      );
+      addActivityLoader.value = false;
     }
   }
 

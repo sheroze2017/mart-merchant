@@ -7,6 +7,7 @@ import 'package:ba_merchandise/widgets/dailog/mark_absent_dailog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 // ignore: depend_on_referenced_packages
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart'; // To format date and time
@@ -140,9 +141,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                 onTap: () async {
                                   if (!attendanceController
                                       .martAttendanceLoader.value) {
-                                    await attendanceController
-                                        .markAttendanceApi(
-                                            _latitude, _longitude, context);
+                                    final XFile? image = await ImagePicker()
+                                        .pickImage(source: ImageSource.camera);
+                                    if (image != null) {
+                                      await attendanceController
+                                          .markAttendanceApi(_latitude,
+                                              _longitude, context, image.path);
+                                    }
                                     attendanceController.checkAttendanceApi();
                                   }
                                 },
@@ -178,9 +183,18 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                       dailogText:
                                           'Are you certain you wish to mark off today?',
                                       onMarkAbsent: () async {
-                                        await attendanceController
-                                            .markCheckoutApi(
-                                                _latitude, _longitude, context);
+                                        final XFile? image = await ImagePicker()
+                                            .pickImage(
+                                                source: ImageSource.camera);
+                                        if (image != null) {
+                                          await attendanceController
+                                              .markCheckoutApi(
+                                                  _latitude,
+                                                  _longitude,
+                                                  context,
+                                                  image.path);
+                                        }
+
                                         setState(() {});
                                         attendanceController
                                             .checkAttendanceApi();
@@ -322,10 +336,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             right: 0,
             bottom: 0,
             child: Obx(() => !attendanceController.martAttendanceLoader.value
-                ? Container()
-                : Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.primaryColorDark,
+                ? const SizedBox()
+                : Container(
+                    color: Colors.black.withOpacity(0.4),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryColorDark,
+                      ),
                     ),
                   )),
           )

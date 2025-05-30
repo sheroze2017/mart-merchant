@@ -112,4 +112,28 @@ class BaOperationService extends BaseService {
       rethrow;
     }
   }
+
+  Future<Map<String, dynamic>> addCompetitorActivity(
+    int userId,
+    String imageUrl,
+    String description,
+    int companyId,
+    int martId,
+  ) async {
+    try {
+      Map<String, dynamic> data = {
+        "user_id": userId,
+        "image": imageUrl,
+        "description": description,
+        "company_id": companyId,
+        "mart_id": martId
+      };
+
+      final response =
+          await dioClient.post(Endpoints.addCompetitorActivity, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -75,6 +75,9 @@ class _RecordSalesState extends State<RecordSales> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 5,
+              ),
               Row(
                 children: [
                   darkHeading(
@@ -94,85 +97,91 @@ class _RecordSalesState extends State<RecordSales> {
                           itemCount: salesController.productList.length,
                           itemBuilder: (context, index) {
                             final data = salesController.productList[index];
-                            print(data.status);
-                            return AnimationConfiguration.staggeredList(
-                              position: index,
-                              duration: const Duration(milliseconds: 375),
-                              child: SlideAnimation(
-                                verticalOffset: 50.0,
-                                child: FadeInAnimation(
-                                    child: Card(
-                                  color: AppColors.primaryColor,
-                                  elevation: 2,
-                                  child: ListTile(
-                                      minVerticalPadding: 10,
-                                      title: Text(
-                                          '${data.productName!} - ${data.companyName} (${data.variant})',
-                                          style:
-                                              CustomTextStyles.darkTextStyle()),
-                                      subtitle: Text(
-                                          '\nPrice: ${data.price} \nStock: ${data.qty}',
-                                          style: CustomTextStyles
-                                              .lightSmallTextStyle(
-                                                  size: 13,
-                                                  color: AppColors
-                                                      .primaryColorDark)),
-                                      trailing: SizedBox(
-                                        width: 100,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Expanded(
-                                              child: TextField(
-                                                controller: salesController
-                                                    .textControllers[index],
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                style: TextStyle(fontSize: 12),
-                                                decoration:
-                                                    const InputDecoration(
-                                                  labelText: 'Qty',
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  color: Colors
-                                                                      .black)),
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  color: Colors
-                                                                      .black)),
-                                                  border: OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: Colors.grey)),
-                                                  isDense: false,
-                                                  hintText: '0',
+                            if (data.status!.toLowerCase() == 'pending') {
+                              return const SizedBox();
+                            } else {
+                              return AnimationConfiguration.staggeredList(
+                                position: index,
+                                duration: const Duration(milliseconds: 375),
+                                child: SlideAnimation(
+                                  verticalOffset: 50.0,
+                                  child: FadeInAnimation(
+                                      child: Card(
+                                    color: AppColors.primaryColor,
+                                    elevation: 2,
+                                    child: ListTile(
+                                        minVerticalPadding: 10,
+                                        title: Text(
+                                            '${data.productName!} - ${data.companyName} (${data.variant})',
+                                            style:
+                                                CustomTextStyles.darkTextStyle()
+                                                    .copyWith(fontSize: 17)),
+                                        subtitle: Text(
+                                            '\nPrice: ${data.price} \nStock: ${data.qty}',
+                                            style: CustomTextStyles
+                                                .lightSmallTextStyle(
+                                                    size: 15,
+                                                    color: AppColors
+                                                        .primaryColorDark)),
+                                        trailing: SizedBox(
+                                          width: 100,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Expanded(
+                                                child: TextField(
+                                                  controller: salesController
+                                                      .textControllers[index],
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    labelText: 'Qty',
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .black)),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .black)),
+                                                    border: OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                Colors.grey)),
+                                                    isDense: false,
+                                                    hintText: '0',
+                                                  ),
+                                                  textAlign: TextAlign.center,
                                                 ),
-                                                textAlign: TextAlign.center,
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 2.w,
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                salesController
-                                                    .textControllers[index]
-                                                    .clear();
-                                              },
-                                              child: const Icon(
-                                                Icons.clear,
-                                                size: 20,
+                                              SizedBox(
+                                                width: 2.w,
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                )),
-                              ),
-                            );
+                                              InkWell(
+                                                onTap: () {
+                                                  salesController
+                                                      .textControllers[index]
+                                                      .clear();
+                                                },
+                                                child: const Icon(
+                                                  Icons.clear,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )),
+                                  )),
+                                ),
+                              );
+                            }
                           }),
                 ),
               ),

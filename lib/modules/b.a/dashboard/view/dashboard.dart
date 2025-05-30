@@ -65,27 +65,6 @@ class _BaHomeState extends State<BaHome> {
                 SizedBox(
                   height: 1.h,
                 ),
-                // const heading(
-                //   title: 'Your Summary',
-                // ),
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: GradientCard(
-                //         img: 'assets/images/brand.png',
-                //         number: '1',
-                //         label: 'Brands',
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: GradientCard(
-                //         img: 'assets/images/product.png',
-                //         number: '10',
-                //         label: 'Products',
-                //       ),
-                //     )
-                //   ],
-                // ),
 
                 SizedBox(
                   height: 1.h,
@@ -128,7 +107,6 @@ class _BaHomeState extends State<BaHome> {
                       },
                       subtitle: 'Record your product sales',
                     ),
-
                     FeatureCard(
                       icon: Icons.hourglass_empty,
                       title: 'Short Stock/Restock',
@@ -171,14 +149,14 @@ class _BaHomeState extends State<BaHome> {
                       },
                       subtitle: 'Record competitor data for product',
                     ),
-                    // FeatureCard(
-                    //   icon: Icons.co_present_sharp,
-                    //   title: 'Sync data',
-                    //   onTap: () {
-                    //     Get.toNamed(Routes.SYNC_DATA);
-                    //   },
-                    //   subtitle: 'Synchroize data for offline use',
-                    // ),
+                    FeatureCard(
+                      icon: Icons.local_activity,
+                      title: 'Competitor Activity',
+                      onTap: () {
+                        Get.toNamed(Routes.COMPETITORDACTIVITY);
+                      },
+                      subtitle: 'Record details for competitor activity',
+                    ),
                   ],
                 )
               ],

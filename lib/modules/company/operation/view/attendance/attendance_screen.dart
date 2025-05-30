@@ -96,23 +96,26 @@ class _BaAttendanceCompanyViewState extends State<BaAttendanceCompanyView> {
                               ),
                               trailing: const Icon(Icons.expand_more_rounded),
                               childrenPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8.0),
+                                  horizontal: 16.0, vertical: 0.0),
                               children: [
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Email: ${data.email}',
-                                    style: CustomTextStyles.lightTextStyle(
-                                        size: 13),
+                                    style: CustomTextStyles.darkTextStyle()
+                                        .copyWith(fontSize: 12),
                                   ),
                                 ),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'UserId: ${data.userId}',
-                                    style: CustomTextStyles.lightTextStyle(
-                                        size: 13),
+                                    style: CustomTextStyles.darkTextStyle()
+                                        .copyWith(fontSize: 13),
                                   ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
                                 ),
                                 Row(
                                   children: [
@@ -130,6 +133,9 @@ class _BaAttendanceCompanyViewState extends State<BaAttendanceCompanyView> {
                                           textColor: AppColors.whiteColor),
                                     ),
                                   ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
                                 ),
                               ],
                             ),

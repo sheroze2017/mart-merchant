@@ -29,6 +29,7 @@ class CompanyOperationBloc extends GetxController {
 
   RxList<Location> locations = RxList();
   RxList<Employee> employees = RxList();
+  RxList<dynamic> competitorActivity = RxList();
   RxList<CategoryData> categories = RxList();
   RxList<MartData> marts = RxList();
   RxList<IndividualUserAttendance> userAttendance = RxList();

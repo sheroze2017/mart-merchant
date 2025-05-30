@@ -1,6 +1,7 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/model/restock_data_model.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/company_short_stock_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
@@ -101,20 +102,35 @@ class _ShortStockScreenState extends State<ShortStockScreen> {
                                   color: AppColors.primaryColor,
                                   elevation: 2,
                                   child: ListTile(
-                                      minVerticalPadding: 20,
+                                      minVerticalPadding: 15,
+                                      contentPadding:
+                                          EdgeInsets.symmetric(horizontal: 10),
                                       title: Text(
-                                          toothpaste.productDetails!
-                                                  .productName ??
-                                              'N/a',
+                                          toothpaste.productDetails!.productName
+                                                  .toString() +
+                                              '' +
+                                              toothpaste.productDetails!.variant
+                                                  .toString(),
                                           style: CustomTextStyles
-                                              .darkHeadingTextStyle(size: 22)),
-                                      subtitle: Text(
-                                          '\nVarient: ${toothpaste.productDetails!.variant}\nPrice: ${toothpaste.productDetails!.price}',
-                                          style: CustomTextStyles
-                                              .lightSmallTextStyle(
-                                                  size: 16,
-                                                  color: AppColors
-                                                      .primaryColorDark)),
+                                              .darkHeadingTextStyle(size: 18)),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              'Varient: ${toothpaste.productDetails!.variant}\nPrice: ${toothpaste.productDetails!.price}',
+                                              style: CustomTextStyles
+                                                  .lightSmallTextStyle(
+                                                      size: 14,
+                                                      color: AppColors
+                                                          .primaryColorDark)),
+                                          Text(
+                                              '\nDate record: ${Utils.formatDay(toothpaste.createdAt.toString())} ${Utils.formatDate(toothpaste.createdAt.toString())}',
+                                              style: CustomTextStyles
+                                                      .darkTextStyle()
+                                                  .copyWith(fontSize: 11)),
+                                        ],
+                                      ),
                                       trailing: Column(
                                         children: [
                                           RoundedButtonSmall(

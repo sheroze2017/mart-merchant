@@ -58,10 +58,7 @@ class CustomDialog extends StatelessWidget {
               validator: Validator.ValidText,
               controller: productSold,
               keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly
-              ], // Allow only numbers
-
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Product sold qty',
@@ -90,12 +87,22 @@ class CustomDialog extends StatelessWidget {
                         text: 'Record',
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          // Handle submission logic here
                           if (textcontroller.text.isEmpty ||
                               productSold.text.isEmpty) {
                             AnimatedSnackbar.showSnackbar(
                               context: context,
                               message: 'Please enter count',
+                              icon: Icons.info,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 14.0,
+                            );
+                          } else if (int.parse(productSold.text) >
+                              int.parse(textcontroller.text)) {
+                            AnimatedSnackbar.showSnackbar(
+                              context: context,
+                              message:
+                                  "Product sold can't be greater then intercept count",
                               icon: Icons.info,
                               backgroundColor: Colors.red,
                               textColor: Colors.white,

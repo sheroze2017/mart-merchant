@@ -11,6 +11,7 @@ import 'package:ba_merchandise/modules/attendence/view/attendece_view.dart';
 import 'package:ba_merchandise/modules/auth/view/login_view.dart';
 import 'package:ba_merchandise/modules/auth/view/role_select_view.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
+import 'package:ba_merchandise/modules/b.a/record_data/view/competitor_activity.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/competitor_data.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/product_priceset.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/record_sales.dart';
@@ -29,6 +30,7 @@ class Routes {
   static const ATTENDENCE = '/attendence';
   static const RECORD_SALES = '/recordSales';
   static const COMPETITORDATA = '/competitorData';
+  static const COMPETITORDACTIVITY = '/competitorActivity';
   static const SEARCHCOMPANYPRODUCT = '/searchCompanyProduct';
   static const STOCK_COUNT = '/stockCount';
   static const PRODUCT_PRICE = '/productPrice';
@@ -73,6 +75,10 @@ class Routes {
     GetPage(
         name: COMPETITORDATA,
         page: () => CompetitorData(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: COMPETITORDACTIVITY,
+        page: () => CompetitorActivity(),
         transition: Transition.rightToLeft),
     GetPage(
         name: STOCK_COUNT,

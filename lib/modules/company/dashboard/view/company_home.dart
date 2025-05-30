@@ -5,6 +5,8 @@ import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/competitor_price_view/competitor_price_view.dart';
+import 'package:ba_merchandise/modules/b.a/record_data/view/competitor_activity.dart';
+import 'package:ba_merchandise/modules/company/operation/view/competitor/activity.dart';
 import 'package:ba_merchandise/modules/company/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/company/operation/view/stock_restock/short_stock_view.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
@@ -192,6 +194,19 @@ class _CompanyHomeState extends State<CompanyHome> {
                           title: 'Merchant Restock Detail',
                         ),
                       ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(CompanyCompetitorActivityReports(),
+                              transition: Transition.cupertino,
+                              duration: Duration(milliseconds: 500));
+                        },
+                        child: const DashboardCard(
+                          asset: 'assets/images/activity.png',
+                          title: 'BA Competitor Activity',
+                        ),
+                      ),
                     )
                   ],
                 ),
@@ -308,7 +323,7 @@ class DashboardCard extends StatelessWidget {
             children: [
               Image(
                 width: 80,
-                height: 40,
+                height: 35,
                 color: AppColors.primaryColorDark,
                 image: AssetImage(
                   asset,
@@ -318,8 +333,9 @@ class DashboardCard extends StatelessWidget {
                 height: 1.h,
               ),
               Text(
+                textAlign: TextAlign.center,
                 title,
-                style: CustomTextStyles.w600TextStyle(size: 16),
+                style: CustomTextStyles.w600TextStyle(size: 15),
               ),
             ],
           ),

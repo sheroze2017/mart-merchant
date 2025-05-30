@@ -46,7 +46,7 @@ class ProfileSection extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Icon(
-                          Icons.location_on_rounded,
+                          Icons.phone,
                           size: 18,
                           color: Colors.blue.shade100,
                         ),
@@ -62,31 +62,24 @@ class ProfileSection extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                isCompany
-                    ? Container(
-                        height: 8.h,
-                        width: 8.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: CachedNetworkImage(
-                          errorWidget: (context, url, error) => CircleAvatar(
-                            backgroundColor: AppColors.whiteColor,
-                            radius: 30,
-                            backgroundImage: NetworkImage(
-                                "http://194.233.69.219/joy-Images//45cee667-c659-4d2c-a5ac-5245d043deff.png"),
-                          ),
-                          fit: BoxFit.cover,
-                          imageUrl: controller.userData.value!.image.toString(),
-                        ),
-                      )
-                    : CircleAvatar(
-                        backgroundColor: AppColors.whiteColor,
-                        radius: 30,
-                        backgroundImage: AssetImage('assets/images/logo.png'),
-                      ),
+                Container(
+                  height: 8.h,
+                  width: 8.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: CachedNetworkImage(
+                    errorWidget: (context, url, error) => CircleAvatar(
+                      backgroundColor: AppColors.whiteColor,
+                      radius: 30,
+                      backgroundImage: AssetImage('assets/images/logo.png'),
+                    ),
+                    fit: BoxFit.cover,
+                    imageUrl: controller.userData.value!.image.toString(),
+                  ),
+                ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(

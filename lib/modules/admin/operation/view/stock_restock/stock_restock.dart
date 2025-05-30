@@ -1,6 +1,7 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/restock_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/model/restock_data_model.dart';
@@ -124,6 +125,11 @@ class ShortStockScreenAdmin extends StatelessWidget {
                                             style: CustomTextStyles
                                                 .lightSmallTextStyle(size: 12),
                                           ),
+                                          Text(
+                                              'Date record: ${Utils.formatDay(toothpaste.createdAt.toString())} ${Utils.formatDate(toothpaste.createdAt.toString())}',
+                                              style: CustomTextStyles
+                                                      .darkTextStyle()
+                                                  .copyWith(fontSize: 11)),
                                         ],
                                       ),
                                       children: [
