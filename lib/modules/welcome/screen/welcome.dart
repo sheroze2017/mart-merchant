@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (userRole != null && userRole.isNotEmpty) {
       userRoute(userRole, context);
     } else {
-      Get.offAllNamed(Routes.USERROLE);
+      Get.offAllNamed(Routes.LOGIN);
     }
   }
 

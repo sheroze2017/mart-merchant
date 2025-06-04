@@ -129,39 +129,77 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 ),
               ),
               Obx(
-                () => attendanceController.attenToday.value.status == false ||
-                        attendanceController.attenToday.value.checkInTime != ''
+                () => attendanceController.attenToday.value.checkInTime != ''
                     ? Container()
-                    : Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: InkWell(
-                                onTap: () async {
-                                  if (!attendanceController
-                                      .martAttendanceLoader.value) {
-                                    final XFile? image = await ImagePicker()
-                                        .pickImage(source: ImageSource.camera);
-                                    if (image != null) {
-                                      await attendanceController
-                                          .markAttendanceApi(_latitude,
-                                              _longitude, context, image.path);
-                                    }
-                                    attendanceController.checkAttendanceApi();
-                                  }
-                                },
-                                child: StatusContainer(
-                                  img: 'assets/images/present.png',
-                                  number: '',
-                                  label: 'Mark attendance',
-                                  color: Colors.green,
+                    : (attendanceController.attenToday.value.checkInTime ==
+                                "" &&
+                            attendanceController.attenToday.value.status ==
+                                true)
+                        ? SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () async {
+                                          if (!attendanceController
+                                              .martAttendanceLoader.value) {
+                                            final XFile? image =
+                                                await ImagePicker().pickImage(
+                                                    source: ImageSource.camera);
+                                            if (image != null) {
+                                              await attendanceController
+                                                  .markAttendanceApi(
+                                                      _latitude,
+                                                      _longitude,
+                                                      context,
+                                                      image.path);
+                                            }
+                                            attendanceController
+                                                .checkAttendanceApi();
+                                          }
+                                        },
+                                        child: StatusContainer(
+                                          img: 'assets/images/present.png',
+                                          number: '',
+                                          label: 'Mark attendance',
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () async {
+                                          await attendanceController
+                                              .markWeeklyOff(
+                                            context,
+                                          );
+                                          attendanceController
+                                              .checkAttendanceApi();
+                                        },
+                                        child: StatusContainer(
+                                          img: 'assets/images/absent.png',
+                                          number: '',
+                                          label: 'Weekly Off',
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
               ),
               InkWell(
                   child: Padding(
@@ -169,81 +207,57 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 child: Row(
                   children: [
                     Obx(
-                      () => attendanceController
-                                      .attenToday.value.checkOutTime ==
-                                  '' &&
+                      () => (attendanceController
+                                      .attenToday.value.checkInTime ==
+                                  "" &&
                               attendanceController.attenToday.value.status ==
-                                  true
-                          ? Expanded(
-                              child: InkWell(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => MarkAbsentDialog(
-                                      dailogText:
-                                          'Are you certain you wish to mark off today?',
-                                      onMarkAbsent: () async {
-                                        final XFile? image = await ImagePicker()
-                                            .pickImage(
-                                                source: ImageSource.camera);
-                                        if (image != null) {
-                                          await attendanceController
-                                              .markCheckoutApi(
-                                                  _latitude,
-                                                  _longitude,
-                                                  context,
-                                                  image.path);
-                                        }
-
-                                        setState(() {});
-                                        attendanceController
-                                            .checkAttendanceApi();
-
-                                        Get.back();
-                                      },
-                                      markAbsentText: 'Mark Off',
+                                  true)
+                          ? SizedBox()
+                          : attendanceController
+                                          .attenToday.value.checkOutTime ==
+                                      '' &&
+                                  attendanceController
+                                          .attenToday.value.status ==
+                                      true
+                              ? Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => MarkAbsentDialog(
+                                          dailogText:
+                                              'Are you certain you wish to mark off today?',
+                                          onMarkAbsent: () async {
+                                            Get.back();
+                                            final XFile? image =
+                                                await ImagePicker().pickImage(
+                                                    source: ImageSource.camera);
+                                            if (image != null) {
+                                              await attendanceController
+                                                  .markCheckoutApi(
+                                                      _latitude,
+                                                      _longitude,
+                                                      context,
+                                                      image.path);
+                                            }
+                                            setState(() {});
+                                            attendanceController
+                                                .checkAttendanceApi();
+                                          },
+                                          markAbsentText: 'Mark Off',
+                                        ),
+                                      );
+                                    },
+                                    child: StatusContainer(
+                                      img: 'assets/images/timeoff.png',
+                                      number: '',
+                                      label: 'Time Off',
+                                      color: Colors.red,
                                     ),
-                                  );
-                                },
-                                child: StatusContainer(
-                                  img: 'assets/images/timeoff.png',
-                                  number: '',
-                                  label: 'Time Off',
-                                  color: Colors.red,
-                                ),
-                              ),
-                            )
-                          : Container(),
+                                  ),
+                                )
+                              : Container(),
                     ),
-                    // Obx(() =>
-                    //     attendanceController.attenToday.value.checkInTime == '' &&
-                    //             attendanceController.attenToday.value.status == null
-                    //         ? Expanded(
-                    //             child: InkWell(
-                    //               onTap: () {
-                    //                 showDialog(
-                    //                   context: context,
-                    //                   builder: (context) => MarkAbsentDialog(
-                    //                     dailogText:
-                    //                         'Are you certain you wish to mark today as absent?',
-                    //                     onMarkAbsent: () async {
-                    //                       await attendanceController
-                    //                           .markAbsent(todayDate);
-                    //                       attendanceController.getTodayAttendance();
-                    //                     },
-                    //                     markAbsentText: 'Mark Absent',
-                    //                   ),
-                    //                 );
-                    //               },
-                    //               child: StatusContainer(
-                    //                 img: 'assets/images/absent.png',
-                    //                 number: '',
-                    //                 label: 'Absent',
-                    //                 color: Colors.red,
-                    //               ),
-                    //             ),
-                    //           )
-                    //         : Container())
                   ],
                 ),
               )),
@@ -267,8 +281,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           ),
                           Obx(
                             () => Text(
-                              attendanceController.attenToday.value.status
-                                  .toString(),
+                              (attendanceController
+                                              .attenToday.value.checkInTime ==
+                                          "" &&
+                                      attendanceController
+                                              .attenToday.value.status ==
+                                          true)
+                                  ? 'Weekly Off'
+                                  : attendanceController.attenToday.value.status
+                                      .toString(),
                               style: CustomTextStyles.lightTextStyle(size: 15),
                             ),
                           )
@@ -277,23 +298,27 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     : Container(),
               ),
               Obx(
-                () => attendanceController.attenToday.value.status == true
-                    ? Row(
-                        children: [
-                          Text(
-                            '   checkin time ',
-                            style: CustomTextStyles.darkHeadingTextStyle(
-                                color: Colors.green),
-                          ),
-                          Obx(
-                            () => Text(
-                              '${Utils.formatDate(attendanceController.attenToday.value.checkInTime.toString())} ${Utils.formatTime(attendanceController.attenToday.value.checkInTime.toString())}',
-                              style: CustomTextStyles.lightTextStyle(),
-                            ),
+                () => (attendanceController.attenToday.value.checkInTime ==
+                            "" &&
+                        attendanceController.attenToday.value.status == true)
+                    ? SizedBox()
+                    : attendanceController.attenToday.value.status == true
+                        ? Row(
+                            children: [
+                              Text(
+                                '   checkin time ',
+                                style: CustomTextStyles.darkHeadingTextStyle(
+                                    color: Colors.green),
+                              ),
+                              Obx(
+                                () => Text(
+                                  '${Utils.formatDate(attendanceController.attenToday.value.checkInTime.toString())} ${Utils.formatTime(attendanceController.attenToday.value.checkInTime.toString())}',
+                                  style: CustomTextStyles.lightTextStyle(),
+                                ),
+                              )
+                            ],
                           )
-                        ],
-                      )
-                    : Container(),
+                        : Container(),
               ),
               Obx(() => attendanceController.attenToday.value.checkOutTime != ''
                   ? Row(

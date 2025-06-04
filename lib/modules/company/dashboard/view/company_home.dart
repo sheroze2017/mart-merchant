@@ -72,7 +72,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                 // Profile Section
                 ProfileSection(
                   showAddress: false,
-                  isCompany: true,
+                  isCompany: false,
                 ),
                 SizedBox(
                   height: 2.h,

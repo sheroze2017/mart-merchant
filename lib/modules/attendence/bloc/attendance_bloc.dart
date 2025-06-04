@@ -95,6 +95,48 @@ class AttendanceController extends GetxController {
     }
   }
 
+  Future<void> markWeeklyOff(BuildContext context) async {
+    martAttendanceLoader.value = true;
+
+    try {
+      final response = await _attendanceService.weeklyOff();
+
+      if (response['data'] != null && response['code'] == 200) {
+        martAttendanceLoader.value = false;
+        DateTime now = DateTime.now();
+        Attendance attendance = Attendance(
+          date: today,
+          status: false,
+          checkOutTime: '',
+          checkInTime: DateFormat('yyyy-MM-dd HH:mm:ss').format(now),
+        );
+        attenToday.value = attendance;
+        attendanceBox.put(today, attendance);
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: 'Weekly off marked',
+          icon: Icons.info,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      } else {
+        martAttendanceLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'].toString(),
+          icon: Icons.info,
+          backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      martAttendanceLoader.value = false;
+      debugPrint('Attendance API error: $e');
+    }
+  }
+
   Future<void> checkAttendanceApi() async {
     try {
       final response = await _attendanceService.checkAttendance();
@@ -133,7 +175,7 @@ class AttendanceController extends GetxController {
 
     try {
       // Upload image using MediaBloc
-       final MediaBloc mediaBloc = Get.put(MediaBloc());
+      final MediaBloc mediaBloc = Get.put(MediaBloc());
       await mediaBloc.uploadPhoto(imagePath, context);
       String uploadedImageUrl = mediaBloc.imgUrl.value;
       if (uploadedImageUrl.isEmpty) {

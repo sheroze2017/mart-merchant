@@ -93,7 +93,7 @@ class CustomDrawer extends StatelessWidget {
                                     Get.find<AuthStorage>();
                                 authStorage.clear();
                                 await logoutAndCleanAttendance();
-                                Get.offAllNamed(Routes.USERROLE);
+                                Get.offAllNamed(Routes.LOGIN);
                               },
                             ),
                           );

@@ -16,4 +16,16 @@ class DashBoardController extends GetxController {
     AuthResponse? authResponse = await authStorage.get();
     userData.value = authResponse!.data;
   }
+
+  Future<void> updateUserImage(String newImageUrl) async {
+    final AuthStorage authStorage = Get.find<AuthStorage>();
+    AuthResponse? authResponse = await authStorage.get();
+    if (authResponse != null && authResponse.data != null) {
+      authResponse.data!.image = newImageUrl;
+      await authStorage.set(authResponse);
+      userData.value = authResponse.data;
+    } else {
+      print("AuthResponse or UserData is null. Cannot update image.");
+    }
+  }
 }

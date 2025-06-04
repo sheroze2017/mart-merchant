@@ -52,15 +52,16 @@ class _BaAttendanceDetailState extends State<BaAttendanceDetail> {
                       .copyWith(fontSize: 14),
                 ),
                 Text(
+                  'Weekly Off: ${result['weeklyoff']}',
+                  style: CustomTextStyles.darkTextStyle(
+                    color: Colors.blue,
+                  ).copyWith(fontSize: 14),
+                ),
+                Text(
                   'Absent: ${result['absent']}',
                   style: CustomTextStyles.darkTextStyle(
                     color: Colors.red,
                   ).copyWith(fontSize: 14),
-                ),
-                Text(
-                  'Late: ${result['late']}',
-                  style: CustomTextStyles.darkTextStyle(color: Colors.brown)
-                      .copyWith(fontSize: 14),
                 ),
               ],
             ),
@@ -83,16 +84,21 @@ class _BaAttendanceDetailState extends State<BaAttendanceDetail> {
                         child: ListTile(
                           leading: Text(data1.status.toString().toUpperCase(),
                               style: CustomTextStyles.darkHeadingTextStyle(
-                                  color: data1.status == "absent"
-                                      ? Colors.red
-                                      : data1.status!.toLowerCase() == "late"
-                                          ? Colors.brown
-                                          : Colors.green)),
+                                  color:
+                                      data1.status!.toLowerCase() == 'weeklyoff'
+                                          ? Colors.blue
+                                          : data1.status == "absent"
+                                              ? Colors.red
+                                              : data1.status!.toLowerCase() ==
+                                                      "late"
+                                                  ? Colors.brown
+                                                  : Colors.green)),
                           title: Text(
                             'Dated: ' + Utils.formatDate(data1.date.toString()),
                             style: CustomTextStyles.lightTextStyle(),
                           ),
-                          subtitle: data1.status == 'absent'
+                          subtitle: data1.status == 'absent' ||
+                                  data1.status == 'weeklyoff'
                               ? null
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,6 +170,7 @@ Map<String, int> countAttendanceStatus(List<AttendanceRecords> records) {
   int presentCount = 0;
   int absentCount = 0;
   int lateCount = 0;
+  int weeklyOff = 0;
 
   for (var record in records) {
     final status = record.status?.toLowerCase() ?? '';
@@ -173,6 +180,8 @@ Map<String, int> countAttendanceStatus(List<AttendanceRecords> records) {
       absentCount++;
     } else if (status == 'late') {
       lateCount++;
+    } else if (status.toLowerCase() == 'weeklyoff') {
+      weeklyOff++;
     }
   }
 
@@ -180,6 +189,7 @@ Map<String, int> countAttendanceStatus(List<AttendanceRecords> records) {
     'present': presentCount,
     'absent': absentCount,
     'late': lateCount,
+    'weeklyoff': weeklyOff
   };
 }
 

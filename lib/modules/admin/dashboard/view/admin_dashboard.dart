@@ -57,7 +57,7 @@ class AdminHome extends StatelessWidget {
               children: [
                 // Profile Section
                 ProfileSection(
-                  isCompany: false,
+                  isCompany: true,
                   showAddress: true,
                 ),
                 SizedBox(

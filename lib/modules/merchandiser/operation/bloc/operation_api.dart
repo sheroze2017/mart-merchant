@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/constant/endpoints.dart';
 import 'package:ba_merchandise/services/base_service.dart';
 
@@ -11,6 +12,22 @@ class MerchantOperationService extends BaseService {
 
       if (result['sucess'] == true) {
         return result['data'];
+      } else {
+        return '';
+      }
+    } catch (e) {
+      return '';
+    } finally {}
+  }
+
+  Future<String> updateProfilePhoto(String baseImage64) async {
+    var userId = await Utils.getUserId();
+    try {
+      final result = await dioClient.post(
+          '${Endpoints.baseUrl}auth/uploadBase64',
+          data: {"base64Image": baseImage64, "user_id": userId});
+      if (result['sucess'] == true) {
+        return result['data']['image'];
       } else {
         return '';
       }

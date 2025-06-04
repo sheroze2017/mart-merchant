@@ -41,9 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final arguments = Get.arguments as Map<String, dynamic>? ?? {};
-    final role = arguments['role'] ?? '';
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
@@ -57,22 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     SizedBox(
                       height: 10.h,
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blueGrey),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            "Role: ${role}",
-                            style: CustomTextStyles.lightTextStyle(
-                                size: 12, color: Colors.blueGrey),
-                          ),
-                        ),
-                      ),
                     ),
                     Center(
                       child: Container(
