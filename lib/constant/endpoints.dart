@@ -35,6 +35,8 @@ class Endpoints {
   static const String getAllBaAttendance = "auth/getAttendence";
   static const String assignBatoCompany = "auth/assignCompanyToBa";
   static const String getSales = "auth/getSales";
+  static const String getIntercepts = "auth/getIntercepts";
+
   static const String getActivity = "auth/getActivities";
 
   static const String getAllRestockRequest = "auth/getAllRestocks";

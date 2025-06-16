@@ -228,7 +228,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                           dailogText:
                                               'Are you certain you wish to mark off today?',
                                           onMarkAbsent: () async {
-                                            Get.back();
                                             final XFile? image =
                                                 await ImagePicker().pickImage(
                                                     source: ImageSource.camera);

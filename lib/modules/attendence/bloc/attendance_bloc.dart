@@ -190,6 +190,7 @@ class AttendanceController extends GetxController {
         martAttendanceLoader.value = false;
         return;
       }
+      Get.back();
       final response = await _attendanceService.attendance(
         lat: latitude.toString(),
         lng: longitude.toString(),
@@ -205,7 +206,6 @@ class AttendanceController extends GetxController {
           at.checkOutTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
           attendanceBox.put(today, at);
           attenToday.value = at;
-          Get.back();
 
           AnimatedSnackbar.showSnackbar(
             context: context,

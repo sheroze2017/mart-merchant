@@ -235,6 +235,22 @@ class AdminOperationService extends BaseService {
     }
   }
 
+  Future<Map<String, dynamic>> getBaIntecept(
+      String companyId, String martId) async {
+    try {
+      Map<String, dynamic> data = {
+        "company_id": companyId,
+        "mart_id": martId,
+      };
+
+      final response =
+          await dioClient.post(Endpoints.getIntercepts, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Map<String, dynamic>> getActivities(
       String companyId, String martId) async {
     try {

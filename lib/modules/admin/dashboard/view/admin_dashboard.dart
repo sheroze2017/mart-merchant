@@ -5,6 +5,7 @@ import 'package:ba_merchandise/modules/admin/dashboard/widget/dashboard_card.dar
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/competitor/activity.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/competitor_price_view/competitor_price_view.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/intercept/ba_intercept.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/stock_restock.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
@@ -109,6 +110,14 @@ class AdminHome extends StatelessWidget {
                   title: 'B.A Attendance',
                   onTap: () {
                     Get.toNamed(Routes.BAADMINATTENDANCE);
+                  },
+                ),
+                DashboardCard(
+                  asset: 'assets/images/intercept.png',
+                  title: 'Intercepts Record By B.A',
+                  onTap: () {
+                    Get.to(BaInterceptAdmin(),
+                        transition: Transition.rightToLeft);
                   },
                 ),
                 DashboardCard(
