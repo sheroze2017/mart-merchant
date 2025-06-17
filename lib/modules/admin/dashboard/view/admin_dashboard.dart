@@ -8,6 +8,7 @@ import 'package:ba_merchandise/modules/admin/operation/view/competitor_price_vie
 import 'package:ba_merchandise/modules/admin/operation/view/intercept/ba_intercept.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/stock_restock/stock_restock.dart';
+import 'package:ba_merchandise/modules/admin/operation/view/supervisor/supervisor_record.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
@@ -176,6 +177,14 @@ class AdminHome extends StatelessWidget {
                   title: 'Competitor Activity View',
                   onTap: () {
                     Get.to(CompetitorAdminActivity(),
+                        transition: Transition.rightToLeft);
+                  },
+                ),
+                DashboardCard(
+                  asset: 'assets/images/comp.png',
+                  title: 'Supervisor Record',
+                  onTap: () {
+                    Get.to(SupervisorAdminRecord(),
                         transition: Transition.rightToLeft);
                   },
                 ),

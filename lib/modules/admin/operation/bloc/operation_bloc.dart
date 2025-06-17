@@ -1,3 +1,4 @@
+import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/all_attendance_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
@@ -173,6 +174,52 @@ class AdminOperation extends GetxController {
         );
         Get.back();
         getAllBa();
+      } else {
+        newBALoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response.message.toString(),
+          icon: Icons.info,
+          backgroundColor: Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      newBALoader.value = false;
+    }
+  }
+
+  Future<void> addNewSupervisor(
+      {required String email,
+      required String password,
+      required String location,
+      required String image,
+      required String phoneNo,
+      required String name,
+      required BuildContext context}) async {
+    try {
+      newBALoader.value = true;
+      var companyId = await Utils.getUserId();
+      CreateUserModel response = await _adminOperationService.createSupervisor(
+          companyId: companyId.toString(),
+          location: location,
+          name: name,
+          image: image,
+          email: email,
+          password: password,
+          phoneNo: phoneNo);
+      if (response.data != null && response.code == 200) {
+        newBALoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response.message.toString(),
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        Get.back();
       } else {
         newBALoader.value = false;
         AnimatedSnackbar.showSnackbar(

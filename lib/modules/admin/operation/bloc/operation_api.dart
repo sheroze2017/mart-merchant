@@ -122,6 +122,34 @@ class AdminOperationService extends BaseService {
     }
   }
 
+  Future<CreateUserModel> createSupervisor(
+      {required String name,
+      required String email,
+      required String password,
+      required String phoneNo,
+      required String companyId,
+      required String image,
+      required String location}) async {
+    try {
+      Map<String, dynamic> data = {
+        "name": name,
+        "email": email,
+        "password": password,
+        "role": 'supervisor',
+        "phone": phoneNo,
+        "company_id": companyId,
+        "mart_id": null,
+        "image": image,
+        "location": location,
+      };
+
+      final response = await dioClient.post(Endpoints.createUser, data: data);
+      return CreateUserModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Map<String, dynamic>> createMart({
     required String martName,
     required String address,
@@ -257,6 +285,24 @@ class AdminOperationService extends BaseService {
       Map<String, dynamic> data = {"company_id": companyId, "mart_id": martId};
 
       final response = await dioClient.post(Endpoints.getActivity, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> getSupervisorRecord(
+      String companyId, String martId) async {
+    try {
+      String url = Endpoints.getSupervisorData;
+
+      List<String> queryParams = [];
+      if (companyId.isNotEmpty) queryParams.add('company_id=$companyId');
+      if (martId.isNotEmpty) queryParams.add('mart_id=$martId');
+      if (queryParams.isNotEmpty) {
+        url += '?${queryParams.join('&')}';
+      }
+      final response = await dioClient.get(url);
       return response;
     } catch (e) {
       rethrow;

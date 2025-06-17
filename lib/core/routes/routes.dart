@@ -20,6 +20,7 @@ import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart'
 import 'package:ba_merchandise/modules/company/operation/view/attendance/attendance_screen.dart';
 import 'package:ba_merchandise/modules/company/operation/view/sales/company_sales.dart';
 import 'package:ba_merchandise/modules/merchandiser/dasboard/view/dashboard.dart';
+import 'package:ba_merchandise/modules/supervisor/dashboard/supervisor_home.dart';
 import 'package:ba_merchandise/modules/welcome/screen/welcome.dart';
 import 'package:get/get.dart';
 
@@ -37,6 +38,8 @@ class Routes {
   static const SYNC_DATA = '/syncData';
   static const MERCHANTDASHBOARD = '/merchantHome';
   static const COMPANY_HOME = '/companyHome';
+  static const SUPERVISOR_HOME = '/supervisorHome';
+
   static const ADMIN_HOME = '/adminHome';
   static const NEW_COMPANTY = '/newCompany';
   static const NEW_EMPLOYEE = '/newEmployee';
@@ -95,6 +98,10 @@ class Routes {
     GetPage(
         name: COMPANY_HOME,
         page: () => CompanyHome(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: SUPERVISOR_HOME,
+        page: () => SupervisorHome(),
         transition: Transition.rightToLeft),
     GetPage(
         name: NEW_COMPANTY,

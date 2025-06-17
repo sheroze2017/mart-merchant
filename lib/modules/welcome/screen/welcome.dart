@@ -54,6 +54,8 @@ class _SplashScreenState extends State<SplashScreen> {
       Get.offAllNamed(Routes.BAHOME);
     } else if (role == 'MERCHANT') {
       Get.offAllNamed(Routes.MERCHANTDASHBOARD);
+    } else if (role == 'supervisor') {
+      Get.offAllNamed(Routes.SUPERVISOR_HOME);
     } else {
       AnimatedSnackbar.showSnackbar(
         context: context,

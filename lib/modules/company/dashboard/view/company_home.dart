@@ -7,12 +7,14 @@ import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/competitor_price_view/competitor_price_view.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/view/competitor_activity.dart';
 import 'package:ba_merchandise/modules/company/operation/view/competitor/activity.dart';
+import 'package:ba_merchandise/modules/company/operation/view/supervisor/new_supervisor.dart';
 import 'package:ba_merchandise/modules/company/operation/view/intercept/ba_intercept.dart';
 import 'package:ba_merchandise/modules/company/operation/view/stock_restock/merchant_restock_detail.dart';
 import 'package:ba_merchandise/modules/company/operation/view/stock_restock/short_stock_view.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/modules/company/operation/view/employee/employee_view.dart';
+import 'package:ba_merchandise/modules/company/operation/view/supervisor/supervisor_record.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
@@ -76,7 +78,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                   isCompany: false,
                 ),
                 SizedBox(
-                  height: 2.h,
+                  height: 0.5.h,
                 ),
                 const Divider(
                   color: Colors.grey,
@@ -239,6 +241,40 @@ class _CompanyHomeState extends State<CompanyHome> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 0.5.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(NewSupervisor(),
+                              transition: Transition.cupertino,
+                              duration: Duration(milliseconds: 500));
+                        },
+                        child: const DashboardCard(
+                          asset: 'assets/images/add_user.png',
+                          title: 'Add New Supervisor',
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(SupervisorRecordData(),
+                              transition: Transition.cupertino,
+                              duration: Duration(milliseconds: 500));
+                        },
+                        child: const DashboardCard(
+                          asset: 'assets/images/timeoff.png',
+                          title: 'Supervisor Reports',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
 
                 const Divider(
                   color: Colors.grey,
@@ -335,15 +371,15 @@ class DashboardCard extends StatelessWidget {
           child: Column(
             children: [
               Image(
-                width: 80,
-                height: 35,
+                width: 70,
+                height: 30,
                 color: AppColors.primaryColorDark,
                 image: AssetImage(
                   asset,
                 ),
               ),
               SizedBox(
-                height: 1.h,
+                height: 0.5.h,
               ),
               Text(
                 textAlign: TextAlign.center,
