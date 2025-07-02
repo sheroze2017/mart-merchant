@@ -25,6 +25,26 @@ class BaOperationService extends BaseService {
     }
   }
 
+  Future<Map<String, dynamic>> editSalesRecord(
+      Map<String, dynamic> data) async {
+    try {
+      final response = await dioClient.post(Endpoints.updateSales, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteSale(saleId) async {
+    try {
+      final response =
+          await dioClient.get(Endpoints.deleteSales + "?sale_id=${saleId}");
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Map<String, dynamic>> insertInterceptRecord(
       String interceptCount, String sold) async {
     var userId = await Utils.getUserId();

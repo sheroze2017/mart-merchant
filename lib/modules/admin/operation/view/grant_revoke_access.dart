@@ -17,12 +17,22 @@ class GrantRevokeAccess extends StatefulWidget {
 
 class _GrantRevokeAccessState extends State<GrantRevokeAccess> {
   final TextEditingController locationController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   final AdminOperation controller = Get.find<AdminOperation>();
   @override
   void initState() {
     super.initState();
     controller.getAllBa();
+    _searchController.addListener(() {
+      setState(() {}); // Rebuild the widget when the search input changes
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -64,7 +74,14 @@ class _GrantRevokeAccessState extends State<GrantRevokeAccess> {
   Widget buildEmployeeList({required String status}) {
     return Obx(() {
       final filteredList = controller.baNameList
-          .where((employee) => employee.status == status)
+          .where((employee) =>
+              employee.status == status &&
+              (employee.name!
+                      .toLowerCase()
+                      .contains(_searchController.text.toLowerCase()) ||
+                  employee.email!
+                      .toLowerCase()
+                      .contains(_searchController.text.toLowerCase())))
           .toList();
 
       return SingleChildScrollView(
@@ -73,93 +90,109 @@ class _GrantRevokeAccessState extends State<GrantRevokeAccess> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const heading(title: 'Search Employee'),
-              filteredList.isEmpty
+              TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  labelText: 'Search by Name or Email',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.search),
+                ),
+              ),
+              SizedBox(
+                  height:
+                      10), // Add some space between the search field and the list
+              controller.fetchBa.value
                   ? Center(
-                      child: Text(
-                        'No $status employees found.',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                    )
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: filteredList.length,
-                      itemBuilder: (context, index) {
-                        final data = filteredList[index];
-                        return AnimationConfiguration.staggeredList(
-                            position: index,
-                            duration: const Duration(milliseconds: 375),
-                            child: SlideAnimation(
-                              verticalOffset: 50.0,
-                              child: FadeInAnimation(
-                                child: Card(
-                                  color: AppColors.primaryColor,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  elevation: 4,
-                                  child: ListTile(
-                                    leading: Container(
-                                      height: 3.h,
-                                      width: 3.h,
-                                      decoration: BoxDecoration(
+                      child: CircularProgressIndicator(
+                      color: AppColors.primaryColorDark,
+                    ))
+                  : filteredList.isEmpty
+                      ? Center(
+                          child: Text(
+                            'No $status employees found.',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: filteredList.length,
+                          itemBuilder: (context, index) {
+                            final data = filteredList[index];
+                            return AnimationConfiguration.staggeredList(
+                                position: index,
+                                duration: const Duration(milliseconds: 175),
+                                child: SlideAnimation(
+                                  verticalOffset: 50.0,
+                                  child: FadeInAnimation(
+                                    child: Card(
+                                      color: AppColors.primaryColor,
+                                      shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(50),
-                                          color: data.status == 'active'
-                                              ? Colors.green
-                                              : Colors.red),
-                                    ),
-                                    minVerticalPadding: 5,
-                                    title: Text(data.name.toString(),
-                                        style:
-                                            CustomTextStyles.darkTextStyle()),
-                                    subtitle: Text(
-                                        'Email: ${data.email}\nRole: ${data.role}\nUserId: ${data.userId}\nCompanyId: ${data.companyId}',
-                                        style: CustomTextStyles
-                                            .lightSmallTextStyle(
-                                                size: 14,
-                                                color: AppColors
-                                                    .primaryColorDark)),
-                                    trailing: data.status == 'active'
-                                        ? Text('Revoke Access',
-                                            style:
-                                                CustomTextStyles.w600TextStyle(
-                                                    size: 10,
-                                                    color: Colors.red))
-                                        : Text('Grant Access',
-                                            style:
-                                                CustomTextStyles.w600TextStyle(
-                                                    size: 10,
-                                                    color: Colors.green)),
-                                    onTap: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            CustomDialogMessage(
-                                          dialogText:
-                                              'Are you sure you want to change status for ${data.name}?',
-                                          buttonText1: 'No',
-                                          buttonText2: 'Yes',
-                                          onButton1Pressed: () {
-                                            Get.back();
-                                          },
-                                          onButton2Pressed: () {
-                                            controller.changeBAStatus(
-                                                data.userId.toString(),
-                                                data.status == 'active'
-                                                    ? 'inactive'
-                                                    : 'active',
-                                                context);
-                                          },
+                                              BorderRadius.circular(10)),
+                                      elevation: 4,
+                                      child: ListTile(
+                                        leading: Container(
+                                          height: 3.h,
+                                          width: 3.h,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              color: data.status == 'active'
+                                                  ? Colors.green
+                                                  : Colors.red),
                                         ),
-                                      );
-                                    },
+                                        minVerticalPadding: 5,
+                                        title: Text(data.name.toString(),
+                                            style: CustomTextStyles
+                                                .darkTextStyle()),
+                                        subtitle: Text(
+                                            'Email: ${data.email}\nRole: ${data.role}\nUser Id: ${data.userId}\nCompanyId: ${data.companyId}',
+                                            style: CustomTextStyles
+                                                .lightSmallTextStyle(
+                                                    size: 14,
+                                                    color: AppColors
+                                                        .primaryColorDark)),
+                                        trailing: data.status == 'active'
+                                            ? Text('Revoke Access',
+                                                style: CustomTextStyles
+                                                    .w600TextStyle(
+                                                        size: 10,
+                                                        color: Colors.red))
+                                            : Text('Grant Access',
+                                                style: CustomTextStyles
+                                                    .w600TextStyle(
+                                                        size: 10,
+                                                        color: Colors.green)),
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                CustomDialogMessage(
+                                              dialogText:
+                                                  'Are you sure you want to change status for ${data.name}?',
+                                              buttonText1: 'No',
+                                              buttonText2: 'Yes',
+                                              onButton1Pressed: () {
+                                                Get.back();
+                                              },
+                                              onButton2Pressed: () {
+                                                controller.changeBAStatus(
+                                                    data.userId.toString(),
+                                                    data.status == 'active'
+                                                        ? 'inactive'
+                                                        : 'active',
+                                                    context);
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ));
-                      },
-                    ),
+                                ));
+                          },
+                        ),
             ],
           ),
         ),

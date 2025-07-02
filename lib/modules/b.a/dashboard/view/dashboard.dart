@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/core/routes/routes.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/widget/profile_section.dart';
+import 'package:ba_merchandise/modules/b.a/record_data/view/ba_sales.dart';
 import 'package:ba_merchandise/modules/sync/bloc/sync_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
@@ -101,9 +102,11 @@ class _BaHomeState extends State<BaHome> {
                   children: [
                     FeatureCard(
                       icon: Icons.record_voice_over_sharp,
-                      title: 'Record sales',
+                      title: 'Sales',
                       onTap: () {
-                        Get.toNamed(Routes.RECORD_SALES);
+                        Get.to(BaIndividualSales(),
+                            transition: Transition.rightToLeft,
+                            duration: Duration(milliseconds: 400));
                       },
                       subtitle: 'Record your product sales',
                     ),

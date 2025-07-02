@@ -65,64 +65,65 @@ class _AllBaToAssignState extends State<AllBaToAssign> {
                           itemCount: controller.baNameList.length,
                           itemBuilder: (context, index) {
                             final data = controller.baNameList[index];
-                            return AnimationConfiguration.staggeredList(
-                              position: index,
-                              duration: const Duration(milliseconds: 375),
-                              child: SlideAnimation(
-                                verticalOffset: 50.0,
-                                child: FadeInAnimation(
-                                    child: Card(
-                                  color: AppColors.redLight,
-                                  elevation: 2,
-                                  child: ListTile(
-                                    onTap: () {
-                                      if (data.userId == null) {
-                                        print('null');
-                                      } else {
-                                        Get.to(AssignNewEmploye(
-                                            user: data, isMerchant: false));
-                                      }
-                                    },
-                                    trailing: Icon(Icons.navigate_next),
-                                    title: Text(
-                                      data.name.toString() + ' (B.A)',
-                                      style: CustomTextStyles.darkTextStyle(),
+                            return data.status != 'active'
+                                ? SizedBox()
+                                : AnimationConfiguration.staggeredList(
+                                    position: index,
+                                    duration: const Duration(milliseconds: 175),
+                                    child: SlideAnimation(
+                                      verticalOffset: 50.0,
+                                      child: FadeInAnimation(
+                                          child: Card(
+                                        color: AppColors.redLight,
+                                        elevation: 2,
+                                        child: ListTile(
+                                          onTap: () {
+                                            if (data.userId == null) {
+                                              print('null');
+                                            } else {
+                                              Get.to(AssignNewEmploye(
+                                                  user: data,
+                                                  isMerchant: false));
+                                            }
+                                          },
+                                          trailing: Icon(Icons.navigate_next),
+                                          title: Text(
+                                            data.name.toString() + ' (B.A)',
+                                            style: CustomTextStyles
+                                                .darkTextStyle(),
+                                          ),
+                                          subtitle: Column(
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  'Email: ${data.email}',
+                                                  style: CustomTextStyles
+                                                      .lightTextStyle(size: 13),
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  'UserId: ${data.userId}',
+                                                  style: CustomTextStyles
+                                                      .lightTextStyle(size: 13),
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  'Current Company : ${Utils.getCompanyNameByUserId(controller.companyNameList, data.companyId.toString())}',
+                                                  style: CustomTextStyles
+                                                      .lightTextStyle(size: 13),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )),
                                     ),
-                                    subtitle: Column(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            'Email: ${data.email}',
-                                            style:
-                                                CustomTextStyles.lightTextStyle(
-                                                    size: 13),
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            'UserId: ${data.userId}',
-                                            style:
-                                                CustomTextStyles.lightTextStyle(
-                                                    size: 13),
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            'Current Company : ${Utils.getCompanyNameByUserId(controller.companyNameList, data.companyId.toString())}',
-                                            style:
-                                                CustomTextStyles.lightTextStyle(
-                                                    size: 13),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )),
-                              ),
-                            );
+                                  );
                           },
                         )),
                   )
@@ -135,7 +136,7 @@ class _AllBaToAssignState extends State<AllBaToAssign> {
                             final data = controller.MerchantNameList[index];
                             return AnimationConfiguration.staggeredList(
                               position: index,
-                              duration: const Duration(milliseconds: 375),
+                              duration: const Duration(milliseconds: 175),
                               child: SlideAnimation(
                                 verticalOffset: 50.0,
                                 child: FadeInAnimation(

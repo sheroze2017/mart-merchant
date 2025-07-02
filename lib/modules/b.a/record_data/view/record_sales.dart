@@ -44,37 +44,6 @@ class _RecordSalesState extends State<RecordSales> {
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             children: [
-              Row(
-                children: [
-                  darkHeading(
-                    title: 'Record your product sales ',
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.error_outline_rounded),
-                    onPressed: () {
-                      setState(() {
-                        _isDetailVisible = !_isDetailVisible;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              Visibility(
-                visible: _isDetailVisible,
-                child: Container(
-                  width: 100.w,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 0.5),
-                      color: Colors.white,
-                      borderRadius: BorderRadiusDirectional.circular(8)),
-                  padding: EdgeInsets.all(3.0),
-                  child: Text(
-                    'Mark your individual product sales of each product in quantity',
-                    style: TextStyle(fontSize: 12),
-                  ),
-                ),
-              ),
               SizedBox(
                 height: 5,
               ),
@@ -100,85 +69,103 @@ class _RecordSalesState extends State<RecordSales> {
                             if (data.status!.toLowerCase() == 'pending') {
                               return const SizedBox();
                             } else {
-                              return AnimationConfiguration.staggeredList(
-                                position: index,
-                                duration: const Duration(milliseconds: 375),
-                                child: SlideAnimation(
-                                  verticalOffset: 50.0,
-                                  child: FadeInAnimation(
-                                      child: Card(
-                                    color: AppColors.primaryColor,
-                                    elevation: 2,
-                                    child: ListTile(
-                                        minVerticalPadding: 10,
-                                        title: Text(
-                                            '${data.productName!} - ${data.companyName} (${data.variant})',
-                                            style:
-                                                CustomTextStyles.darkTextStyle()
-                                                    .copyWith(fontSize: 17)),
-                                        subtitle: Text(
-                                            '\nPrice: ${data.price} \nStock: ${data.qty}',
-                                            style: CustomTextStyles
-                                                .lightSmallTextStyle(
-                                                    size: 15,
-                                                    color: AppColors
-                                                        .primaryColorDark)),
-                                        trailing: SizedBox(
-                                          width: 100,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Expanded(
-                                                child: TextField(
-                                                  controller: salesController
-                                                      .textControllers[index],
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  style:
-                                                      TextStyle(fontSize: 12),
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    labelText: 'Qty',
-                                                    focusedBorder:
-                                                        OutlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                                    color: Colors
-                                                                        .black)),
-                                                    enabledBorder:
-                                                        OutlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                                    color: Colors
-                                                                        .black)),
-                                                    border: OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.grey)),
-                                                    isDense: false,
-                                                    hintText: '0',
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 2.w,
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  salesController
-                                                      .textControllers[index]
-                                                      .clear();
-                                                },
-                                                child: const Icon(
-                                                  Icons.clear,
-                                                  size: 20,
-                                                ),
-                                              ),
-                                            ],
+                              return Card(
+                                elevation: 3,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 6),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      /// Product Name and Variant
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              '${data.productName!} ${data.companyName!} (${data.variant})',
+                                              style: CustomTextStyles
+                                                      .darkTextStyle()
+                                                  .copyWith(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                            ),
                                           ),
-                                        )),
-                                  )),
+                                          IconButton(
+                                            onPressed: () {
+                                              salesController
+                                                  .textControllers[index]
+                                                  .clear();
+                                            },
+                                            icon: const Icon(Icons.clear,
+                                                size: 20),
+                                            tooltip: 'Clear quantity',
+                                          ),
+                                        ],
+                                      ),
+
+                                      SizedBox(height: 4),
+
+                                      /// Price and Stock Info
+                                      Text(
+                                        'Price: ${data.price}  •  Stock: ${data.qty}',
+                                        style: CustomTextStyles
+                                            .lightSmallTextStyle(
+                                          size: 14,
+                                          color: AppColors.primaryColorDark,
+                                        ),
+                                      ),
+
+                                      SizedBox(height: 12),
+
+                                      /// Quantity Field
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Qty:',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(width: 10),
+                                          Expanded(
+                                            child: TextField(
+                                              controller: salesController
+                                                  .textControllers[index],
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              style:
+                                                  const TextStyle(fontSize: 14),
+                                              textAlign: TextAlign.center,
+                                              decoration: InputDecoration(
+                                                hintText: '0',
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12,
+                                                        vertical: 10),
+                                                isDense: true,
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: AppColors
+                                                          .primaryColorDark),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             }

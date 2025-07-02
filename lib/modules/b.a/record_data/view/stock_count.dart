@@ -75,7 +75,7 @@ class StockPage extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
                   child: AnimationConfiguration.staggeredList(
                     position: index,
-                    duration: const Duration(milliseconds: 375),
+                    duration: const Duration(milliseconds: 175),
                     child: SlideAnimation(
                       verticalOffset: 50.0,
                       child: FadeInAnimation(
@@ -195,7 +195,7 @@ class RestockPage extends StatelessWidget {
                                 horizontal: 12.0, vertical: 4),
                             child: AnimationConfiguration.staggeredList(
                               position: index,
-                              duration: const Duration(milliseconds: 375),
+                              duration: const Duration(milliseconds: 175),
                               child: SlideAnimation(
                                 verticalOffset: 50.0,
                                 child: FadeInAnimation(

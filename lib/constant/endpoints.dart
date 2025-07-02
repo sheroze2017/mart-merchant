@@ -5,19 +5,27 @@ class Endpoints {
     return kReleaseMode ? baseUrlProduction : baseUrlTesting;
   }
 
-  static const String baseUrlProduction = "https://canvas.cybvegit.com/";
-  static const String baseUrlTesting = "https://canvas.cybvegit.com/";
-  static const String baseUrlStaging = "https://canvas.cybvegit.com/";
+  static const String baseUrlProduction =
+      "https://canvas-prod.comsrvssoftwaresolutions.com/";
+  static const String baseUrlTesting =
+      "https://canvas-prod.comsrvssoftwaresolutions.com/";
+  static const String baseUrlStaging =
+      "https://canvas-prod.comsrvssoftwaresolutions.com/";
   static const String login = "auth/login";
   static const String attendance = "auth/attendance";
   static const String checkAttendance = "auth/checkAttendence";
   static const String recordSales = "auth/insertSales";
+  static const String updateSales = "auth/updateSales";
+  static const String deleteSales = "auth/deleteSales";
+
   static const String createUser = "auth/createUser";
   static const String restockRecord = "auth/shelfRestocked";
   static const String createMart = "auth/createMart";
   static const String createProduct = "auth/createProduct";
-  static const String submitSupervisorData = "auth/submitSupervisorData";
+  static const String updateProduct = "auth/updateProduct";
 
+  static const String submitSupervisorData = "auth/submitSupervisorData";
+  static const String deleteProduct = "auth/deleteProduct";
   static const String createCategory = "auth/createCategory";
   static const String baIntercept = "auth/intercepts";
   static const String updateProductPrice = "auth/updateProductPrice";

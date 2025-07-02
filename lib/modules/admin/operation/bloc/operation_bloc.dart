@@ -19,6 +19,7 @@ class AdminOperation extends GetxController {
   var changeBaStatusLoader = false.obs;
   var assignBaLoader = false.obs;
   var salesLoader = false.obs;
+  var fetchBa = false.obs;
 
   var getAllBaAttendanceLoader = false.obs;
   var isBASelected = false.obs;
@@ -345,7 +346,8 @@ class AdminOperation extends GetxController {
           textColor: Colors.white,
           fontSize: 14.0,
         );
-        getAllBa();
+        await getAllBa();
+        update();
         Get.back();
       } else {
         changeBaStatusLoader.value = false;
@@ -387,12 +389,20 @@ class AdminOperation extends GetxController {
   Future<void> getAllBa() async {
     baNameList.clear();
     try {
+      fetchBa.value = true;
       AllUserByRole response =
           await _adminOperationService.getAllUserByRole('BA');
       if (response.data != null && response.code == 200) {
         baNameList.value = response.data ?? [];
-      } else {}
-    } catch (e) {}
+        fetchBa.value = false;
+      } else {
+        fetchBa.value = false;
+      }
+    } catch (e) {
+      fetchBa.value = false;
+    } finally {
+      fetchBa.value = false;
+    }
   }
 
   Future<void> getAllMerchant() async {

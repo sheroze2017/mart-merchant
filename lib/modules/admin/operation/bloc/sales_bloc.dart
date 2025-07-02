@@ -17,7 +17,7 @@ class SalesController extends GetxController {
           await _adminOperationService.getSales(companyId, martId, userId);
       if (response.data != null && response.code == 200) {
         salesLoader.value = false;
-        individualSales.value = response.data ?? [];
+        individualSales.value = (response.data ?? []).reversed.toList();
         update(); // Notify listeners to rebuild UI
       } else {
         salesLoader.value = false;

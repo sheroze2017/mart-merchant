@@ -151,92 +151,99 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                                   itemBuilder: (context, index) {
                                     final data =
                                         operationBloc.baNameList[index];
-                                    return Padding(
-                                      padding: const EdgeInsets.only(top: 2.0),
-                                      child: Card(
-                                        elevation: 2,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color: AppColors.primaryColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: AppColors.primaryColor,
-                                              )),
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Expanded(
+                                    return data.status != 'active'
+                                        ? SizedBox()
+                                        : Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 2.0),
+                                            child: Card(
+                                              elevation: 2,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        AppColors.primaryColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    border: Border.all(
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                    )),
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(8.0),
                                                   child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
-                                                      ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(40),
-                                                        child: Image.asset(
-                                                          'assets/images/person.png',
-                                                          fit: BoxFit.contain,
-                                                          width: 60,
-                                                          height: 60,
+                                                      Expanded(
+                                                        child: Row(
+                                                          children: [
+                                                            ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          40),
+                                                              child:
+                                                                  Image.asset(
+                                                                'assets/images/person.png',
+                                                                fit: BoxFit
+                                                                    .contain,
+                                                                width: 60,
+                                                                height: 60,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 2.w,
+                                                            ),
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  data.name ??
+                                                                      'N/a',
+                                                                  style: CustomTextStyles.w600TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      size: 19),
+                                                                ),
+                                                                Text(
+                                                                  'Role: ${data.role}',
+                                                                  style: CustomTextStyles.lightTextStyle(
+                                                                      color: AppColors
+                                                                          .primaryColorDark,
+                                                                      size: 14),
+                                                                ),
+                                                                Text(
+                                                                  'Email: ${data.email}',
+                                                                  style: CustomTextStyles.lightTextStyle(
+                                                                      color: AppColors
+                                                                          .primaryColorDark,
+                                                                      size: 14),
+                                                                ),
+                                                                Text(
+                                                                  'Status: ${data.status}',
+                                                                  style: CustomTextStyles.lightTextStyle(
+                                                                      color: AppColors
+                                                                          .primaryColorDark,
+                                                                      size: 14),
+                                                                )
+                                                              ],
+                                                            )
+                                                          ],
                                                         ),
                                                       ),
-                                                      SizedBox(
-                                                        width: 2.w,
-                                                      ),
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            data.name ?? 'N/a',
-                                                            style: CustomTextStyles
-                                                                .w600TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    size: 19),
-                                                          ),
-                                                          Text(
-                                                            'Role: ${data.role}',
-                                                            style: CustomTextStyles
-                                                                .lightTextStyle(
-                                                                    color: AppColors
-                                                                        .primaryColorDark,
-                                                                    size: 14),
-                                                          ),
-                                                          Text(
-                                                            'Email: ${data.email}',
-                                                            style: CustomTextStyles
-                                                                .lightTextStyle(
-                                                                    color: AppColors
-                                                                        .primaryColorDark,
-                                                                    size: 14),
-                                                          ),
-                                                          Text(
-                                                            'Status: ${data.status}',
-                                                            style: CustomTextStyles
-                                                                .lightTextStyle(
-                                                                    color: AppColors
-                                                                        .primaryColorDark,
-                                                                    size: 14),
-                                                          )
-                                                        ],
-                                                      )
                                                     ],
                                                   ),
                                                 ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
+                                          );
                                   });
                         },
                       ),

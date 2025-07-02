@@ -37,6 +37,52 @@ class CompanyOperationService extends BaseService {
     }
   }
 
+  Future<Map<String, dynamic>> editProduct({
+    required String categoryId,
+    required String productId,
+    required String name,
+    required String desc,
+    required String price,
+    required String qty,
+    required String varient,
+    required String size,
+  }) async {
+    var userId = await Utils.getUserId();
+
+    try {
+      Map<String, dynamic> data = {
+        "product_id": int.parse(productId),
+        "company_id": userId,
+        "product_name": name,
+        "varient": varient,
+        "product_desc": desc,
+        "price": price,
+        "status": "active",
+        "qty": qty,
+        "category_id": int.parse(categoryId),
+        "sizes": size,
+      };
+      print(data);
+      final response =
+          await dioClient.post(Endpoints.updateProduct, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteProduct({
+    required String productId,
+  }) async {
+    try {
+      final response = await dioClient
+          .get('${Endpoints.deleteProduct}?product_id=$productId');
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Map<String, dynamic>> createNewCategory({
     required String name,
   }) async {

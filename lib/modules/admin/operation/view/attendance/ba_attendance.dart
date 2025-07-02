@@ -142,7 +142,7 @@ class _BaAttendanceState extends State<BaAttendance> {
                         if (controller.companyIndividual.value == null) {
                           return AnimationConfiguration.staggeredList(
                             position: index,
-                            duration: const Duration(milliseconds: 375),
+                            duration: const Duration(milliseconds: 175),
                             child: SlideAnimation(
                                 verticalOffset: 50.0,
                                 child: FadeInAnimation(
@@ -219,7 +219,7 @@ class _BaAttendanceState extends State<BaAttendance> {
                             data.companyId) {
                           return AnimationConfiguration.staggeredList(
                             position: index,
-                            duration: const Duration(milliseconds: 375),
+                            duration: const Duration(milliseconds: 175),
                             child: SlideAnimation(
                               verticalOffset: 50.0,
                               child: FadeInAnimation(

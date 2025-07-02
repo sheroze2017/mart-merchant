@@ -2,6 +2,7 @@ import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/modules/admin/operation/bloc/operation_api.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/user_by_role_model.dart';
+import 'package:ba_merchandise/modules/b.a/record_data/bloc/ba_inidividual_sales_bloc.dart';
 import 'package:ba_merchandise/modules/b.a/record_data/bloc/ba_operation_api.dart';
 import 'package:ba_merchandise/widgets/custom/error_toast.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:get/get.dart';
 class InsertSalesRecord extends GetxController {
   var fetchProductCompanyLoader = false.obs;
   var statusRecordLoader = false.obs;
+  var editRecordLoader = false.obs;
+
   var updatePriceLoader = false.obs;
   var addActivityLoader = false.obs;
   RxList<ByUserRoleData> companyNameList = RxList();
@@ -30,6 +33,97 @@ class InsertSalesRecord extends GetxController {
     getAllProductByCompanyMart();
     getAllCompany();
     getAllCompititor();
+  }
+
+  Future<void> deleteSaleById(saleId, context) async {
+    try {
+      final response = await baOperationService.deleteSale(saleId);
+
+      if (response != null &&
+          response['data'] != null &&
+          response['code'] == 200) {
+        Get.back();
+        final controller = Get.put(SalesBaController());
+        controller.getSalesForBa();
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'] ??
+              'Sales deleted successfully', // Fallback message
+          icon: Icons.info,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      } else {
+        // Failure message
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message']?.toString() ??
+              'Failed to edit sales record', // Fallback error message
+          icon: Icons.error,
+          backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (error) {
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: 'An error occurred: ${error.toString()}',
+        icon: Icons.error,
+        backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+        textColor: Colors.black,
+        fontSize: 14.0,
+      );
+    }
+  }
+
+  Future<void> editSaleRecord(Map<String, dynamic> data, context) async {
+    editRecordLoader.value = true;
+    try {
+      final response = await baOperationService.editSalesRecord(data);
+
+      if (response != null &&
+          response['data'] != null &&
+          response['code'] == 200) {
+        editRecordLoader.value = false;
+        Get.back();
+        final controller = Get.put(SalesBaController());
+        controller.getSalesForBa();
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'] ??
+              'Sales record edited successfully', // Fallback message
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      } else {
+        editRecordLoader.value = false;
+
+        // Failure message
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message']?.toString() ??
+              'Failed to edit sales record', // Fallback error message
+          icon: Icons.error,
+          backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (error) {
+      editRecordLoader.value = false;
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: 'An error occurred: ${error.toString()}',
+        icon: Icons.error,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    }
   }
 
   Future<void> insertSalesRecord(BuildContext context) async {

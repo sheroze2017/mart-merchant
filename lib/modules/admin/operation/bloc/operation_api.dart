@@ -1,5 +1,7 @@
 import 'package:ba_merchandise/constant/endpoints.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/all_attendance_model.dart';
+import 'package:intl/intl.dart';
+
 import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/createUser_model.dart';
 import 'package:ba_merchandise/modules/admin/operation/model/sales_model.dart';
@@ -191,9 +193,18 @@ class AdminOperationService extends BaseService {
   Future<AllUserAttendance> getAllUserAttendance(
       String startDate, String endDate) async {
     try {
+      final now = DateTime.now();
+      final formatter = DateFormat('yyyy-MM-dd');
+
+      String formattedToday = formatter.format(now);
+      String formatted30DaysAgo =
+          formatter.format(now.subtract(Duration(days: 30)));
+
       Map<String, dynamic> data = {
-        "start_date": startDate == "null" ? "" : startDate,
-        "end_date": endDate == "null" ? "" : endDate
+        "start_date": startDate.isEmpty ? formatted30DaysAgo : startDate,
+        "end_date": endDate.isEmpty
+            ? (startDate.isEmpty ? formattedToday : formatter.format(now))
+            : endDate,
       };
 
       final response =

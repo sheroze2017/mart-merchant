@@ -2,11 +2,13 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/common/utils/validator.dart';
+import 'package:ba_merchandise/modules/admin/operation/model/company_mart_product_model.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/company/dashboard/view/company_home.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
+import 'package:ba_merchandise/widgets/dailog/custom_text_dailog.dart';
 import 'package:ba_merchandise/widgets/textfield/rounded_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -134,11 +136,87 @@ class _ProductScreenState extends State<ProductScreen> {
                               '${product.productName} (${product.variant})',
                               style: CustomTextStyles.darkHeadingTextStyle(
                                   size: 20)),
-                          subtitle: Text(
-                              'Description: ${product.productDesc}\nPrice: ${product.price}\nsize: ${product.sizes}\nQuantity Available: ${product.qty}',
-                              style: CustomTextStyles.lightSmallTextStyle(
-                                  color: AppColors.primaryColorDark,
-                                  size: 16))),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  'Description: ${product.productDesc}\nPrice: ${product.price}\nsize: ${product.sizes}\nQuantity Available: ${product.qty}',
+                                  style: CustomTextStyles.lightSmallTextStyle(
+                                      color: AppColors.primaryColorDark,
+                                      size: 16)),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                CustomDialogMessage(
+                                                  dialogText:
+                                                      'Are you sure you want to delete this product ${product.productName} ${product.variant}',
+                                                  buttonText1: 'No',
+                                                  buttonText2: 'Yes',
+                                                  onButton1Pressed: () {
+                                                    Get.back();
+                                                  },
+                                                  onButton2Pressed: () {
+                                                    controller.deleteProduct(
+                                                        product.productId,
+                                                        context);
+                                                  },
+                                                ));
+                                      },
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          Text(
+                                            'Delete',
+                                            style: CustomTextStyles
+                                                .lightSmallTextStyle(
+                                                    size: 14,
+                                                    color: Colors.red),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    InkWell(
+                                        onTap: () {
+                                          _updateProduct(product);
+                                        },
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            const Icon(
+                                              Icons.edit,
+                                              size: 20,
+                                              color: Colors.black,
+                                            ),
+                                            Text(
+                                              'Edit',
+                                              style: CustomTextStyles
+                                                  .lightSmallTextStyle(
+                                                      size: 14,
+                                                      color: Colors.black),
+                                            )
+                                          ],
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )),
                     );
                   },
                 ),
@@ -296,6 +374,160 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
               ),
             ));
+      },
+    );
+  }
+
+  void _updateProduct(ProductCMData product) {
+    TextEditingController nameController =
+        TextEditingController(text: product.productName);
+    TextEditingController priceController =
+        TextEditingController(text: product.price.toString());
+    TextEditingController desc =
+        TextEditingController(text: product.productDesc);
+    TextEditingController varient =
+        TextEditingController(text: product.variant);
+    TextEditingController qty =
+        TextEditingController(text: product.qty.toString());
+    TextEditingController sizes = TextEditingController(text: product.sizes);
+    TextEditingController martId =
+        TextEditingController(text: product.martId.toString());
+    TextEditingController categoryId =
+        TextEditingController(text: product.categoryId.toString());
+
+    showModalBottomSheet(
+      backgroundColor: AppColors.whiteColor,
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Wrap(
+              children: [
+                Text(
+                  'Update Product',
+                  style: CustomTextStyles.darkHeadingTextStyle(size: 20),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: CustomDropdown(
+                    hintText: 'Select Category',
+                    initialItem: controller.categories
+                        .firstWhere(
+                          (cat) => cat.categoryId == product.categoryId,
+                        )
+                        .name,
+                    items: controller.categories
+                        .map((category) => category.name)
+                        .toList(),
+                    onChanged: (value) {
+                      int exactIndex = controller.categories
+                          .indexWhere((m) => m.name == value);
+                      if (exactIndex != -1) {
+                        categoryId.text = controller
+                            .categories[exactIndex].categoryId
+                            .toString();
+                      }
+                    },
+                  ),
+                ),
+                Text('Name', style: CustomTextStyles.lightTextStyle()),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: RoundedBorderTextField(
+                    controller: nameController,
+                    validator: Validator.ValidText,
+                    hintText: 'Name',
+                    icon: '',
+                  ),
+                ),
+                Text('Price', style: CustomTextStyles.lightTextStyle()),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: RoundedBorderTextField(
+                    controller: priceController,
+                    textInputType: TextInputType.number,
+                    hintText: 'Price',
+                    validator: Validator.ValidText,
+                    icon: '',
+                  ),
+                ),
+                Text('Description', style: CustomTextStyles.lightTextStyle()),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: RoundedBorderTextField(
+                    controller: desc,
+                    validator: Validator.ValidText,
+                    hintText: 'Description',
+                    icon: '',
+                  ),
+                ),
+                Text('Varient', style: CustomTextStyles.lightTextStyle()),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: RoundedBorderTextField(
+                    controller: varient,
+                    validator: Validator.ValidText,
+                    hintText: 'Varient (e.g., 50gm, 1kg)',
+                    icon: '',
+                  ),
+                ),
+                Text('Quantity', style: CustomTextStyles.lightTextStyle()),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: RoundedBorderTextField(
+                    controller: qty,
+                    validator: Validator.ValidText,
+                    textInputType: TextInputType.number,
+                    hintText: 'Quantity',
+                    icon: '',
+                  ),
+                ),
+                Text('Size', style: CustomTextStyles.lightTextStyle()),
+                RoundedBorderTextField(
+                  controller: sizes,
+                  validator: Validator.ValidText,
+                  textInputType: TextInputType.text,
+                  hintText: 'Size',
+                  icon: '',
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Obx(() => RoundedButton(
+                              showLoader: controller.updateProductLoader.value,
+                              text: 'Update Product',
+                              onPressed: () {
+                                controller.updateProduct(
+                                  categoryId.text,
+                                  nameController.text,
+                                  desc.text,
+                                  priceController.text,
+                                  qty.text,
+                                  varient.text,
+                                  sizes.text,
+                                  product.productId.toString(),
+                                  context,
+                                );
+                              },
+                              backgroundColor: AppColors.primaryColorDark,
+                              textColor: AppColors.whiteColor,
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
   }

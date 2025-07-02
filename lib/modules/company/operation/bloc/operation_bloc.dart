@@ -15,6 +15,9 @@ import '../model/operation_model.dart';
 
 class CompanyOperationBloc extends GetxController {
   var addProductLoader = false.obs;
+  var delProductLoader = false.obs;
+  var updateProductLoader = false.obs;
+
   var addCategoryLoader = false.obs;
   var fetchProductCompanyLoader = false.obs;
   var getAllBaAttendanceLoader = false.obs;
@@ -115,6 +118,78 @@ class CompanyOperationBloc extends GetxController {
         textColor: Colors.black,
         fontSize: 14.0,
       );
+    }
+  }
+
+  Future<void> updateProduct(categoryId, name, desc, price, qty, varient, size,
+      productId, context) async {
+    updateProductLoader.value = true;
+    try {
+      final response = await _companyOperationService.editProduct(
+          productId: productId,
+          categoryId: categoryId,
+          name: name,
+          desc: desc,
+          price: price,
+          qty: qty,
+          varient: varient,
+          size: size);
+      if (response['data'] != null && response['code'] == 200) {
+        updateProductLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: 'Product updated', // Fallback message
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        Get.back();
+      } else {
+        updateProductLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'],
+          icon: Icons.error,
+          backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      updateProductLoader.value = false;
+    } finally {
+      updateProductLoader.value = false;
+    }
+  }
+
+  Future<void> deleteProduct(productId, context) async {
+    delProductLoader.value = true;
+    final response = await _companyOperationService.deleteProduct(
+        productId: productId.toString());
+    if (response['data'] != null && response['code'] == 200) {
+      delProductLoader.value = false;
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: 'Product Deleted', // Fallback message
+        icon: Icons.info,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      getAllProductByCompanyMart(null, context);
+      Get.back();
+    } else {
+      delProductLoader.value = false;
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response['message'],
+        icon: Icons.error,
+        backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+        textColor: Colors.black,
+        fontSize: 14.0,
+      );
+      Get.back();
     }
   }
 
