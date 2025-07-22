@@ -53,7 +53,7 @@ class _SalesScreenMartCompanyState extends State<SalesScreenMartCompany> {
                         elevation: 2,
                         child: CustomDropdown.search(
                           decoration: CustomDropdownDecoration(
-                            prefixIcon: Icon(Icons.arrow_drop_down),
+                            prefixIcon: Icon(Icons.factory),
                             expandedFillColor: AppColors.primaryColor,
                             closedFillColor: AppColors.primaryColor,
                           ),
@@ -109,7 +109,7 @@ class _SalesScreenMartCompanyState extends State<SalesScreenMartCompany> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 12, right: 12),
+                padding: const EdgeInsets.only(top: 4.0, left: 12, right: 12),
                 child: Row(
                   children: [
                     Expanded(
@@ -117,7 +117,7 @@ class _SalesScreenMartCompanyState extends State<SalesScreenMartCompany> {
                         elevation: 2,
                         child: CustomDropdown.search(
                           decoration: CustomDropdownDecoration(
-                            prefixIcon: Icon(Icons.arrow_drop_down),
+                            prefixIcon: Icon(Icons.location_on_outlined),
                             expandedFillColor: AppColors.primaryColor,
                             closedFillColor: AppColors.primaryColor,
                           ),
@@ -170,12 +170,12 @@ class _SalesScreenMartCompanyState extends State<SalesScreenMartCompany> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 12, right: 12),
+                padding: const EdgeInsets.only(top: 4.0, left: 12, right: 12),
                 child: Card(
                   elevation: 2,
                   child: CustomDropdown.search(
                     decoration: CustomDropdownDecoration(
-                      prefixIcon: Icon(Icons.arrow_drop_down),
+                      prefixIcon: Icon(Icons.person),
                       expandedFillColor: AppColors.primaryColor,
                       closedFillColor: AppColors.primaryColor,
                     ),
@@ -207,7 +207,7 @@ class _SalesScreenMartCompanyState extends State<SalesScreenMartCompany> {
                   ? SizedBox()
                   : Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 6),
+                          horizontal: 12.0, vertical: 4),
                       child: Row(
                         children: [
                           Expanded(
@@ -215,7 +215,7 @@ class _SalesScreenMartCompanyState extends State<SalesScreenMartCompany> {
                               elevation: 2,
                               child: Obx(() => CustomDropdown.search(
                                     decoration: CustomDropdownDecoration(
-                                      prefixIcon: Icon(Icons.arrow_drop_down),
+                                      prefixIcon: Icon(Icons.category),
                                       expandedFillColor: AppColors.primaryColor,
                                       closedFillColor: AppColors.primaryColor,
                                     ),

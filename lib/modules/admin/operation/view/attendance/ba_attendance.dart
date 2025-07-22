@@ -50,6 +50,7 @@ class _BaAttendanceState extends State<BaAttendance> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const heading(title: 'Search Employee Attendance'),
             Row(
               children: [
                 Expanded(
@@ -80,11 +81,7 @@ class _BaAttendanceState extends State<BaAttendance> {
               ],
             ),
             SizedBox(
-              height: 2.h,
-            ),
-            const heading(title: 'Search Employee Attendance'),
-            SizedBox(
-              height: 2.h,
+              height: 1.h,
             ),
             Row(
               children: [
