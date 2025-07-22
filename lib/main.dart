@@ -25,7 +25,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseApi().initNotification();
+//  await FirebaseApi().initNotification();
 
   Hive.registerAdapter(AttendanceAdapter());
   Hive.registerAdapter(SalesRecordModelAdapter());

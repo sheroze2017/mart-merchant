@@ -10,8 +10,10 @@ import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:ba_merchandise/widgets/button/rounded_button.dart';
 import 'package:ba_merchandise/widgets/custom/error_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart' as locat;
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class SupervisorNewReport extends StatefulWidget {
@@ -31,6 +33,37 @@ class _SupervisorNewReportState extends State<SupervisorNewReport> {
   final MediaBloc mediaBloc = Get.put(MediaBloc());
 
   final _formKey = GlobalKey<FormState>();
+  final locat.Location _location = locat.Location();
+  double _latitude = 0.00;
+  double _longitude = 0.00;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  _getCurrentLocation() async {
+    bool serviceEnabled;
+    locat.PermissionStatus permissionGranted;
+    serviceEnabled = await _location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await _location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+    permissionGranted = await _location.hasPermission();
+    if (permissionGranted == locat.PermissionStatus.denied) {
+      permissionGranted = await _location.requestPermission();
+      if (permissionGranted != locat.PermissionStatus.granted) {
+        return;
+      }
+    }
+    locat.LocationData currentPosition = await _location.getLocation();
+    _latitude = currentPosition.latitude!;
+    _longitude = currentPosition.longitude!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,6 +241,8 @@ class _SupervisorNewReportState extends State<SupervisorNewReport> {
                                                 martId.text,
                                                 _descriptionController.text,
                                                 mediaBloc.imgUrl.value,
+                                                _latitude,
+                                                _longitude,
                                                 context);
                                       }
                                     },

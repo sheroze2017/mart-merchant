@@ -3,11 +3,12 @@ import 'package:ba_merchandise/constant/endpoints.dart';
 import 'package:ba_merchandise/services/base_service.dart';
 
 class SupervisorOperationService extends BaseService {
-  Future<Map<String, dynamic>> createNewReport({
-    required String martId,
-    required String desc,
-    required String image,
-  }) async {
+  Future<Map<String, dynamic>> createNewReport(
+      {required String martId,
+      required String desc,
+      required String image,
+      required String latitude,
+      required String longitude}) async {
     var userId = await Utils.getUserId();
     var companyId = await Utils.getCompanyId();
 
@@ -17,7 +18,9 @@ class SupervisorOperationService extends BaseService {
         "image": image,
         "description": desc,
         "company_id": companyId.toString(),
-        "mart_id": martId
+        "mart_id": martId,
+        "lat": latitude,
+        "lng": longitude
       };
       final response =
           await dioClient.post(Endpoints.submitSupervisorData, data: data);

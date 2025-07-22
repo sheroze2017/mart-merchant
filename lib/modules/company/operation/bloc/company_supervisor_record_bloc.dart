@@ -19,8 +19,8 @@ class SupervisorRecordController extends GetxController {
           companyId.toString(), martId);
       if (response['data'] != null) {
         salesLoader.value = false;
-        activityList.value = response['data'] ?? [];
-        update(); // Notify listeners to rebuild UI
+        activityList.value = (response['data'] ?? []).reversed.toList();
+        update();
       } else {
         salesLoader.value = false;
         update();

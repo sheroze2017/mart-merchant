@@ -43,6 +43,8 @@ class ByUserRoleData {
   String? email;
   String? companyId;
   String? martId;
+  String? categoryId;
+  String? categoryName;
 
   // Main constructor with all parameters
   ByUserRoleData(
@@ -52,6 +54,8 @@ class ByUserRoleData {
       this.status,
       this.email,
       this.companyId,
+      this.categoryId,
+      this.categoryName,
       this.martId});
 
   ByUserRoleData.fromJson(Map<String, dynamic> json) {
@@ -62,6 +66,8 @@ class ByUserRoleData {
     email = json['email'] ?? '';
     companyId = json['company_id'] ?? '';
     martId = json['mart_id'] ?? '';
+    categoryName = json['category_name'] ?? '';
+    categoryId = json['category_id'].toString();
   }
 
   // Method to convert Data object to JSON
@@ -71,6 +77,7 @@ class ByUserRoleData {
     jsonData['name'] = name ?? '';
     jsonData['role'] = role ?? '';
     jsonData['status'] = status ?? '';
+    jsonData['category_name'] = categoryName ?? '';
     return jsonData;
   }
 }

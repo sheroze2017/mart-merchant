@@ -40,10 +40,15 @@ class SupervisorOperationBloc extends GetxController {
     }
   }
 
-  Future<void> createNewSubmission(martId, desc, image, context) async {
+  Future<void> createNewSubmission(
+      martId, desc, image, latitude, longitude, context) async {
     addReportLoader.value = true;
     final response = await _supervisorOperationService.createNewReport(
-        martId: martId, desc: desc, image: image);
+        martId: martId,
+        desc: desc,
+        image: image,
+        latitude: latitude.toString(),
+        longitude: longitude.toString());
     if (response['data'] != null && response['code'] == 200) {
       addReportLoader.value = false;
       AnimatedSnackbar.showSnackbar(

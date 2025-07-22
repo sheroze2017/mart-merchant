@@ -133,17 +133,14 @@ class ProductDetails {
   String? price;
   String? variant;
   String? productName;
-
-  ProductDetails({
-    this.price,
-    this.variant,
-    this.productName,
-  });
+  String? catId;
+  ProductDetails({this.price, this.variant, this.productName, this.catId});
 
   ProductDetails.fromJson(Map<String, dynamic> json) {
     price = json['price'] ?? '0';
     variant = json['variant'] ?? 'N/A';
     productName = json['product_name'] ?? 'N/A';
+    catId = json['category_id'].toString();
   }
 
   Map<String, dynamic> toJson() {

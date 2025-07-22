@@ -24,15 +24,19 @@ class BaAttendance extends StatefulWidget {
 }
 
 class _BaAttendanceState extends State<BaAttendance> {
-  final TextEditingController locationController = TextEditingController();
+  final SingleSelectController<String> locationController =
+      SingleSelectController<String>(null);
+  final SingleSelectController<String> martNameController =
+      SingleSelectController<String>(null);
   final TextEditingController startDate = TextEditingController();
   final TextEditingController endDate = TextEditingController();
   final AdminOperation controller = Get.find<AdminOperation>();
-
+  String martName = '';
   @override
   void initState() {
     super.initState();
     controller.companyIndividual.value = null;
+    controller.marts.isEmpty ? controller.getAllMart() : null;
     controller.getAllBaAttendance('', '');
   }
 
@@ -88,6 +92,7 @@ class _BaAttendanceState extends State<BaAttendance> {
                   child: Card(
                     elevation: 2,
                     child: CustomDropdown(
+                      controller: locationController,
                       decoration: CustomDropdownDecoration(
                         prefixIcon: Icon(Icons.location_on_sharp),
                         expandedFillColor: AppColors.primaryColor,
@@ -114,6 +119,49 @@ class _BaAttendanceState extends State<BaAttendance> {
                 InkWell(
                   onTap: () {
                     controller.companyIndividual.value = null;
+                    locationController.clear();
+                    setState(() {});
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.cancel),
+                      )),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Card(
+                    elevation: 2,
+                    child: CustomDropdown.search(
+                      controller: martNameController,
+                      decoration: CustomDropdownDecoration(
+                        prefixIcon: Icon(Icons.keyboard_option_key),
+                        expandedFillColor: AppColors.primaryColor,
+                        closedFillColor: AppColors.primaryColor,
+                      ),
+                      hintText: 'Select Mart',
+                      items: controller.marts.map((m) => m.martName).toList(),
+                      onChanged: (value) {
+                        martName = value!;
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                InkWell(
+                  onTap: () {
+                    martName = '';
+                    martNameController.clear();
+
                     setState(() {});
                   },
                   child: Container(
@@ -139,11 +187,108 @@ class _BaAttendanceState extends State<BaAttendance> {
                       itemCount: controller.userAttendance.length,
                       itemBuilder: (context, index) {
                         final data = controller.userAttendance[index];
-                        if (controller.companyIndividual.value == null) {
-                          return AnimationConfiguration.staggeredList(
-                            position: index,
-                            duration: const Duration(milliseconds: 175),
-                            child: SlideAnimation(
+                        if (martName.isEmpty || martName == data.martName) {
+                          if (controller.companyIndividual.value == null) {
+                            return AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(milliseconds: 50),
+                              child: SlideAnimation(
+                                  verticalOffset: 50.0,
+                                  child: FadeInAnimation(
+                                      child: Card(
+                                    color: AppColors.primaryColor,
+                                    elevation: 2,
+                                    child: ExpansionTile(
+                                      title: Text(
+                                        data.name.toString(),
+                                        style: CustomTextStyles.darkTextStyle(),
+                                      ),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (data.martName != null)
+                                            Text(
+                                              'Mart Name: ${data.martName}',
+                                              style: CustomTextStyles
+                                                  .lightTextStyle(),
+                                            ),
+                                          if (data.categoryName != null)
+                                            Text(
+                                              'Category: ${data.categoryName}',
+                                              style: CustomTextStyles
+                                                  .lightTextStyle(),
+                                            ),
+                                        ],
+                                      ),
+                                      trailing:
+                                          const Icon(Icons.expand_more_rounded),
+                                      childrenPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 16.0, vertical: 0.0),
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Email: ${data.email}',
+                                            style:
+                                                CustomTextStyles.lightTextStyle(
+                                                    size: 13),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'UserId: ${data.userId}',
+                                            style:
+                                                CustomTextStyles.lightTextStyle(
+                                                    size: 13),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Currently assign: ${Utils.getCompanyNameByUserId(controller.companyNameList, data.companyId.toString())}',
+                                            style:
+                                                CustomTextStyles.lightTextStyle(
+                                                    size: 13),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 1.h,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: RoundedButton(
+                                                  text: 'Details',
+                                                  onPressed: () {
+                                                    print('d');
+                                                    Get.to(BaAttendanceDetail(
+                                                      data: data,
+                                                    ));
+                                                  },
+                                                  backgroundColor: AppColors
+                                                      .primaryColorDark,
+                                                  textColor:
+                                                      AppColors.whiteColor),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 1.h,
+                                        ),
+                                      ],
+                                    ),
+                                  ))),
+                            );
+                          } else if (controller.companyIndividual.value!.userId
+                                  .toString() ==
+                              data.companyId) {
+                            return AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(milliseconds: 50),
+                              child: SlideAnimation(
                                 verticalOffset: 50.0,
                                 child: FadeInAnimation(
                                     child: Card(
@@ -154,10 +299,28 @@ class _BaAttendanceState extends State<BaAttendance> {
                                       data.name.toString(),
                                       style: CustomTextStyles.darkTextStyle(),
                                     ),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        if (data.martName != null)
+                                          Text(
+                                            'Mart Name: ${data.martName}',
+                                            style: CustomTextStyles
+                                                .lightTextStyle(),
+                                          ),
+                                        if (data.categoryName != null)
+                                          Text(
+                                            'Category: ${data.categoryName}',
+                                            style: CustomTextStyles
+                                                .lightTextStyle(),
+                                          ),
+                                      ],
+                                    ),
                                     trailing:
                                         const Icon(Icons.expand_more_rounded),
                                     childrenPadding: const EdgeInsets.symmetric(
-                                        horizontal: 16.0, vertical: 0.0),
+                                        horizontal: 16.0, vertical: 8.0),
                                     children: [
                                       Align(
                                         alignment: Alignment.centerLeft,
@@ -177,18 +340,6 @@ class _BaAttendanceState extends State<BaAttendance> {
                                                   size: 13),
                                         ),
                                       ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          'Currently assign: ${Utils.getCompanyNameByUserId(controller.companyNameList, data.companyId.toString())}',
-                                          style:
-                                              CustomTextStyles.lightTextStyle(
-                                                  size: 13),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 1.h,
-                                      ),
                                       Row(
                                         children: [
                                           Expanded(
@@ -207,78 +358,18 @@ class _BaAttendanceState extends State<BaAttendance> {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(
-                                        height: 1.h,
-                                      ),
                                     ],
                                   ),
-                                ))),
-                          );
-                        } else if (controller.companyIndividual.value!.userId
-                                .toString() ==
-                            data.companyId) {
-                          return AnimationConfiguration.staggeredList(
-                            position: index,
-                            duration: const Duration(milliseconds: 175),
-                            child: SlideAnimation(
-                              verticalOffset: 50.0,
-                              child: FadeInAnimation(
-                                  child: Card(
-                                color: AppColors.primaryColor,
-                                elevation: 2,
-                                child: ExpansionTile(
-                                  title: Text(
-                                    data.name.toString(),
-                                    style: CustomTextStyles.darkTextStyle(),
-                                  ),
-                                  trailing:
-                                      const Icon(Icons.expand_more_rounded),
-                                  childrenPadding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 8.0),
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'Email: ${data.email}',
-                                        style: CustomTextStyles.lightTextStyle(
-                                            size: 13),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'UserId: ${data.userId}',
-                                        style: CustomTextStyles.lightTextStyle(
-                                            size: 13),
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: RoundedButton(
-                                              text: 'Details',
-                                              onPressed: () {
-                                                print('d');
-                                                Get.to(BaAttendanceDetail(
-                                                  data: data,
-                                                ));
-                                              },
-                                              backgroundColor:
-                                                  AppColors.primaryColorDark,
-                                              textColor: AppColors.whiteColor),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )),
-                            ),
-                          );
+                                )),
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
                         } else {
-                          return Container();
+                          return SizedBox();
                         }
-                      },
-                    )),
+                      })),
             ),
           ],
         ),

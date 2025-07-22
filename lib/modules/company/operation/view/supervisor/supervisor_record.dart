@@ -15,11 +15,35 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class SupervisorRecordData extends StatelessWidget {
+class SupervisorRecordData extends StatefulWidget {
   SupervisorRecordData({super.key});
+
+  @override
+  State<SupervisorRecordData> createState() => _SupervisorRecordDataState();
+}
+
+class _SupervisorRecordDataState extends State<SupervisorRecordData> {
   final controllerCompany = Get.find<CompanyOperationBloc>();
+
   final TextEditingController martId = TextEditingController();
+
   final TextEditingController emplyeeId = TextEditingController();
+
+  final SingleSelectController<String> catController =
+      SingleSelectController<String>(null);
+
+  final SingleSelectController<String> martController =
+      SingleSelectController<String>(null);
+
+  final SingleSelectController<String> companyController =
+      SingleSelectController<String>(null);
+
+  String catId = '';
+  @override
+  void initState() {
+    super.initState();
+    controllerCompany.getAllCategory();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +62,12 @@ class SupervisorRecordData extends StatelessWidget {
                       child: Card(
                         elevation: 2,
                         child: CustomDropdown.search(
+                          controller: martController,
+                          decoration: CustomDropdownDecoration(
+                            prefixIcon: const Icon(Icons.location_on_sharp),
+                            expandedFillColor: AppColors.primaryColor,
+                            closedFillColor: AppColors.primaryColor,
+                          ),
                           hintText: 'Select Mart',
                           items: controllerCompany.marts
                               .map((m) => m.martName)
@@ -55,9 +85,63 @@ class SupervisorRecordData extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      width: 12,
+                    ),
                     InkWell(
                       onTap: () {
                         controller.getSupervisorData('');
+                        martController.clear();
+                        martId.clear();
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.cancel),
+                          )),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 8, right: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomDropdown(
+                        decoration: CustomDropdownDecoration(
+                          prefixIcon: Icon(Icons.location_on_sharp),
+                          expandedFillColor: AppColors.primaryColor,
+                          closedFillColor: AppColors.primaryColor,
+                        ),
+                        controller: catController,
+                        hintText: 'Select Category',
+                        items: controllerCompany.categories
+                            .map((category) => category.name)
+                            .toList(),
+                        onChanged: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            final selectedCat =
+                                controllerCompany.categories.firstWhere(
+                              (cat) => cat.name == value,
+                            );
+                            catId = selectedCat.categoryId.toString();
+                            setState(() {});
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        catController.clear();
+                        catId = '';
+                        setState(() {});
                       },
                       child: Container(
                           decoration: BoxDecoration(
@@ -73,83 +157,92 @@ class SupervisorRecordData extends StatelessWidget {
               ),
               Expanded(
                 child: controller.salesLoader.value
-                    ? Center(
+                    ? const Center(
                         child:
                             CircularProgressIndicator()) // Show loader when loading data
                     : controller.activityList.isEmpty
-                        ? Center(
+                        ? const Center(
                             child: Text(
                                 'No Data Found')) // Show message if no data is found
                         : ListView.builder(
                             itemCount: controller.activityList.length,
                             itemBuilder: (context, index) {
                               var saleData = controller.activityList[index];
-                              return Card(
-                                color: AppColors.primaryColor,
-                                elevation: 2,
-                                margin: EdgeInsets.all(8),
-                                child: ExpansionTile(
-                                  title: Text(
-                                    '${saleData['name']}',
-                                    style: CustomTextStyles.w600TextStyle(),
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Reported Date: ${Utils.formatDate(saleData['created_at']) + ' ' + Utils.formatTime(saleData['created_at'])}',
-                                        style: CustomTextStyles.lightTextStyle(
-                                            size: 13),
-                                      ),
-                                    ],
-                                  ),
-                                  trailing:
-                                      const Icon(Icons.expand_more_rounded),
-                                  childrenPadding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 8.0),
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'Email: ${saleData['email'] ?? ''}',
-                                        style: CustomTextStyles.lightTextStyle(
-                                            size: 13),
-                                      ),
+                              if (catId.isEmpty ||
+                                  catId == saleData['category_id']) {
+                                return Card(
+                                  color: AppColors.primaryColor,
+                                  elevation: 2,
+                                  margin: EdgeInsets.all(8),
+                                  child: ExpansionTile(
+                                    title: Text(
+                                      '${saleData['name']}',
+                                      style: CustomTextStyles.w600TextStyle(),
                                     ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'Phone: ${saleData['phone'] ?? ''}',
-                                        style: CustomTextStyles.lightTextStyle(
-                                            size: 13),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Row(
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Expanded(
-                                          child: RoundedButton(
-                                              text: 'View Report',
-                                              onPressed: () {
-                                                showActivityDetailsDialog(
-                                                  context,
-                                                  imageUrl: saleData['image'],
-                                                  description:
-                                                      saleData['description'],
-                                                );
-                                              },
-                                              backgroundColor:
-                                                  AppColors.primaryColorDark,
-                                              textColor: AppColors.whiteColor),
+                                        Text(
+                                          'Reported Date: ${Utils.formatDate(saleData['created_at']) + ' ' + Utils.formatTime(saleData['created_at'])}',
+                                          style:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 13),
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              );
+                                    trailing:
+                                        const Icon(Icons.expand_more_rounded),
+                                    childrenPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 8.0),
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Email: ${saleData['email'] ?? ''}',
+                                          style:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 13),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Phone: ${saleData['phone'] ?? ''}',
+                                          style:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 13),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 1.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: RoundedButton(
+                                                text: 'View Report',
+                                                onPressed: () {
+                                                  showActivityDetailsDialog(
+                                                    context,
+                                                    imageUrl: saleData['image'],
+                                                    description:
+                                                        saleData['description'],
+                                                  );
+                                                },
+                                                backgroundColor:
+                                                    AppColors.primaryColorDark,
+                                                textColor:
+                                                    AppColors.whiteColor),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
                             },
                           ),
               ),

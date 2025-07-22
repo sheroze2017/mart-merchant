@@ -12,7 +12,7 @@ class InsertSalesRecord extends GetxController {
   var fetchProductCompanyLoader = false.obs;
   var statusRecordLoader = false.obs;
   var editRecordLoader = false.obs;
-
+  var addCompetitorProductLoader = false.obs;
   var updatePriceLoader = false.obs;
   var addActivityLoader = false.obs;
   RxList<ByUserRoleData> companyNameList = RxList();
@@ -32,7 +32,8 @@ class InsertSalesRecord extends GetxController {
     super.onInit();
     getAllProductByCompanyMart();
     getAllCompany();
-    getAllCompititor();
+    //  getAllCompititor();
+    getAllCompetitorProductByCompanyMart();
   }
 
   Future<void> deleteSaleById(saleId, context) async {
@@ -197,13 +198,16 @@ class InsertSalesRecord extends GetxController {
     }
   }
 
-  Future<void> getAllCompetitorProductByCompanyMart(companyId) async {
+  Future<void> getAllCompetitorProductByCompanyMart() async {
     competitorProductList.clear();
-    var categoryId = await Utils.getCategoryId();
+    var companyid = await Utils.getCompanyId();
+    var userid = await Utils.getUserId();
+
     try {
       fetchProductCompanyLoader.value = true;
-      AllCompanyProductData response = await _adminOperationService
-          .getAllProducts(companyId, categoryId: categoryId);
+      AllCompanyProductData response =
+          await _adminOperationService.getAllCompetitorProduct(
+              companyid!.isEmpty ? userid.toString() : companyid.toString());
       if (response.data != null && response.code == 200) {
         fetchProductCompanyLoader.value = false;
         competitorProductList.value = response.data ?? [];
@@ -263,7 +267,7 @@ class InsertSalesRecord extends GetxController {
         );
         getAllProductByCompanyMart();
         if (companyId != null) {
-          getAllCompetitorProductByCompanyMart(int.parse(companyId));
+          //  getAllCompetitorProductByCompanyMart(int.parse(companyId));
         }
         Get.back();
       } else {
@@ -360,5 +364,95 @@ class InsertSalesRecord extends GetxController {
         compititorNameList.value = response.data ?? [];
       } else {}
     } catch (e) {}
+  }
+
+  Future<void> addNewCompetitorProduct(
+      categoryId, name, desc, price, qty, varient, size, context) async {
+    addCompetitorProductLoader.value = true;
+    var companuId = await Utils.getCompanyId();
+    var catId = await Utils.getCategoryId();
+    var martId = await Utils.getMartId();
+
+    final response = await baOperationService.addNewCompetitorProduct(
+        categoryId: catId.toString(),
+        companyId: companuId.toString(),
+        martId: martId.toString(),
+        name: name,
+        desc: desc,
+        price: price,
+        qty: '0',
+        varient: varient,
+        size: size);
+    if (response['data'] != null && response['code'] == 200) {
+      addCompetitorProductLoader.value = false;
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response['message'], // Fallback message
+        icon: Icons.info,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      getAllCompetitorProductByCompanyMart();
+      Get.back();
+    } else {
+      addCompetitorProductLoader.value = false;
+      AnimatedSnackbar.showSnackbar(
+        context: context,
+        message: response['message'],
+        icon: Icons.error,
+        backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+        textColor: Colors.black,
+        fontSize: 14.0,
+      );
+    }
+  }
+
+  Future<void> updateProduct(categoryId, name, desc, price, qty, varient, size,
+      productId, context) async {
+    addCompetitorProductLoader.value = true;
+    String? companyId = await Utils.getCompanyId();
+    String? martId = await Utils.getMartId();
+
+    try {
+      final response = await baOperationService.editProduct(
+          productId: productId,
+          categoryId: categoryId,
+          name: name,
+          desc: desc,
+          price: price,
+          qty: qty,
+          varient: varient,
+          size: size,
+          companyId: companyId.toString(),
+          martId: martId.toString());
+      if (response['data'] != null && response['code'] == 200) {
+        addCompetitorProductLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: 'Product updated', // Fallback message
+          icon: Icons.info,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+        getAllCompetitorProductByCompanyMart();
+        Get.back();
+      } else {
+        addCompetitorProductLoader.value = false;
+        AnimatedSnackbar.showSnackbar(
+          context: context,
+          message: response['message'],
+          icon: Icons.error,
+          backgroundColor: const Color.fromARGB(255, 241, 235, 235),
+          textColor: Colors.black,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      addCompetitorProductLoader.value = false;
+    } finally {
+      addCompetitorProductLoader.value = false;
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/b.a/dashboard/view/dashboard.dart';
 import 'package:ba_merchandise/modules/company/operation/bloc/operation_bloc.dart';
+import 'package:ba_merchandise/modules/company/operation/model/company_model.dart';
 import 'package:ba_merchandise/widgets/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,16 +18,23 @@ class EmployeeListScreen extends StatefulWidget {
 
 class _EmployeeListScreenState extends State<EmployeeListScreen> {
   final CompanyOperationBloc operationBloc = Get.find();
-  final RxInt selectedMartId =
-      RxInt(0); // Selected Mart ID as a reactive variable
+  final SingleSelectController<String> categoryController =
+      SingleSelectController<String>(null);
+  String category = '';
+// Selected Mart ID as a reactive variable
   bool showBa = true;
   bool showSupervisor = false;
+  final SingleSelectController<String> controller =
+      SingleSelectController<String>(null);
 
   @override
   void initState() {
     super.initState();
     operationBloc.getAllBa();
     operationBloc.getAllSupervisor();
+    operationBloc.getAllCategory();
+    operationBloc.selectedCategoryId.value = 0;
+    operationBloc.selectedMartId.value = 0;
   }
 
   @override
@@ -59,6 +67,11 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
               Card(
                 elevation: 2,
                 child: CustomDropdown(
+                  decoration: CustomDropdownDecoration(
+                    prefixIcon: Icon(Icons.person),
+                    expandedFillColor: AppColors.primaryColor,
+                    closedFillColor: AppColors.primaryColor,
+                  ),
                   initialItem: 'BA',
                   hintText: 'Employee Type',
                   items: ['BA', 'MERCHANT', 'SUPERVISOR'],
@@ -77,7 +90,7 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                       setState(() {
                         showBa = false;
                         showSupervisor = false;
-                        selectedMartId.value = 0;
+                        operationBloc.selectedMartId.value = 0;
                       });
                     }
                   },
@@ -85,168 +98,207 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
               ),
               showBa == true
                   ? Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8.0, left: 0, right: 0),
+                      padding: const EdgeInsets.only(top: 0.0),
                       child: Row(
                         children: [
                           Expanded(
                             child: Card(
                               elevation: 2,
                               child: CustomDropdown.search(
+                                decoration: CustomDropdownDecoration(
+                                  prefixIcon: Icon(Icons.location_on_sharp),
+                                  expandedFillColor: AppColors.primaryColor,
+                                  closedFillColor: AppColors.primaryColor,
+                                ),
+                                controller: controller,
                                 hintText: 'Select Mart',
                                 items: operationBloc.marts
                                     .map((m) => m.martName)
                                     .toList(),
                                 onChanged: (value) {
-                                  // Find the index of the selected mart
-                                  int exactIndex = operationBloc.marts
-                                      .indexWhere((m) => m.martName == value);
-                                  if (exactIndex != -1) {
-                                    // Update the selectedMartId with the martId of the selected mart
-                                    selectedMartId.value = operationBloc
-                                            .marts[exactIndex].martId ??
-                                        0;
-                                  }
+                                  category = '';
+                                  categoryController.clear();
+                                  operationBloc.selectMartByName(value!);
                                 },
                               ),
                             ),
                           ),
                           InkWell(
                             onTap: () {
-                              selectedMartId.value = 0;
+                              operationBloc.clearMartSelection();
+                              controller.clear();
+                              operationBloc.selectedCategoryId.value = 0;
+                              categoryController.clear();
+                              setState(() {});
                             },
                             child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Icon(Icons.cancel),
-                                )),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.cancel),
+                              ),
+                            ),
                           )
                         ],
                       ),
                     )
                   : Container(),
+              !showBa
+                  ? const SizedBox()
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 0.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Card(
+                              elevation: 2,
+                              child: CustomDropdown.search(
+                                decoration: CustomDropdownDecoration(
+                                  prefixIcon: Icon(Icons.category),
+                                  expandedFillColor: AppColors.primaryColor,
+                                  closedFillColor: AppColors.primaryColor,
+                                ),
+                                controller: categoryController,
+                                hintText: 'Select Category',
+                                items: operationBloc.categories
+                                    .map((c) => c.name ?? 'N/A')
+                                    .toList(),
+                                onChanged: (value) {
+                                  categoryController.value = value;
+                                  category = value!;
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              categoryController.clear();
+                              category = '';
+                              setState(() {});
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.cancel),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
               showBa
                   ? Expanded(
-                      child: Obx(
-                        () {
-                          final filteredBaNameList =
-                              operationBloc.baNameList.where((data) {
-                            // Show all employees when selectedMartId is 0, otherwise filter by martId
-                            return selectedMartId.value == 0 ||
-                                data.martId == selectedMartId.value.toString();
-                          }).toList();
+                      child: Obx(() {
+                        final baList = operationBloc.filteredBaList;
 
-                          return filteredBaNameList.isEmpty
-                              ? Center(
-                                  child: Text(
-                                      'No Employee to show for selected Mart'),
-                                )
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  itemCount: operationBloc.baNameList.length,
-                                  itemBuilder: (context, index) {
-                                    final data =
-                                        operationBloc.baNameList[index];
-                                    return data.status != 'active'
-                                        ? SizedBox()
-                                        : Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 2.0),
-                                            child: Card(
-                                              elevation: 2,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    border: Border.all(
-                                                      color: AppColors
-                                                          .primaryColor,
-                                                    )),
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Expanded(
-                                                        child: Row(
-                                                          children: [
-                                                            ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          40),
-                                                              child:
-                                                                  Image.asset(
-                                                                'assets/images/person.png',
-                                                                fit: BoxFit
-                                                                    .contain,
-                                                                width: 60,
-                                                                height: 60,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 2.w,
-                                                            ),
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  data.name ??
-                                                                      'N/a',
-                                                                  style: CustomTextStyles.w600TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      size: 19),
-                                                                ),
-                                                                Text(
-                                                                  'Role: ${data.role}',
-                                                                  style: CustomTextStyles.lightTextStyle(
-                                                                      color: AppColors
-                                                                          .primaryColorDark,
-                                                                      size: 14),
-                                                                ),
-                                                                Text(
-                                                                  'Email: ${data.email}',
-                                                                  style: CustomTextStyles.lightTextStyle(
-                                                                      color: AppColors
-                                                                          .primaryColorDark,
-                                                                      size: 14),
-                                                                ),
-                                                                Text(
-                                                                  'Status: ${data.status}',
-                                                                  style: CustomTextStyles.lightTextStyle(
-                                                                      color: AppColors
-                                                                          .primaryColorDark,
-                                                                      size: 14),
-                                                                )
-                                                              ],
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
+                        if (baList.isEmpty) {
+                          return const Center(
+                              child: Text(
+                                  'No employee to show for selected Mart'));
+                        }
+
+                        return ListView.builder(
+                          itemCount: baList.length,
+                          itemBuilder: (context, index) {
+                            final data = baList[index];
+                            if (data.categoryName == categoryController.value ||
+                                category == '') {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 2.0),
+                                child: Card(
+                                  elevation: 2,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: AppColors.primaryColor,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: AppColors.primaryColor,
+                                        )),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
+                                                  child: Image.asset(
+                                                    'assets/images/person.png',
+                                                    fit: BoxFit.contain,
+                                                    width: 60,
+                                                    height: 60,
                                                   ),
                                                 ),
-                                              ),
+                                                SizedBox(
+                                                  width: 2.w,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      data.name ?? 'N/a',
+                                                      style: CustomTextStyles
+                                                          .w600TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              size: 19),
+                                                    ),
+                                                    Text(
+                                                      'Role: ${data.role}',
+                                                      style: CustomTextStyles
+                                                          .lightTextStyle(
+                                                              color: AppColors
+                                                                  .primaryColorDark,
+                                                              size: 14),
+                                                    ),
+                                                    Text(
+                                                      'Email: ${data.email}',
+                                                      style: CustomTextStyles
+                                                          .lightTextStyle(
+                                                              color: AppColors
+                                                                  .primaryColorDark,
+                                                              size: 14),
+                                                    ),
+                                                    Text(
+                                                      'Status: ${data.status}',
+                                                      style: CustomTextStyles
+                                                          .lightTextStyle(
+                                                              color: AppColors
+                                                                  .primaryColorDark,
+                                                              size: 14),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
                                             ),
-                                          );
-                                  });
-                        },
-                      ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const SizedBox();
+                            }
+                          },
+                        );
+                      }),
                     )
                   : showSupervisor
                       ? Expanded(
@@ -370,9 +422,11 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                               final filteredBaNameList =
                                   operationBloc.merchantNameList.where((data) {
                                 // Show all employees when selectedMartId is 0, otherwise filter by martId
-                                return selectedMartId.value == 0 ||
+                                return operationBloc.selectedMartId.value ==
+                                        0 ||
                                     data.martId ==
-                                        selectedMartId.value.toString();
+                                        operationBloc.selectedMartId.value
+                                            .toString();
                               }).toList();
 
                               return filteredBaNameList.isEmpty

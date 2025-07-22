@@ -8,6 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BaAttendanceDetail extends StatefulWidget {
   final IndividualUserAttendance data;
@@ -208,8 +209,28 @@ void showSingleAttendanceDialog(
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildEntryTile('Check-In', record.checkinTime, record.imageIn),
+            record.checkinTime!.isNotEmpty
+                ? RoundedButtonSmall(
+                    isBorder: true,
+                    text: 'View Check-In',
+                    onPressed: () {
+                      openMap(record.lat ?? "0.0", record.lng ?? "0.0");
+                    },
+                    backgroundColor: AppColors.primaryColorDark,
+                    textColor: AppColors.whiteColor)
+                : SizedBox(),
             const SizedBox(height: 16),
             _buildEntryTile('Check-Out', record.checkoutTime, record.imageOut),
+            record.checkoutTime!.isNotEmpty
+                ? RoundedButtonSmall(
+                    isBorder: true,
+                    text: 'View Check-Out',
+                    onPressed: () {
+                      openMap(record.lat ?? "0.0", record.lng ?? "0.0");
+                    },
+                    backgroundColor: AppColors.primaryColorDark,
+                    textColor: AppColors.whiteColor)
+                : SizedBox(),
           ],
         ),
       ),
@@ -258,4 +279,15 @@ Widget _buildEntryTile(String title, String? time, String? imageUrl) {
       ),
     ],
   );
+}
+
+Future<void> openMap(String lat, String lng) async {
+  final Uri googleMapUrl =
+      Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$lng");
+
+  if (await canLaunchUrl(googleMapUrl)) {
+    await launchUrl(googleMapUrl, mode: LaunchMode.externalApplication);
+  } else {
+    throw 'Could not launch Google Maps';
+  }
 }

@@ -4,6 +4,76 @@ import 'package:ba_merchandise/modules/b.a/record_data/model/restock_data_model.
 import 'package:ba_merchandise/services/base_service.dart';
 
 class BaOperationService extends BaseService {
+  Future<Map<String, dynamic>> addNewCompetitorProduct({
+    required String categoryId,
+    required String companyId,
+    required String martId,
+    required String name,
+    required String desc,
+    required String price,
+    required String qty,
+    required String varient,
+    required String size,
+  }) async {
+    try {
+      Map<String, dynamic> data = {
+        "company_id": companyId,
+        "category_id": categoryId,
+        "mart_id": martId,
+        "product_name": name,
+        "product_description": desc,
+        "price": price,
+        "qty": qty,
+        "size": size,
+        "varient": varient,
+        "compititor_company_id": companyId,
+        "compititor": true
+      };
+
+      final response =
+          await dioClient.post(Endpoints.createProduct, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> editProduct({
+    required String categoryId,
+    required String productId,
+    required String companyId,
+    required String martId,
+    required String name,
+    required String desc,
+    required String price,
+    required String qty,
+    required String varient,
+    required String size,
+  }) async {
+    try {
+      Map<String, dynamic> data = {
+        "product_id": productId,
+        "company_id": companyId,
+        "category_id": categoryId,
+        "mart_id": martId,
+        "product_name": name,
+        "product_desc": desc,
+        "price": price,
+        "qty": qty,
+        "size": size,
+        "varient": varient,
+        "compititor_company_id": companyId,
+        "compititor": true
+      };
+      print(data);
+      final response =
+          await dioClient.post(Endpoints.updateProduct, data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Map<String, dynamic>> insertSalesRecord(
       List<Map<String, String>> products) async {
     var userId = await Utils.getUserId();

@@ -39,7 +39,7 @@ class IndividualSalesData {
   int? companyId;
   int? martId;
   BA? bA;
-  List<ProductsSold>? productsSold;
+  late List<ProductsSold> productsSold;
   String? companyName;
   String? martName;
 
@@ -50,7 +50,7 @@ class IndividualSalesData {
       this.companyId,
       this.martId,
       this.bA,
-      this.productsSold,
+      required this.productsSold,
       this.companyName,
       this.martName});
 
@@ -66,7 +66,7 @@ class IndividualSalesData {
     if (json['products_sold'] != null && json['products_sold'] is List) {
       productsSold = <ProductsSold>[];
       json['products_sold'].forEach((v) {
-        productsSold!.add(ProductsSold.fromJson(v));
+        productsSold.add(ProductsSold.fromJson(v));
       });
     } else {
       productsSold = [];
@@ -119,6 +119,7 @@ class ProductsSold {
   int? productId;
   String? unitPrice;
   String? productName;
+  String? categoryName;
 
   ProductsSold({
     this.qty,
@@ -126,6 +127,7 @@ class ProductsSold {
     this.productId,
     this.unitPrice,
     this.productName,
+    this.categoryName,
   });
 
   ProductsSold.fromJson(Map<String, dynamic> json) {
@@ -134,6 +136,7 @@ class ProductsSold {
     productId = json['product_id'] ?? 0;
     unitPrice = json['unit_price'] ?? '0.0';
     productName = json['product_name'] ?? '';
+    categoryName = json['category_name'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
@@ -143,6 +146,7 @@ class ProductsSold {
     data['product_id'] = this.productId;
     data['unit_price'] = this.unitPrice;
     data['product_name'] = this.productName;
+    data['category_name'] = this.categoryName;
     return data;
   }
 }

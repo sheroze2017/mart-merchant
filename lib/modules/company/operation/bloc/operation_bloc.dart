@@ -38,6 +38,7 @@ class CompanyOperationBloc extends GetxController {
   RxList<MartData> marts = RxList();
   RxList<IndividualUserAttendance> userAttendance = RxList();
   Rxn<ByUserRoleData> companyIndividual = Rxn();
+  RxInt selectedCategoryId = 0.obs;
 
   @override
   void onInit() async {
@@ -47,6 +48,43 @@ class CompanyOperationBloc extends GetxController {
     getAllMerchant();
     getAllBa();
     getAllSupervisor();
+  }
+
+  RxInt selectedMartId = 0.obs;
+
+  List<CategoryData> get availableCategories {
+    final filteredBas = filteredBaList;
+    print(categories);
+    final categoryIds = filteredBas
+        .map((e) => int.tryParse(e.categoryId ?? ''))
+        .whereType<int>()
+        .toSet();
+
+    return categories.where((c) => categoryIds.contains(c.categoryId)).toList();
+  }
+
+  List<ByUserRoleData> get filteredBaList {
+    final selectedMart = selectedMartId.value;
+    final selectedCategory = selectedCategoryId.value;
+
+    return baNameList.where((e) {
+      final matchesMart =
+          selectedMart == 0 || e.martId == selectedMart.toString();
+      final matchesCategory =
+          selectedCategory == 0 || e.categoryId == selectedCategory.toString();
+      return e.status == 'active' && matchesMart && matchesCategory;
+    }).toList();
+  }
+
+  void clearMartSelection() {
+    selectedMartId.value = 0;
+  }
+
+  void selectMartByName(String martName) {
+    final index = marts.indexWhere((m) => m.martName == martName);
+    if (index != -1) {
+      selectedMartId.value = marts[index].martId ?? 0;
+    }
   }
 
   Future<void> getAllCategory() async {

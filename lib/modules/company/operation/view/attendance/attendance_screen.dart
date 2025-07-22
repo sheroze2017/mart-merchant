@@ -1,3 +1,4 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:ba_merchandise/common/style/color.dart';
 import 'package:ba_merchandise/common/style/custom_textstyle.dart';
 import 'package:ba_merchandise/modules/admin/operation/view/attendance/ba_attendance_detail.dart';
@@ -21,6 +22,10 @@ class BaAttendanceCompanyView extends StatefulWidget {
 
 class _BaAttendanceCompanyViewState extends State<BaAttendanceCompanyView> {
   final TextEditingController startDate = TextEditingController();
+  final SingleSelectController<String> martNameController =
+      SingleSelectController<String>(null);
+  String martName = '';
+
   final TextEditingController endDate = TextEditingController();
   final CompanyOperationBloc controller = Get.find();
 
@@ -29,6 +34,7 @@ class _BaAttendanceCompanyViewState extends State<BaAttendanceCompanyView> {
     super.initState();
     controller.companyIndividual.value = null;
     controller.getAllBaAttendance('', '');
+    controller.marts.isEmpty ? controller.getAllMart() : null;
   }
 
   @override
@@ -73,6 +79,48 @@ class _BaAttendanceCompanyViewState extends State<BaAttendanceCompanyView> {
             SizedBox(
               height: 1.h,
             ),
+            Row(
+              children: [
+                Expanded(
+                  child: Card(
+                    elevation: 2,
+                    child: CustomDropdown.search(
+                      controller: martNameController,
+                      decoration: CustomDropdownDecoration(
+                        prefixIcon: Icon(Icons.keyboard_option_key),
+                        expandedFillColor: AppColors.primaryColor,
+                        closedFillColor: AppColors.primaryColor,
+                      ),
+                      hintText: 'Select Mart',
+                      items: controller.marts.map((m) => m.martName).toList(),
+                      onChanged: (value) {
+                        martName = value!;
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                InkWell(
+                  onTap: () {
+                    martName = '';
+                    martNameController.clear();
+
+                    setState(() {});
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.cancel),
+                      )),
+                )
+              ],
+            ),
             SizedBox(
               height: 1.h,
             ),
@@ -85,117 +133,157 @@ class _BaAttendanceCompanyViewState extends State<BaAttendanceCompanyView> {
                       itemCount: controller.userAttendance.length,
                       itemBuilder: (context, index) {
                         final data = controller.userAttendance[index];
-                        if (controller.companyIndividual.value == null) {
-                          return Card(
-                            color: AppColors.primaryColor,
-                            elevation: 2,
-                            child: ExpansionTile(
-                              title: Text(
-                                data.name.toString(),
-                                style: CustomTextStyles.darkTextStyle(),
-                              ),
-                              trailing: const Icon(Icons.expand_more_rounded),
-                              childrenPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 0.0),
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Email: ${data.email}',
-                                    style: CustomTextStyles.darkTextStyle()
-                                        .copyWith(fontSize: 12),
-                                  ),
+                        if (martName.isEmpty ||
+                            martName == data.martName.toString()) {
+                          if (controller.companyIndividual.value == null) {
+                            return Card(
+                              color: AppColors.primaryColor,
+                              elevation: 2,
+                              child: ExpansionTile(
+                                title: Text(
+                                  data.name.toString(),
+                                  style: CustomTextStyles.darkTextStyle(),
                                 ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'UserId: ${data.userId}',
-                                    style: CustomTextStyles.darkTextStyle()
-                                        .copyWith(fontSize: 13),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Expanded(
-                                      child: RoundedButton(
-                                          text: 'Details',
-                                          onPressed: () {
-                                            print('d');
-                                            Get.to(BaAttendanceDetail(
-                                              data: data,
-                                            ));
-                                          },
-                                          backgroundColor:
-                                              AppColors.primaryColorDark,
-                                          textColor: AppColors.whiteColor),
-                                    ),
+                                    if (data.martName != null)
+                                      Text(
+                                        'Mart Name: ${data.martName}',
+                                        style:
+                                            CustomTextStyles.lightTextStyle(),
+                                      ),
+                                    if (data.categoryName != null)
+                                      Text(
+                                        'Category: ${data.categoryName}',
+                                        style:
+                                            CustomTextStyles.lightTextStyle(),
+                                      ),
                                   ],
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          );
-                        } else if (controller.companyIndividual.value != null &&
-                            controller.companyIndividual.value!.userId ==
-                                data.userId) {
-                          return Card(
-                            color: AppColors.primaryColor,
-                            elevation: 2,
-                            child: ExpansionTile(
-                              title: Text(
-                                data.name.toString(),
-                                style: CustomTextStyles.darkTextStyle(),
-                              ),
-                              trailing: const Icon(Icons.expand_more_rounded),
-                              childrenPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8.0),
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Email: ${data.email}',
-                                    style: CustomTextStyles.lightTextStyle(
-                                        size: 13),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'UserId: ${data.userId}',
-                                    style: CustomTextStyles.lightTextStyle(
-                                        size: 13),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 2.h,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: RoundedButton(
-                                          text: 'Details',
-                                          onPressed: () {
-                                            print('d');
-                                            Get.to(BaAttendanceDetail(
-                                              data: data,
-                                            ));
-                                          },
-                                          backgroundColor:
-                                              AppColors.primaryColorDark,
-                                          textColor: AppColors.whiteColor),
+                                trailing: const Icon(Icons.expand_more_rounded),
+                                childrenPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 0.0),
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Email: ${data.email}',
+                                      style: CustomTextStyles.darkTextStyle()
+                                          .copyWith(fontSize: 12),
                                     ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'UserId: ${data.userId}',
+                                      style: CustomTextStyles.darkTextStyle()
+                                          .copyWith(fontSize: 13),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: RoundedButton(
+                                            text: 'Details',
+                                            onPressed: () {
+                                              print('d');
+                                              Get.to(BaAttendanceDetail(
+                                                data: data,
+                                              ));
+                                            },
+                                            backgroundColor:
+                                                AppColors.primaryColorDark,
+                                            textColor: AppColors.whiteColor),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else if (controller.companyIndividual.value !=
+                                  null &&
+                              controller.companyIndividual.value!.userId ==
+                                  data.userId) {
+                            return Card(
+                              color: AppColors.primaryColor,
+                              elevation: 2,
+                              child: ExpansionTile(
+                                title: Text(
+                                  data.name.toString(),
+                                  style: CustomTextStyles.darkTextStyle(),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (data.martName != null)
+                                      Text(
+                                        'Mart Name: ${data.martName}',
+                                        style:
+                                            CustomTextStyles.lightTextStyle(),
+                                      ),
+                                    if (data.categoryName != null)
+                                      Text(
+                                        'Category: ${data.categoryName}',
+                                        style:
+                                            CustomTextStyles.lightTextStyle(),
+                                      ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          );
+                                trailing: const Icon(Icons.expand_more_rounded),
+                                childrenPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 8.0),
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Email: ${data.email}',
+                                      style: CustomTextStyles.lightTextStyle(
+                                          size: 13),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'UserId: ${data.userId}',
+                                      style: CustomTextStyles.lightTextStyle(
+                                          size: 13),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: RoundedButton(
+                                            text: 'Details',
+                                            onPressed: () {
+                                              print('d');
+                                              Get.to(BaAttendanceDetail(
+                                                data: data,
+                                              ));
+                                            },
+                                            backgroundColor:
+                                                AppColors.primaryColorDark,
+                                            textColor: AppColors.whiteColor),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
                         } else {
-                          return Container();
+                          return const SizedBox();
                         }
                       },
                     )),

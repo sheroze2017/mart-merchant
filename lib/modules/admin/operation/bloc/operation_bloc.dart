@@ -29,6 +29,7 @@ class AdminOperation extends GetxController {
   Rxn<ByUserRoleData> companyIndividual = Rxn();
   RxList<ByUserRoleData> baNameList = RxList();
   RxList<ByUserRoleData> MerchantNameList = RxList();
+  RxList<ProductCMData> competitorProductList = RxList();
 
   RxList<IndividualUserAttendance> userAttendance = RxList();
   RxList<IndividualSalesData> individualSales = RxList();
@@ -529,6 +530,24 @@ class AdminOperation extends GetxController {
         await _companyOperationService.getAllCategories(companyId: companyId);
     if (response.data != null && response.code == 200) {
       categories.value = response.data ?? [];
+    }
+  }
+
+  Future<void> getAllCompetitorProductByCompanyMart(companyId) async {
+    competitorProductList.clear();
+
+    try {
+      fetchProductCompanyLoader.value = true;
+      AllCompanyProductData response =
+          await _adminOperationService.getAllCompetitorProduct(companyId);
+      if (response.data != null && response.code == 200) {
+        fetchProductCompanyLoader.value = false;
+        competitorProductList.value = response.data ?? [];
+      } else {
+        fetchProductCompanyLoader.value = false;
+      }
+    } catch (e) {
+      fetchProductCompanyLoader.value = false;
     }
   }
 }

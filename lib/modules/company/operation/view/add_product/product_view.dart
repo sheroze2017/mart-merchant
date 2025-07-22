@@ -32,6 +32,10 @@ class _ProductScreenState extends State<ProductScreen> {
     controller.getAllProductByCompanyMart(null, context);
   }
 
+  final SingleSelectController<String> catController =
+      SingleSelectController<String>(null);
+  String catId = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,45 +62,57 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                   ),
                 ),
-                // InkWell(
-                //   onTap: () {
-                //     _addBrand();
-                //   },
-                //   child: DashboardCard(
-                //     asset: 'assets/images/product.png',
-                //     title: 'New Brand',
-                //   ),
-                // )
               ],
             ),
             SizedBox(
               height: 2.h,
             ),
-            // Card(
-            //   elevation: 2,
-            //   child: CustomDropdown(
-            //     hintText: 'Select Mart',
-            //     items: controller.marts.map((m) => m.martName).toList(),
-            //     onChanged: (value) {
-            //       if (value != null) {
-            //         int exactIndex =
-            //             controller.marts.indexWhere((m) => m.martName == value);
-            //         if (exactIndex != -1) {
-            //           controller.getAllProductByCompanyMart(
-            //               null, controller.marts[exactIndex].martId, context);
-            //         }
-            //       }
-            //     },
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 1.h,
-            // ),
             Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: Text(
-                'All Products',
-                style: CustomTextStyles.w600TextStyle(),
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomDropdown(
+                      decoration: CustomDropdownDecoration(
+                        prefixIcon: Icon(Icons.location_on_sharp),
+                        expandedFillColor: AppColors.primaryColor,
+                        closedFillColor: AppColors.primaryColor,
+                      ),
+                      controller: catController,
+                      hintText: 'Select Category',
+                      items: controller.categories
+                          .map((category) => category.name)
+                          .toList(),
+                      onChanged: (value) {
+                        if (value != null && value.isNotEmpty) {
+                          final selectedCat = controller.categories.firstWhere(
+                            (cat) => cat.name == value,
+                          );
+                          catId = selectedCat.categoryId.toString();
+                          setState(() {});
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      catController.clear();
+                      catId = '';
+                      setState(() {});
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(Icons.cancel),
+                        )),
+                  )
+                ],
               ),
             ),
             SizedBox(
@@ -127,97 +143,102 @@ class _ProductScreenState extends State<ProductScreen> {
                   itemCount: controller.productList.length,
                   itemBuilder: (context, index) {
                     final product = controller.productList[index];
-                    return Card(
-                      color: AppColors.primaryColor,
-                      elevation: 2,
-                      child: ListTile(
-                          minVerticalPadding: 10,
-                          title: Text(
-                              '${product.productName} (${product.variant})',
-                              style: CustomTextStyles.darkHeadingTextStyle(
-                                  size: 20)),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  'Description: ${product.productDesc}\nPrice: ${product.price}\nsize: ${product.sizes}\nQuantity Available: ${product.qty}',
-                                  style: CustomTextStyles.lightSmallTextStyle(
-                                      color: AppColors.primaryColorDark,
-                                      size: 16)),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                CustomDialogMessage(
-                                                  dialogText:
-                                                      'Are you sure you want to delete this product ${product.productName} ${product.variant}',
-                                                  buttonText1: 'No',
-                                                  buttonText2: 'Yes',
-                                                  onButton1Pressed: () {
-                                                    Get.back();
-                                                  },
-                                                  onButton2Pressed: () {
-                                                    controller.deleteProduct(
-                                                        product.productId,
-                                                        context);
-                                                  },
-                                                ));
-                                      },
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          const Icon(
-                                            Icons.delete,
-                                            color: Colors.red,
-                                          ),
-                                          Text(
-                                            'Delete',
-                                            style: CustomTextStyles
-                                                .lightSmallTextStyle(
-                                                    size: 14,
-                                                    color: Colors.red),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    InkWell(
+                    if (catId.isEmpty ||
+                        catId == product.categoryId.toString()) {
+                      return Card(
+                        color: AppColors.primaryColor,
+                        elevation: 2,
+                        child: ListTile(
+                            minVerticalPadding: 10,
+                            title: Text(
+                                '${product.productName} (${product.variant})',
+                                style: CustomTextStyles.darkHeadingTextStyle(
+                                    size: 20)),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    'Description: ${product.productDesc}\nPrice: ${product.price}\nsize: ${product.sizes}\nQuantity Available: ${product.qty}',
+                                    style: CustomTextStyles.lightSmallTextStyle(
+                                        color: AppColors.primaryColorDark,
+                                        size: 16)),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      InkWell(
                                         onTap: () {
-                                          _updateProduct(product);
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  CustomDialogMessage(
+                                                    dialogText:
+                                                        'Are you sure you want to delete this product ${product.productName} ${product.variant}',
+                                                    buttonText1: 'No',
+                                                    buttonText2: 'Yes',
+                                                    onButton1Pressed: () {
+                                                      Get.back();
+                                                    },
+                                                    onButton2Pressed: () {
+                                                      controller.deleteProduct(
+                                                          product.productId,
+                                                          context);
+                                                    },
+                                                  ));
                                         },
                                         child: Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
                                           children: [
                                             const Icon(
-                                              Icons.edit,
-                                              size: 20,
-                                              color: Colors.black,
+                                              Icons.delete,
+                                              color: Colors.red,
                                             ),
                                             Text(
-                                              'Edit',
+                                              'Delete',
                                               style: CustomTextStyles
                                                   .lightSmallTextStyle(
                                                       size: 14,
-                                                      color: Colors.black),
+                                                      color: Colors.red),
                                             )
                                           ],
-                                        ))
-                                  ],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      InkWell(
+                                          onTap: () {
+                                            _updateProduct(product);
+                                          },
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              const Icon(
+                                                Icons.edit,
+                                                size: 20,
+                                                color: Colors.black,
+                                              ),
+                                              Text(
+                                                'Edit',
+                                                style: CustomTextStyles
+                                                    .lightSmallTextStyle(
+                                                        size: 14,
+                                                        color: Colors.black),
+                                              )
+                                            ],
+                                          ))
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          )),
-                    );
+                              ],
+                            )),
+                      );
+                    } else {
+                      return SizedBox();
+                    }
                   },
                 ),
               );
@@ -275,22 +296,6 @@ class _ProductScreenState extends State<ProductScreen> {
                         },
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(top: 8.0),
-                    //   child: CustomDropdown(
-                    //     hintText: 'Select Mart',
-                    //     items: controller.marts.map((m) => m.martName).toList(),
-                    //     onChanged: (value) {
-                    //       int exactIndex = controller.marts
-                    //           .indexWhere((m) => m.martName == value);
-                    //       if (exactIndex != -1) {
-                    //         martId.text =
-                    //             controller.marts[exactIndex].martId.toString();
-                    //       }
-                    //     },
-                    //   ),
-                    // ),
-
                     Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: RoundedBorderTextField(
@@ -345,7 +350,6 @@ class _ProductScreenState extends State<ProductScreen> {
                       hintText: 'Size',
                       icon: '',
                     ),
-
                     Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Row(

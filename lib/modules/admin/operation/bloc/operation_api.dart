@@ -190,6 +190,17 @@ class AdminOperationService extends BaseService {
     }
   }
 
+  Future<AllCompanyProductData> getAllCompetitorProduct(
+      String companyId) async {
+    try {
+      final response = await dioClient
+          .get('${Endpoints.getAllCompetitorProduct}?company_id=$companyId');
+      return AllCompanyProductData.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<AllUserAttendance> getAllUserAttendance(
       String startDate, String endDate) async {
     try {

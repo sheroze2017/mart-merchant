@@ -14,11 +14,36 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class CompanyCompetitorActivityReports extends StatelessWidget {
+class CompanyCompetitorActivityReports extends StatefulWidget {
   CompanyCompetitorActivityReports({super.key});
+
+  @override
+  State<CompanyCompetitorActivityReports> createState() =>
+      _CompanyCompetitorActivityReportsState();
+}
+
+class _CompanyCompetitorActivityReportsState
+    extends State<CompanyCompetitorActivityReports> {
   final controllerCompany = Get.find<CompanyOperationBloc>();
+
   final TextEditingController martId = TextEditingController();
+
   final TextEditingController emplyeeId = TextEditingController();
+
+  final SingleSelectController<String> catController =
+      SingleSelectController<String>(null);
+
+  final SingleSelectController<String> martController =
+      SingleSelectController<String>(null);
+
+  String catId = '';
+
+  @override
+  void initState() {
+    controllerCompany.categories.isEmpty
+        ? controllerCompany.getAllCategory()
+        : null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +62,12 @@ class CompanyCompetitorActivityReports extends StatelessWidget {
                       child: Card(
                         elevation: 2,
                         child: CustomDropdown.search(
+                          decoration: CustomDropdownDecoration(
+                            prefixIcon: Icon(Icons.location_on_sharp),
+                            expandedFillColor: AppColors.primaryColor,
+                            closedFillColor: AppColors.primaryColor,
+                          ),
+                          controller: martController,
                           hintText: 'Select Mart',
                           items: controllerCompany.marts
                               .map((m) => m.martName)
@@ -54,9 +85,62 @@ class CompanyCompetitorActivityReports extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      width: 12,
+                    ),
                     InkWell(
                       onTap: () {
+                        martController.clear();
                         controller.getActivityCompetitor('');
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.cancel),
+                          )),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 8, right: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomDropdown(
+                        decoration: CustomDropdownDecoration(
+                          prefixIcon: Icon(Icons.category_outlined),
+                          expandedFillColor: AppColors.primaryColor,
+                          closedFillColor: AppColors.primaryColor,
+                        ),
+                        controller: catController,
+                        hintText: 'Select Category',
+                        items: controllerCompany.categories
+                            .map((category) => category.name)
+                            .toList(),
+                        onChanged: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            final selectedCat =
+                                controllerCompany.categories.firstWhere(
+                              (cat) => cat.name == value,
+                            );
+                            catId = selectedCat.categoryId.toString();
+                            setState(() {});
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        catController.clear();
+                        catId = '';
+                        setState(() {});
                       },
                       child: Container(
                           decoration: BoxDecoration(
@@ -72,93 +156,104 @@ class CompanyCompetitorActivityReports extends StatelessWidget {
               ),
               Expanded(
                 child: controller.salesLoader.value
-                    ? Center(
+                    ? const Center(
                         child:
                             CircularProgressIndicator()) // Show loader when loading data
                     : controller.activityList.isEmpty
-                        ? Center(
+                        ? const Center(
                             child: Text(
                                 'No Activity Data Found')) // Show message if no data is found
                         : ListView.builder(
                             itemCount: controller.activityList.length,
                             itemBuilder: (context, index) {
                               var saleData = controller.activityList[index];
-                              return Card(
-                                color: AppColors.primaryColor,
-                                elevation: 2,
-                                margin: EdgeInsets.all(8),
-                                child: ExpansionTile(
-                                  title: Text(
-                                    '${saleData['mart_details']['name']}',
-                                    style: CustomTextStyles.w600TextStyle(),
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Reported Date: ${Utils.formatDate(saleData['activity_details']['created_at']) + ' ' + Utils.formatTime(saleData['activity_details']['created_at'])}',
-                                        style: CustomTextStyles.lightTextStyle(
-                                            size: 13),
-                                      ),
-                                      Text(
-                                        'BA Name: ${saleData['user_details']['name'] ?? ''}',
-                                        style: CustomTextStyles.lightTextStyle(
-                                            size: 13),
-                                      ),
-                                    ],
-                                  ),
-                                  trailing:
-                                      const Icon(Icons.expand_more_rounded),
-                                  childrenPadding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 8.0),
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'Email: ${saleData['user_details']['email'] ?? ''}',
-                                        style: CustomTextStyles.lightTextStyle(
-                                            size: 13),
-                                      ),
+                              if (catId.isEmpty ||
+                                  catId ==
+                                      saleData['user_details']['category_id']
+                                          .toString()) {
+                                return Card(
+                                  color: AppColors.primaryColor,
+                                  elevation: 2,
+                                  margin: EdgeInsets.all(8),
+                                  child: ExpansionTile(
+                                    title: Text(
+                                      '${saleData['mart_details']['name']}',
+                                      style: CustomTextStyles.w600TextStyle(),
                                     ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'Phone: ${saleData['user_details']['phone'] ?? ''}',
-                                        style: CustomTextStyles.lightTextStyle(
-                                            size: 13),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Row(
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Expanded(
-                                          child: RoundedButton(
-                                              text: 'View Activity',
-                                              onPressed: () {
-                                                showActivityDetailsDialog(
-                                                  context,
-                                                  imageUrl: saleData[
-                                                          'activity_details']
-                                                      ['image'],
-                                                  description: saleData[
-                                                          'activity_details']
-                                                      ['description'],
-                                                );
-                                              },
-                                              backgroundColor:
-                                                  AppColors.primaryColorDark,
-                                              textColor: AppColors.whiteColor),
+                                        Text(
+                                          'Reported Date: ${Utils.formatDate(saleData['activity_details']['created_at']) + ' ' + Utils.formatTime(saleData['activity_details']['created_at'])}',
+                                          style:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 13),
+                                        ),
+                                        Text(
+                                          'BA Name: ${saleData['user_details']['name'] ?? ''}',
+                                          style:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 13),
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                                    trailing:
+                                        const Icon(Icons.expand_more_rounded),
+                                    childrenPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 8.0),
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Email: ${saleData['user_details']['email'] ?? ''}',
+                                          style:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 13),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Phone: ${saleData['user_details']['phone'] ?? ''}',
+                                          style:
+                                              CustomTextStyles.lightTextStyle(
+                                                  size: 13),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 1.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: RoundedButton(
+                                                text: 'View Activity',
+                                                onPressed: () {
+                                                  showActivityDetailsDialog(
+                                                    context,
+                                                    imageUrl: saleData[
+                                                            'activity_details']
+                                                        ['image'],
+                                                    description: saleData[
+                                                            'activity_details']
+                                                        ['description'],
+                                                  );
+                                                },
+                                                backgroundColor:
+                                                    AppColors.primaryColorDark,
+                                                textColor:
+                                                    AppColors.whiteColor),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return SizedBox();
+                              }
+                            }),
               ),
             ],
           );

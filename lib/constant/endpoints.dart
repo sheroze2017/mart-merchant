@@ -22,6 +22,7 @@ class Endpoints {
   static const String restockRecord = "auth/shelfRestocked";
   static const String createMart = "auth/createMart";
   static const String createProduct = "auth/createProduct";
+
   static const String updateProduct = "auth/updateProduct";
 
   static const String submitSupervisorData = "auth/submitSupervisorData";
@@ -34,6 +35,7 @@ class Endpoints {
   static const String restockApi = "auth/createRestock";
   static const String getAllCompanyMartProduct =
       "auth/getCompanyAndMartProducts";
+  static const String getAllCompetitorProduct = "auth/getCompititorsProducts";
   static const String getUserByRole = "auth/getUsersByRole";
   static const String updateRestock = "auth/updateRestock";
   static const String getAllCategories = "auth/getAllCategories";
