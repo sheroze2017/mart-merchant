@@ -34,6 +34,15 @@ class _SearchCompanyProductState extends State<SearchCompanyProduct> {
     }
   }
 
+  final SingleSelectController<String> catController =
+      SingleSelectController<String>(null);
+
+  final SingleSelectController<String> martController =
+      SingleSelectController<String>(null);
+
+  final SingleSelectController<String> comController =
+      SingleSelectController<String>(null);
+  String catId = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,50 +54,140 @@ class _SearchCompanyProductState extends State<SearchCompanyProduct> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const heading(title: 'Select company to find products'),
-            Obx(() => Card(
-                  elevation: 2,
-                  child: CustomDropdown(
-                    decoration: CustomDropdownDecoration(
-                      prefixIcon: Icon(Icons.location_on_sharp),
-                      expandedFillColor: AppColors.primaryColor,
-                      closedFillColor: AppColors.primaryColor,
+            Obx(() => Row(
+                  children: [
+                    Expanded(
+                      child: Card(
+                        elevation: 2,
+                        child: CustomDropdown(
+                          controller: comController,
+                          decoration: CustomDropdownDecoration(
+                            prefixIcon: Icon(Icons.factory),
+                            expandedFillColor: AppColors.primaryColor,
+                            closedFillColor: AppColors.primaryColor,
+                          ),
+                          hintText: 'Select Company',
+                          items: companyController.companyNameList
+                              .map((company) => company.name)
+                              .toList(),
+                          onChanged: (selected) async {
+                            if (selected != null) {
+                              companyController
+                                      .selectedCompanyIndividual.value =
+                                  await companyController.companyNameList
+                                      .firstWhere((c) => c.name == selected);
+                              companyController.getAllCategory(companyController
+                                  .selectedCompanyIndividual.value!.userId
+                                  .toString());
+                              companyController.getAllProductByCompanyMart(
+                                  companyController
+                                      .selectedCompanyIndividual.value!.userId!
+                                      .toInt(),
+                                  null,
+                                  context);
+                              setState(() {});
+                            }
+                          },
+                        ),
+                      ),
                     ),
-                    hintText: 'Select Company',
-                    items: companyController.companyNameList
-                        .map((company) => company.name)
-                        .toList(),
-                    onChanged: (selected) async {
-                      if (selected != null) {
-                        companyController.selectedCompanyIndividual.value =
-                            await companyController.companyNameList
-                                .firstWhere((c) => c.name == selected);
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        catId = '';
+                        comController.clear();
+                        catController.clear();
                         companyController.getAllProductByCompanyMart(
-                            companyController
-                                .selectedCompanyIndividual.value!.userId!
-                                .toInt(),
-                            null,
-                            context);
-                      }
-                    },
-                  ),
+                            0, null, context);
+                        setState(() {});
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.cancel),
+                          )),
+                    )
+                  ],
                 )),
             SizedBox(
               height: 1.h,
             ),
+            comController.value == null
+                ? SizedBox()
+                : Padding(
+                    padding: const EdgeInsets.symmetric(),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Card(
+                            elevation: 2,
+                            child: Obx(() => CustomDropdown.search(
+                                  decoration: CustomDropdownDecoration(
+                                    prefixIcon: Icon(Icons.category),
+                                    expandedFillColor: AppColors.primaryColor,
+                                    closedFillColor: AppColors.primaryColor,
+                                  ),
+                                  controller: catController,
+                                  hintText: 'Select Category',
+                                  items: companyController.categories
+                                      .map((category) => category.name)
+                                      .toList(),
+                                  onChanged: (selected) {
+                                    if (selected != null) {
+                                      final selectedCat = companyController
+                                          .categories
+                                          .firstWhere(
+                                        (cat) => cat.name == selected,
+                                      );
+                                      catId = selectedCat.categoryId.toString();
+                                      catController.value = selected;
+                                      setState(() {});
+                                    }
+                                  },
+                                )),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        InkWell(
+                          onTap: () {
+                            catId = '';
+                            catController.clear();
+                            setState(() {});
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Icon(Icons.cancel),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
             headingSmall(
               title: 'Product List ${locationController.text}',
             ),
             Obx(() {
-              if (companyController.productList.value.isEmpty) {
-                return const Center(
-                  child: headingSmall(title: 'No Products to show'),
-                );
-              } else if (companyController.fetchProductCompanyLoader.value) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
+              if (companyController.fetchProductCompanyLoader.value) {
+                return const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
+                );
+              } else if (companyController.productList.isEmpty) {
+                return const Center(
+                  child: headingSmall(title: 'No Products to show'),
                 );
               }
               return Expanded(
@@ -98,20 +197,25 @@ class _SearchCompanyProductState extends State<SearchCompanyProduct> {
                   itemCount: companyController.productList.length,
                   itemBuilder: (context, index) {
                     final product = companyController.productList[index];
-                    return Card(
-                      color: AppColors.redLight,
-                      elevation: 2,
-                      child: ListTile(
-                          minVerticalPadding: 10,
-                          title: Text(
-                              '${product.productName} - ${product.companyName} (${product.variant})',
-                              style: CustomTextStyles.darkTextStyle()),
-                          subtitle: Text(
-                              'Description: ${product.productDesc}\nPrice: ${product.price}\nQuantity: ${product.qty}',
-                              style: CustomTextStyles.lightSmallTextStyle(
-                                  color: AppColors.primaryColorDark,
-                                  size: 15))),
-                    );
+                    if (catId.isEmpty ||
+                        catId == product.categoryId.toString()) {
+                      return Card(
+                        color: AppColors.redLight,
+                        elevation: 2,
+                        child: ListTile(
+                            minVerticalPadding: 10,
+                            title: Text(
+                                '${product.productName} - ${product.companyName} (${product.variant})',
+                                style: CustomTextStyles.darkTextStyle()),
+                            subtitle: Text(
+                                'Description: ${product.productDesc}\nPrice: ${product.price}\nQuantity: ${product.qty}',
+                                style: CustomTextStyles.lightSmallTextStyle(
+                                    color: AppColors.primaryColorDark,
+                                    size: 15))),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
                   },
                 ),
               );

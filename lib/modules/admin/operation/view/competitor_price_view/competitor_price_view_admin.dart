@@ -28,6 +28,7 @@ class _CompetitorAdminScreenState extends State<CompetitorAdminScreen> {
 
   String comId = '';
   String martId = '';
+  String catId = '';
 
   @override
   void initState() {
@@ -43,11 +44,11 @@ class _CompetitorAdminScreenState extends State<CompetitorAdminScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 0.0),
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 12, right: 12),
+                padding: const EdgeInsets.only(top: 8.0, left: 8, right: 8),
                 child: Row(
                   children: [
                     Expanded(
@@ -70,9 +71,13 @@ class _CompetitorAdminScreenState extends State<CompetitorAdminScreen> {
                                   controllerCompany.companyNameList.firstWhere(
                                 (com) => com.name == value,
                               );
+                              catId = '';
+                              catController.clear();
+                              controllerCompany.categories.clear();
                               comId = selectedCom.userId.toString();
                               controllerCompany
                                   .getAllCompetitorProductByCompanyMart(comId);
+                              controllerCompany.getAllCategory(comId);
                               setState(() {});
                             }
                           },
@@ -85,6 +90,8 @@ class _CompetitorAdminScreenState extends State<CompetitorAdminScreen> {
                     InkWell(
                       onTap: () {
                         companyController.clear();
+                        catId = '';
+                        catController.clear();
                         comId = '';
                         setState(() {});
                       },
@@ -101,7 +108,7 @@ class _CompetitorAdminScreenState extends State<CompetitorAdminScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 12, right: 12),
+                padding: const EdgeInsets.only(top: 4.0, left: 12, right: 12),
                 child: Row(
                   children: [
                     Expanded(
@@ -152,6 +159,64 @@ class _CompetitorAdminScreenState extends State<CompetitorAdminScreen> {
                   ],
                 ),
               ),
+              companyController.value == null
+                  ? const SizedBox()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 4),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Card(
+                              elevation: 2,
+                              child: Obx(() => CustomDropdown.search(
+                                    decoration: CustomDropdownDecoration(
+                                      prefixIcon: Icon(Icons.category),
+                                      expandedFillColor: AppColors.primaryColor,
+                                      closedFillColor: AppColors.primaryColor,
+                                    ),
+                                    controller: catController,
+                                    hintText: 'Select Category',
+                                    items: controllerCompany.categories
+                                        .map((category) => category.name)
+                                        .toList(),
+                                    onChanged: (selected) {
+                                      if (selected != null) {
+                                        final selectedCat = controllerCompany
+                                            .categories
+                                            .firstWhere(
+                                          (cat) => cat.name == selected,
+                                        );
+                                        catId =
+                                            selectedCat.categoryId.toString();
+                                        catController.value = selected;
+                                        setState(() {});
+                                      }
+                                    },
+                                  )),
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          InkWell(
+                            onTap: () {
+                              catId = '';
+                              catController.clear();
+                              setState(() {});
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.cancel),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
               SizedBox(
                 height: 2.h,
               ),
@@ -175,8 +240,10 @@ class _CompetitorAdminScreenState extends State<CompetitorAdminScreen> {
                               itemBuilder: (context, index) {
                                 final data = controllerCompany
                                     .competitorProductList[index];
-                                if (martId.isEmpty ||
-                                    martId == data.martId.toString()) {
+                                if ((martId.isEmpty ||
+                                        martId == data.martId.toString()) &&
+                                    (catId.isEmpty ||
+                                        catId == data.categoryId.toString())) {
                                   return AnimationConfiguration.staggeredList(
                                       position: index,
                                       duration:
