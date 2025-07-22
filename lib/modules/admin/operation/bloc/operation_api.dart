@@ -318,13 +318,14 @@ class AdminOperationService extends BaseService {
     try {
       String url = Endpoints.getSupervisorData;
 
-      List<String> queryParams = [];
-      if (companyId.isNotEmpty) queryParams.add('company_id=$companyId');
-      if (martId.isNotEmpty) queryParams.add('mart_id=$martId');
-      if (queryParams.isNotEmpty) {
-        url += '?${queryParams.join('&')}';
-      }
-      final response = await dioClient.get(url);
+      // List<String> queryParams = [];
+      // if (companyId.isNotEmpty) queryParams.add('company_id=$companyId');
+      // if (martId.isNotEmpty) queryParams.add('mart_id=$martId');
+      // if (queryParams.isNotEmpty) {
+      //   url += '?${queryParams.join('&')}';
+      // }
+      final response = await dioClient
+          .post(url, data: {"company_id": companyId, "mart_id": martId});
       return response;
     } catch (e) {
       rethrow;

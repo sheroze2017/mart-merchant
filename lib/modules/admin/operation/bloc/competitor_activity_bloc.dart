@@ -15,7 +15,7 @@ class adminCompetitorActivity extends GetxController {
           companyId.toString(), martId);
       if (response['data'] != null) {
         salesLoader.value = false;
-        activityList.value = response['data'] ?? [];
+        activityList.value = (response['data'] ?? []).reversed.toList();
         update(); // Notify listeners to rebuild UI
       } else {
         salesLoader.value = false;
