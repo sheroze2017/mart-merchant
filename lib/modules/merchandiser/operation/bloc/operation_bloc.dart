@@ -83,9 +83,7 @@ class MerchantOperationBloc extends GetxController {
     imgUrl.value = '';
     try {
       imgUrl.value = '';
-      String base64Image = await imageToBase64(imagePath);
-      print('Base64 Image: $base64Image');
-      final response = await merchantservice.uploadPhoto(base64Image);
+      final response = await merchantservice.uploadPhoto(imagePath);
       if (response.isNotEmpty) {
         imgUrl.value = response;
         AnimatedSnackbar.showSnackbar(
@@ -120,16 +118,6 @@ class MerchantOperationBloc extends GetxController {
     } finally {
       imgUploaded.value = false;
     }
-  }
-
-  Future<String> imageToBase64(String imagePath) async {
-    File imageFile = File(imagePath);
-    if (!imageFile.existsSync()) {
-      throw Exception('Image file not found');
-    }
-    Uint8List imageBytes = await imageFile.readAsBytes();
-    String base64Image = base64Encode(imageBytes);
-    return base64Image;
   }
 
   Future<void> getAllMart() async {

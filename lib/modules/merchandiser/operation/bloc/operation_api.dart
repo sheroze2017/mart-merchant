@@ -1,39 +1,77 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:ba_merchandise/common/utils/function.dart';
 import 'package:ba_merchandise/constant/endpoints.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 import 'package:ba_merchandise/services/base_service.dart';
 
 class MerchantOperationService extends BaseService {
-  Future<String> uploadPhoto(String baseImage64) async {
-    print(baseImage64);
-    try {
-      final result = await dioClient.post(
-          '${Endpoints.baseUrl}auth/uploadBase64',
-          data: {"base64Image": baseImage64});
+  Future<String> uploadPhoto(String filePath) async {
+    final url = Uri.parse(
+        'https://canvas-prod.comsrvssoftwaresolutions.com/auth/uploadImage');
 
-      if (result['sucess'] == true) {
-        return result['data'];
-      } else {
-        return '';
+    try {
+      final File originalFile = File(filePath);
+      final request = http.MultipartRequest('POST', url)
+        ..files
+            .add(await http.MultipartFile.fromPath('image', originalFile.path));
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      print('STATUS: ${response.statusCode}');
+      print('BODY: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['sucess'] == true) {
+          return data['data']; // Adjust based on API response structure
+        }
       }
-    } catch (e) {
       return '';
-    } finally {}
+    } catch (e) {
+      print("Upload error: $e");
+      return '';
+    }
   }
 
-  Future<String> updateProfilePhoto(String baseImage64) async {
+  Future<String> updateProfilePhoto(String filePath) async {
     var userId = await Utils.getUserId();
+    var url = Uri.parse(
+        'https://canvas-prod.comsrvssoftwaresolutions.com/auth/uploadImage');
+
+    var request = http.MultipartRequest('POST', url);
+    request.files.add(await http.MultipartFile.fromPath('image', filePath));
+    request.fields['user_id'] = userId.toString();
+
     try {
-      final result = await dioClient.post(
-          '${Endpoints.baseUrl}auth/uploadBase64',
-          data: {"base64Image": baseImage64, "user_id": userId});
-      if (result['sucess'] == true) {
-        return result['data']['image'];
+      // Send request
+      var streamedResponse = await request.send();
+
+      // Read response
+      var response = await http.Response.fromStream(streamedResponse);
+      print("STATUS: ${response.statusCode}");
+      print("BODY: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['sucess'] == true) {
+          return data['data']['image'];
+        } else {
+          print("Success = false: ${data}");
+        }
       } else {
-        return '';
+        print("Unexpected status code: ${response.statusCode}");
       }
-    } catch (e) {
+
       return '';
-    } finally {}
+    } catch (e) {
+      print('Upload failed with error: $e');
+      return '';
+    }
   }
 
   Future<Map<String, dynamic>> uploadRestockRecord(

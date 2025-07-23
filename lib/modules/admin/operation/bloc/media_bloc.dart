@@ -23,9 +23,7 @@ class MediaBloc extends GetxController {
 
     try {
       imgUrl.value = '';
-      String base64Image = await imageToBase64(imagePath);
-      print("Base64 string length: ${base64Image.length}");
-      final response = await merchantservice.uploadPhoto(base64Image);
+      final response = await merchantservice.uploadPhoto(imagePath);
       if (response.isNotEmpty) {
         imgUrl.value = response;
         AnimatedSnackbar.showSnackbar(
@@ -62,31 +60,12 @@ class MediaBloc extends GetxController {
     }
   }
 
-  Future<String> imageToBase64(String imagePath) async {
-    final imageFile = File(imagePath);
-    if (!imageFile.existsSync()) {
-      throw Exception('Image file not found');
-    }
-    final compressedBytes = await FlutterImageCompress.compressWithFile(
-      imagePath,
-      minWidth: 800,
-      minHeight: 800,
-      quality: 75,
-      format: CompressFormat.jpeg,
-    );
-    if (compressedBytes == null) {
-      throw Exception('Failed to compress image');
-    }
-    return base64Encode(compressedBytes);
-  }
-
   Future<void> updateProfilePhoto(imagePath, BuildContext context) async {
     proimgUploaded.value = true;
     proimgUrl.value = '';
     try {
       proimgUrl.value = '';
-      String base64Image = await imageToBase64(imagePath);
-      final response = await merchantservice.updateProfilePhoto(base64Image);
+      final response = await merchantservice.updateProfilePhoto(imagePath);
       if (response.isNotEmpty) {
         proimgUrl.value = response;
         controller.updateUserImage(proimgUrl.value);
